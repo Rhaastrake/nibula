@@ -5,6 +5,16 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [3.0.0] - 2026-09-??
+
+### Changed
+- **BREAKING** The global stylesheet is loaded by the layout instead of being imported by each page. `_global.scss` is now `global.scss`, so Sass compiles it into `out/css/global.css`, and `base.njk` links it before the page's own file. Until now every page's CSS carried a full copy of the framework and of every module, so a visitor reading three pages downloaded the same thing three times with no way to cache it.
+- **BREAKING** Page stylesheets no longer start with `@import "../global"`. A new page opens with the `@use "../root"` line and nothing else, since everything shared now arrives from the layout.
+
+### Notes
+- **To migrate the stylesheets:** rename `_global.scss` to `global.scss`, remove `@import "../global"` from every file in `scss/pages/`, and add the global stylesheet link to `base.njk` above the page one.
+
 ## [2.4.7] - 2026-09-04
 
 ### Changed

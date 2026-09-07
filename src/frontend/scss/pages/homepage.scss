@@ -1,9 +1,6 @@
 // Getting root rules from _root.scss
 @use "../root" as root; // Usage: root.$value-name
 
-// This global module contains the import framework, necessary modules for each page and any other common styles
-@import "../global";
-
 // Import any other module you need by import down here
 // @import "../modules/moduleName";
 
