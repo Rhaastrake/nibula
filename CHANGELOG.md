@@ -5,6 +5,23 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [3.0.0] - 2026-09-??
+
+### Changed
+- **BREAKING** Removed the `build-js` command. Projects now call `esbuild` directly in their `build:js` and `serve:js` scripts, with the entry pattern written out in full. `nib` is for the commands it offers, not a wrapper around the build.
+- Removed the `glob` dependency from new projects. It existed only to expand the entry pattern before handing it to esbuild, which expands it by itself.
+
+### Notes
+- **`nib build-js` no longer exists.** A project created before this release has it in its `package.json` and its build will fail after updating. Replace the two scripts with:
+
+```
+  "build:js": "esbuild \"src/frontend/js/pages/*.js\" --bundle --outdir=out/js/pages --minify",
+  "serve:js": "esbuild \"src/frontend/js/pages/*.js\" --bundle --outdir=out/js/pages --watch"
+```
+
+  A TypeScript project uses `src/frontend/ts/pages/*.ts` instead.
+
 ## [2.4.7] - 2026-09-04
 
 ### Changed
