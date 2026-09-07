@@ -5,6 +5,11 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-09-??
+
+### Changed
+- The data record a new page gets in `pages.json` comes from `tools/res/templates/template.json` instead of being written inside `settings.json`. It's content, like the route, the stylesheet and the script, and it now sits with the other three templates rather than in the CLI's configuration.
+
 ## [2.4.7] - 2026-09-04
 
 ### Changed

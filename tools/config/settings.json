@@ -71,19 +71,7 @@
     "styleTemplate": "template.scss",
     "routeTemplate": "template.njk",
     "layoutExtension": "njk",
-    "defaultData": {
-      "seo": {
-        "title": "{title}",
-        "description": "Description",
-        "keywords": "",
-        "noindex": false,
-        "canonical": ""
-      },
-      "cdn": {
-        "css": [],
-        "js": []
-      }
-    }
+    "dataTemplate": "template.json"
   },
   "frontMatter": {
     "title": "title: \"{camelName}\"",
