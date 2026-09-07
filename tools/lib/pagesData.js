@@ -1,7 +1,7 @@
 const path = require('path');
 const settings = require('../config/settings.json');
 const { PATHS } = require('./paths');
-const { exists, readText, writeJson } = require('./files');
+const { exists, readText, readJson, writeJson } = require('./files');
 const { log } = require('./logger');
 const { toCamelCase, toTitleCase, formatValue } = require('./text');
 
@@ -28,7 +28,14 @@ function writePagesData(data) {
 }
 
 function createRecord(pageName) {
-    return formatValue(settings.page.defaultData, { title: toTitleCase(pageName) });
+    const templateFile = path.join(PATHS.templates, settings.page.dataTemplate);
+
+    if (!exists(templateFile)) {
+        log('page.templateMissing', { path: templateFile });
+        return null;
+    }
+
+    return formatValue(readJson(templateFile), { title: toTitleCase(pageName) });
 }
 
 function addPageData(pageName) {
@@ -41,7 +48,10 @@ function addPageData(pageName) {
         return;
     }
 
-    data[camelName] = createRecord(pageName);
+    const record = createRecord(pageName);
+    if (!record) return;
+
+    data[camelName] = record;
 
     writePagesData(data);
     log('pagesData.recordAdded', { name: camelName });
