@@ -382,7 +382,7 @@
     
       <li>
         
-          <a class="button link-button" href="#asset-management">Asset management</a>
+          <a class="button link-button" href="#assets-management">Assets management</a>
         
       </li>
     
@@ -1490,30 +1490,28 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
             <div class="col-section">
               <h1 id="content-and-data">Content &amp; Data</h1>
 <p>Two folders hold the things your site needs but that aren't markup: <code>assets/</code> and <code>data/</code>. The difference is <strong>when</strong> they're used.</p>
-<p><code>assets/</code> is copied into the output as it is, so its files exist on the published site and the browser can reach them.</p>
-<p><code>data/</code> is read while the site builds and then left behind. Its files never reach the output, so nothing in there is ever downloadable.</p>
-<h2 id="asset-management" tabindex="-1">Asset management <a class="header-anchor" href="#asset-management">#</a></h2>
-<p>Everything the browser has to load goes in <code>src/frontend/assets/</code>: images, fonts, icons, downloadable files.</p>
+<p><code>assets/</code> is copied into the <strong>out</strong> folder as it is, so the browser can reach its files while the page is running. Images, fonts, icons, downloadable files, and <strong>JSON</strong> your <strong>JavaScript</strong> wants to fetch.</p>
+<p><code>data/</code> is read while the site <strong>builds</strong> and then left behind. Its <strong>JSON</strong> files feed your <a href="#what-is-a-component">components</a> and <a href="#what-is-markdown">Markdown</a>, and never reach the <strong>out</strong> folder, so nothing in there is downloadable or reachable by JavaScript.</p>
+<h2 id="assets-management" tabindex="-1">Assets management <a class="header-anchor" href="#assets-management">#</a></h2>
+<p>Everything the browser has to load goes in <code>src/frontend/assets/</code>, in whatever structure you like. The folder is copied keeping that structure, so the path you write is the path it has.</p>
 <pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">assets</span><span class="token operator">/</span>
 ├── <span class="token variable">brand</span><span class="token operator">/</span>
 │   ├── <span class="token variable">favicon</span><span class="token punctuation">.</span><span class="token variable">svg</span>
-│   ├── <span class="token variable">favicon</span><span class="token operator">-</span><span class="token number">32</span><span class="token punctuation">.</span><span class="token variable">png</span>
-│   └── <span class="token variable">apple</span><span class="token operator">-</span><span class="token variable">touch</span><span class="token operator">-</span><span class="token variable">icon</span><span class="token punctuation">.</span><span class="token variable">png</span>
+│   ├── <span class="token variable">logo</span><span class="token punctuation">.</span><span class="token variable">svg</span>
+│   └── <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 ├── <span class="token variable">images</span><span class="token operator">/</span>
-└── <span class="token variable">fonts</span><span class="token operator">/</span></code></pre>
-<p><code>brand/</code> holds the favicon and the logo, which the <a href="#what-base-gives-you">layout</a> already points at. The rest is yours to organize.</p>
-<p>The folder is copied into the output keeping its structure, so the path you write is the path it has:</p>
-<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">img</span> <span class="token variable">src</span><span class="token operator">=</span><span class="token string">"{{ '/assets/images/photo.jpg' | url }}"</span> <span class="token variable">alt</span><span class="token operator">=</span><span class="token string">"A photo"</span><span class="token operator">></span></code></pre>
+└── <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
 <blockquote>
-<p>The <strong>url</strong> filter is what makes the path work when the site is published in a subfolder rather than at the root of a domain. Use it for every internal path</p>
+<p>You can create your own custom folders</p>
 </blockquote>
 <h3 id="assets-json" tabindex="-1">JSON the browser can read <a class="header-anchor" href="#assets-json">#</a></h3>
-<p>Because <code>assets/</code> ends up in the output, a <strong>JSON</strong> file in there can be fetched by your <strong>JavaScript</strong> while the page is running:</p>
+<p>A <strong>JSON</strong> file in <code>assets/</code> can be fetched by your <strong>JavaScript</strong> while the page is running:</p>
 <p><code>assets/data/products.json</code></p>
 <pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
   <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">19</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span></code></pre>
+<p><code>js/modules/plans.js</code></p>
 <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/assets/data/products.json"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> products <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>That's the choice to make when the data changes without rebuilding the site, or when you only need it after the visitor does something.</p>
@@ -1529,6 +1527,7 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
   <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"0"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"19"</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span></code></pre>
+<p><code>frontend/components/plans.njk</code></p>
 <pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">ul</span><span class="token operator">></span>
   <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> <span class="token variable">plan</span> <span class="token keyword">in</span> <span class="token variable">plans</span> <span class="token operator">%</span><span class="token punctuation">}</span>
     <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">name</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> — €<span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">price</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
@@ -1536,48 +1535,12 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">ul</span><span class="token operator">></span></code></pre>
 <p>No import, no configuration, no restart. The variable is named after the file, so <code>plans.json</code> becomes <code>plans</code>.</p>
 <h3 id="data-in-markdown" tabindex="-1">In a Markdown file <a class="header-anchor" href="#data-in-markdown">#</a></h3>
-<p>A <code>.md</code> file can use the same values, but it doesn't see them on its own. Pass them when you <a href="#include-markdown">render the file</a>:</p>
+<p>A <code>.md</code> file can use the same values, but it doesn't see them on its own. Pass them when you include the <a href="#include-markdown">markdown component</a>:</p>
 <pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">renderFile</span> <span class="token string">"example.md"</span> <span class="token operator">|</span> <span class="token variable">componentsPath</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token variable">plans</span><span class="token punctuation">:</span> <span class="token variable">plans</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"md"</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
-<blockquote>
-<p>This is the difference from a <code>.njk</code> component: an <a href="#include-a-component">include</a> inherits the page's data, <code>renderFile</code> gets only what you hand it</p>
-</blockquote>
-<h3 id="data-or-assets" tabindex="-1">Which folder to use <a class="header-anchor" href="#data-or-assets">#</a></h3>
-<table>
-<thead>
-<tr>
-<th></th>
-<th><code>data/</code></th>
-<th><code>assets/</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Read</td>
-<td>While the site builds</td>
-<td>While the page runs</td>
-</tr>
-<tr>
-<td>By</td>
-<td><strong>Nunjucks</strong> and <strong>Markdown</strong></td>
-<td>Your <strong>JavaScript</strong></td>
-</tr>
-<tr>
-<td>Ends up in the output</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Good for</td>
-<td>Content that's part of the page</td>
-<td>Data fetched on demand</td>
-</tr>
-</tbody>
-</table>
 <p>Building the values into the page is faster for the visitor: the content is already there when the page arrives, and search engines can read it. Fetching is what you want when the data changes on its own, or when it's too much to put in every page.</p>
 <blockquote>
 <p>Keep <code>data/</code> where it is. It was moved out of <code>assets/</code> in an early version precisely so it wouldn't be published</p>
 </blockquote>
-<h2 id="content-and-data-examples" tabindex="-1">Examples <a class="header-anchor" href="#content-and-data-examples">#</a></h2>
 
             </div>
           
