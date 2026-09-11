@@ -316,7 +316,7 @@
     
       <li>
         
-          <a class="button link-button" href="#styling-create-a-module">Create a module</a>
+          <a class="button link-button" href="#styling-modules">Modules</a>
         
       </li>
     
@@ -358,7 +358,7 @@
     
       <li>
         
-          <a class="button link-button" href="#javascript-create-a-module">Create a module</a>
+          <a class="button link-button" href="#javascript-modules">Modules</a>
         
       </li>
     
@@ -1332,7 +1332,7 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <blockquote>
 <p>The leading underscore marks a file meant to be imported rather than compiled into a stylesheet of its own</p>
 </blockquote>
-<h2 id="styling-create-a-module" tabindex="-1">Create a module <a class="header-anchor" href="#styling-create-a-module">#</a></h2>
+<h2 id="styling-modules" tabindex="-1">Modules <a class="header-anchor" href="#styling-modules">#</a></h2>
 <p>You can create your custom <strong>SCSS</strong> module under <code>src/frontend/scss/modules/</code>, with an underscore in front of the name.</p>
 <p>Remember to declare <code>@use &quot;../root&quot; as root;</code> to access the values that you named and ant to reuse</p>
 <p><code>modules/_exampleModule.scss</code></p>
@@ -1422,34 +1422,57 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
           
             <div class="col-section">
               <h1 id="javascript">Javascript</h1>
+<blockquote>
+<p>Examples use <strong>JavaScript</strong>. Everything applies to <strong>TypeScript</strong> too, except that imports leave the extension out and the project has an extra <code>tsconfig.json</code></p>
+</blockquote>
 <h2 id="javascript-or-typescript" tabindex="-1">Javascript or TypeScript <a class="header-anchor" href="#javascript-or-typescript">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>When creating a project, <strong>Nibula</strong> asks you whether to use <strong>JavaScript</strong> or <strong>TypeScript</strong>. The difference is that TypeScript makes you say what kind of value each thing holds: a <strong>string</strong>, a <strong>number</strong>, the <strong>return</strong> of the function. It checks that you're consistent while you write, so a whole class of mistakes shows up in your editor instead of in the browser.</p>
+<p>It's more to learn, though. If you're not sure, start with <strong>JavaScript</strong>. You can always write the next project in TypeScript.</p>
 <h2 id="javascript-structure" tabindex="-1">Structure <a class="header-anchor" href="#javascript-structure">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="javascript-create-a-module" tabindex="-1">Create a module <a class="header-anchor" href="#javascript-create-a-module">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="javascript-import-a-module" tabindex="-1">Import a module <a class="header-anchor" href="#javascript-import-a-module">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>The <strong>JavaScript</strong> structure is much the same as the <a href="#styling-structure">SCSS</a> one, but imports work a little differently.</p>
+<p>Every <strong>page</strong> has its own file, named after the page in <strong>camel case</strong>, created for you under <code>src/frontend/js/pages/</code> when you add a page with the <a href="#nibula-cli">Nibula CLI</a>.</p>
+<blockquote>
+<p>Example: <code>my-page.njk</code> (page file) is automatically linked to <code>myPage.js</code></p>
+</blockquote>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">js</span><span class="token operator">/</span>
+├── <span class="token variable">global</span><span class="token punctuation">.</span><span class="token variable">js</span>
+├── <span class="token variable">modules</span><span class="token operator">/</span>
+└── <span class="token variable">pages</span><span class="token operator">/</span></code></pre>
+<p><code>pages/</code> holds one file per page, <code>modules/</code> the pieces you reuse, and <code>global.js</code> what runs everywhere.</p>
+<p>Each page file imports <code>global.js</code>, so you write the shared behaviour once:</p>
+<p><code>js/pages/myPage.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">'../global.js'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// import { initExampleModule } from '../modules/exampleModule.js';</span>
+
+<span class="token comment">// initExampleModule();</span>
+
+<span class="token comment">// Page logic here</span></code></pre>
+<blockquote>
+<p>Unlike <strong>SCSS</strong>, there's no central file to register anything in. Each page pulls in what it needs</p>
+</blockquote>
+<h2 id="javascript-modules" tabindex="-1">Modules <a class="header-anchor" href="#javascript-modules">#</a></h2>
+<p>A module is a file holding one piece of behaviour: a menu, a slider, a form check. Add it under <code>src/frontend/js/modules/</code>.</p>
+<p><code>modules/exampleModule.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">initExampleModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"Example module is working!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The <strong>export</strong> is what makes the function reachable from outside the file. Anything you don't export stays private to the module.</p>
+<blockquote>
+<p>Wrap the behaviour in an <strong>init</strong> function rather than running it as soon as the file loads. That way the page decides <strong>when</strong> it starts</p>
+</blockquote>
+<p><strong>Importing</strong> a module makes its functions available. Calling the <strong>init</strong> function is what actually starts it, so you need both lines.</p>
+<p>In a page file, for behaviour only that page needs:</p>
+<p><code>js/pages/myPage.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">'../global.js'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initExampleModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../modules/exampleModule.js'</span><span class="token punctuation">;</span>
+
+<span class="token function">initExampleModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In <code>global.js</code>, for behaviour every page needs:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> initBurgerMenu <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./modules/burgerMenu.js"</span><span class="token punctuation">;</span>
+
+<span class="token function">initBurgerMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
             </div>
           
@@ -1466,27 +1489,95 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
           
             <div class="col-section">
               <h1 id="content-and-data">Content &amp; Data</h1>
+<p>Two folders hold the things your site needs but that aren't markup: <code>assets/</code> and <code>data/</code>. The difference is <strong>when</strong> they're used.</p>
+<p><code>assets/</code> is copied into the output as it is, so its files exist on the published site and the browser can reach them.</p>
+<p><code>data/</code> is read while the site builds and then left behind. Its files never reach the output, so nothing in there is ever downloadable.</p>
 <h2 id="asset-management" tabindex="-1">Asset management <a class="header-anchor" href="#asset-management">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Everything the browser has to load goes in <code>src/frontend/assets/</code>: images, fonts, icons, downloadable files.</p>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">assets</span><span class="token operator">/</span>
+├── <span class="token variable">brand</span><span class="token operator">/</span>
+│   ├── <span class="token variable">favicon</span><span class="token punctuation">.</span><span class="token variable">svg</span>
+│   ├── <span class="token variable">favicon</span><span class="token operator">-</span><span class="token number">32</span><span class="token punctuation">.</span><span class="token variable">png</span>
+│   └── <span class="token variable">apple</span><span class="token operator">-</span><span class="token variable">touch</span><span class="token operator">-</span><span class="token variable">icon</span><span class="token punctuation">.</span><span class="token variable">png</span>
+├── <span class="token variable">images</span><span class="token operator">/</span>
+└── <span class="token variable">fonts</span><span class="token operator">/</span></code></pre>
+<p><code>brand/</code> holds the favicon and the logo, which the <a href="#what-base-gives-you">layout</a> already points at. The rest is yours to organize.</p>
+<p>The folder is copied into the output keeping its structure, so the path you write is the path it has:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">img</span> <span class="token variable">src</span><span class="token operator">=</span><span class="token string">"{{ '/assets/images/photo.jpg' | url }}"</span> <span class="token variable">alt</span><span class="token operator">=</span><span class="token string">"A photo"</span><span class="token operator">></span></code></pre>
+<blockquote>
+<p>The <strong>url</strong> filter is what makes the path work when the site is published in a subfolder rather than at the root of a domain. Use it for every internal path</p>
+</blockquote>
+<h3 id="assets-json" tabindex="-1">JSON the browser can read <a class="header-anchor" href="#assets-json">#</a></h3>
+<p>Because <code>assets/</code> ends up in the output, a <strong>JSON</strong> file in there can be fetched by your <strong>JavaScript</strong> while the page is running:</p>
+<p><code>assets/data/products.json</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">19</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span></code></pre>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/assets/data/products.json"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> products <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>That's the choice to make when the data changes without rebuilding the site, or when you only need it after the visitor does something.</p>
+<blockquote>
+<p>Anything in <code>assets/</code> is public. Never put keys, credentials or anything private in there</p>
+</blockquote>
 <h2 id="data-files" tabindex="-1">Data files <a class="header-anchor" href="#data-files">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p><code>src/frontend/data/</code> holds the <strong>JSON</strong> files your templates read while the site builds.</p>
+<p>Two are there from the start: <code>site.json</code> with your site-wide settings, and <code>pages.json</code> with the <a href="#seo">SEO</a> of each page.</p>
+<p>Any other <code>.json</code> you add becomes available on its own, with the name of the file:</p>
+<p><code>data/plans.json</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"0"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"19"</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span></code></pre>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">ul</span><span class="token operator">></span>
+  <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> <span class="token variable">plan</span> <span class="token keyword">in</span> <span class="token variable">plans</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">name</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> — €<span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">price</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+  <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">endfor</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">ul</span><span class="token operator">></span></code></pre>
+<p>No import, no configuration, no restart. The variable is named after the file, so <code>plans.json</code> becomes <code>plans</code>.</p>
+<h3 id="data-in-markdown" tabindex="-1">In a Markdown file <a class="header-anchor" href="#data-in-markdown">#</a></h3>
+<p>A <code>.md</code> file can use the same values, but it doesn't see them on its own. Pass them when you <a href="#include-markdown">render the file</a>:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">renderFile</span> <span class="token string">"example.md"</span> <span class="token operator">|</span> <span class="token variable">componentsPath</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token variable">plans</span><span class="token punctuation">:</span> <span class="token variable">plans</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"md"</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>This is the difference from a <code>.njk</code> component: an <a href="#include-a-component">include</a> inherits the page's data, <code>renderFile</code> gets only what you hand it</p>
+</blockquote>
+<h3 id="data-or-assets" tabindex="-1">Which folder to use <a class="header-anchor" href="#data-or-assets">#</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>data/</code></th>
+<th><code>assets/</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read</td>
+<td>While the site builds</td>
+<td>While the page runs</td>
+</tr>
+<tr>
+<td>By</td>
+<td><strong>Nunjucks</strong> and <strong>Markdown</strong></td>
+<td>Your <strong>JavaScript</strong></td>
+</tr>
+<tr>
+<td>Ends up in the output</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Good for</td>
+<td>Content that's part of the page</td>
+<td>Data fetched on demand</td>
+</tr>
+</tbody>
+</table>
+<p>Building the values into the page is faster for the visitor: the content is already there when the page arrives, and search engines can read it. Fetching is what you want when the data changes on its own, or when it's too much to put in every page.</p>
+<blockquote>
+<p>Keep <code>data/</code> where it is. It was moved out of <code>assets/</code> in an early version precisely so it wouldn't be published</p>
+</blockquote>
 <h2 id="content-and-data-examples" tabindex="-1">Examples <a class="header-anchor" href="#content-and-data-examples">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 
             </div>
           
@@ -1621,33 +1712,251 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
             <div class="col-section">
               <h1 id="deploy">Deploy</h1>
 <h2 id="how-to-deploy" tabindex="-1">How to deploy <a class="header-anchor" href="#how-to-deploy">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Publishing means copying the <code>out</code> folder onto a web server. What you can use depends on the backend you picked when you created the project.</p>
+<p><strong>PHP</strong> runs once per visit: a request arrives, PHP answers, PHP exits. Nothing stays running, so there's nothing to look after. That's why it works on cheap hosting.</p>
+<p><strong>Node is itself a server</strong>: a program that has to stay running in the background while the web server forwards <code>/api</code> requests to it. Somebody has to start it and restart it if the machine reboots.</p>
+<p>That's why shared hosting can't run the Node backend. On plans like Aruba or cPanel you upload files into a folder and that's all you can do. If that's your host, choose PHP.</p>
+<blockquote>
+<p><strong>Shared hosting</strong> is a plan where you share a server with other customers and only get a folder to upload into. <strong>A VPS</strong> is a whole machine that's yours, where you can install and run whatever you want</p>
+</blockquote>
+<h3 id="deploy-requirements" tabindex="-1">What you need <a class="header-anchor" href="#deploy-requirements">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PHP</strong></td>
+<td>A host with PHP support, and Composer to install the backend's dependencies</td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td>Node.js 18 or newer, and command-line access to start the backend</td>
+</tr>
+<tr>
+<td><strong>None</strong></td>
+<td>Nothing at all: any static hosting will do</td>
+</tr>
+</tbody>
+</table>
 <h2 id="hosting-options" tabindex="-1">Hosting options <a class="header-anchor" href="#hosting-options">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Frontend</th>
+<th>PHP backend</th>
+<th>Node backend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared hosting (Apache)</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌ nothing can stay running</td>
+</tr>
+<tr>
+<td>Windows hosting (IIS)</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️ only with the ARR module</td>
+</tr>
+<tr>
+<td>Your own VPS (Nginx)</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Static hosting (Netlify, Vercel, GitHub Pages)</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<p>Static hosting serves files and nothing else. Perfect if your site has no <code>/api</code> endpoints, unusable if it does.</p>
+<h3 id="deploy-server-config" tabindex="-1">Editing the server config <a class="header-anchor" href="#deploy-server-config">#</a></h3>
+<p>Every server needs a file telling it how to behave: which page to show on a 404, which files to keep private, where to send <code>/api</code> requests. <strong>Nibula</strong> writes these for you.</p>
+<p><code>.htaccess</code> and <code>web.config</code> are already inside <code>out</code>, ready to upload. To change a rule, edit the original in <code>src/frontend/hosting/</code>. Anything you change directly inside <code>out</code> is erased the next time you build.</p>
+<p><code>nginx.conf</code> is different. It sits in your project root and is <strong>not</strong> copied into <code>out</code>, because Nginx doesn't read config files from the site folder. You install it on the server yourself.</p>
 <h2 id="apache-iis" tabindex="-1">Apache / IIS <a class="header-anchor" href="#apache-iis">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Upload <strong>the contents of <code>out</code></strong>, not the folder itself, into your web root. Depending on the host it's called <code>htdocs</code>, <code>public_html</code> or <code>www</code>.</p>
+<p>That's it. The config file is already in there and the server reads it automatically: folder listings are off, errors show your <code>/404.html</code>, sensitive files are blocked, the backend source is sealed off, and <code>/api/*</code> is routed.</p>
+<h3 id="deploy-api-routing" tabindex="-1">Where /api goes <a class="header-anchor" href="#deploy-api-routing">#</a></h3>
+<p><strong>On Apache</strong>, if the server has <code>mod_proxy</code> the request is forwarded to Node. If it doesn't, which is the usual case on shared hosting, <code>/api</code> goes to PHP instead. To force PHP on a server that does have <code>mod_proxy</code>, comment out the <code>mod_proxy</code> block in <code>.htaccess</code>.</p>
+<p><strong>On IIS</strong>, <code>/api</code> goes to PHP by default. To use Node instead, uncomment the <code>ApiToNode</code> rule in <code>web.config</code> and delete <code>ApiToPhp</code>. This only works if the server has the ARR and URL Rewrite modules with proxying turned on, which means a server you control.</p>
+<blockquote>
+<p>If you chose Node and your host has no ARR, don't upload the <code>backend</code> folder. Without it the static site works fine and <code>/api/*</code> shows your <code>404.html</code>. Upload it and every <code>/api</code> request returns an empty 404 instead</p>
+</blockquote>
 <h2 id="nginx" tabindex="-1">Nginx <a class="header-anchor" href="#nginx">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Nginx doesn't read config files from the site folder: the whole site is described in one file kept elsewhere on the machine. <strong>Nibula</strong> ships that file as <code>nginx.conf</code> in your project root, and it handles both backends with no edits. <code>/api</code> goes to Node, and if Node isn't running the request falls through to PHP automatically.</p>
+<p>Upload the contents of <code>out</code> to <code>/var/www/SITE_FOLDER</code>, then work through the steps below.</p>
+<h3 id="nginx-placeholders" tabindex="-1">Fill in the placeholders <a class="header-anchor" href="#nginx-placeholders">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>What to put there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>YOUR_DOMAIN</code></td>
+<td>Your domain, twice: once for port 80 and once for 443</td>
+</tr>
+<tr>
+<td><code>SITE_FOLDER</code></td>
+<td>The folder name you used under <code>/var/www/</code></td>
+</tr>
+<tr>
+<td><code>YOUR_CERTIFICATE</code></td>
+<td>The folder name under <code>/etc/letsencrypt/live/</code></td>
+</tr>
+<tr>
+<td><code>SITE_NAME</code></td>
+<td>The file name you'll use in the commands below</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nginx-install" tabindex="-1">Install what's missing <a class="header-anchor" href="#nginx-install">#</a></h3>
+<pre><code>sudo apt update
+sudo apt install -y nginx certbot python3-certbot-nginx
+</code></pre>
+<p>With the PHP backend, also:</p>
+<pre><code>sudo apt install -y php-fpm
+</code></pre>
+<h3 id="nginx-certificate" tabindex="-1">Get an HTTPS certificate <a class="header-anchor" href="#nginx-certificate">#</a></h3>
+<p>This is what makes your site load over <code>https://</code>. Certificates are free and last 90 days; the second command renews them automatically.</p>
+<pre><code>sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
+</code></pre>
+<pre><code>sudo systemctl enable --now certbot.timer
+</code></pre>
+<h3 id="nginx-site-file" tabindex="-1">Install the site file <a class="header-anchor" href="#nginx-site-file">#</a></h3>
+<p>Go to the folder where Nginx keeps site files, create the file, and paste in the contents of your edited <code>nginx.conf</code>:</p>
+<pre><code>cd /etc/nginx/sites-available
+sudo nano SITE_NAME
+</code></pre>
+<p>Save with <code>CTRL + O</code>, <code>ENTER</code>, <code>CTRL + X</code>. Then switch the site on and apply it:</p>
+<pre><code>sudo cp SITE_NAME ../sites-enabled/
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx
+</code></pre>
+<blockquote>
+<p>If <code>nginx -t</code> reports an error, fix it before reloading. Nginx keeps running on the old config until the reload succeeds, so your site stays up</p>
+</blockquote>
+<h3 id="nginx-troubleshooting" tabindex="-1">If something goes wrong <a class="header-anchor" href="#nginx-troubleshooting">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What it usually means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cannot load certificate ... Permission denied</code></td>
+<td>You ran <code>nginx -t</code> without <code>sudo</code></td>
+</tr>
+<tr>
+<td><code>cannot load certificate ... No such file</code></td>
+<td>Wrong certificate name</td>
+</tr>
+<tr>
+<td><code>no alternative certificate subject name</code></td>
+<td>The certificate doesn't cover this domain</td>
+</tr>
+<tr>
+<td><code>unknown directive &quot;http2&quot;</code></td>
+<td>Nginx older than 1.25, check with <code>nginx -v</code></td>
+</tr>
+<tr>
+<td>NXDOMAIN or a timeout during certbot</td>
+<td>Your domain's DNS isn't pointing at this server yet</td>
+</tr>
+<tr>
+<td>A blank 500 instead of your 404 page</td>
+<td><code>404.html</code> is missing from the upload</td>
+</tr>
+<tr>
+<td>502 on <code>/api</code>, Node backend</td>
+<td>The Node program isn't running</td>
+</tr>
+<tr>
+<td>502 on <code>/api</code>, PHP backend</td>
+<td>Wrong php-fpm socket path in the config</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nginx-node-service" tabindex="-1">Starting the Node backend <a class="header-anchor" href="#nginx-node-service">#</a></h3>
+<p>Only for the Node backend. After uploading <code>out</code>, install its dependencies:</p>
+<pre><code>cd /var/www/SITE_FOLDER/backend
+npm install
+</code></pre>
+<p>Make sure <code>config.js</code> exists in <code>out/backend/</code>. If it doesn't, copy <code>example.config.js</code> to <code>config.js</code> and fill in your values.</p>
+<p><strong>Try it out first.</strong> <code>screen</code> lets you start a program, walk away, and come back to it later:</p>
+<pre><code>screen -S node-backend
+sudo node /var/www/SITE_FOLDER/backend/_core/index.js
+</code></pre>
+<pre><code>curl http://127.0.0.1:3000/api/example-public
+</code></pre>
+<p>If <code>curl</code> prints a JSON response, the backend is alive. Press <code>CTRL + A</code> then <code>D</code> to leave the screen without stopping the program; <code>screen -r node-backend</code> brings you back.</p>
+<p><strong>Then set it up for real.</strong> <code>screen</code> is for testing: the program dies if the server reboots. For a live site use <strong>systemd</strong>, the part of Linux that manages background programs. It starts your backend at boot and restarts it if it crashes.</p>
+<p>Create <code>/etc/systemd/system/backend-node.service</code>:</p>
+<pre class="language-ini"><code class="language-ini"><span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Unit</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Description</span><span class="token punctuation">=</span><span class="token value attr-value">Nibula Node backend</span>
+<span class="token key attr-name">After</span><span class="token punctuation">=</span><span class="token value attr-value">network.target</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Service</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Type</span><span class="token punctuation">=</span><span class="token value attr-value">simple</span>
+<span class="token key attr-name">User</span><span class="token punctuation">=</span><span class="token value attr-value">www-data</span>
+<span class="token key attr-name">WorkingDirectory</span><span class="token punctuation">=</span><span class="token value attr-value">/var/www/SITE_FOLDER/backend</span>
+<span class="token key attr-name">ExecStart</span><span class="token punctuation">=</span><span class="token value attr-value">/usr/bin/node /var/www/SITE_FOLDER/backend/_core/index.js</span>
+<span class="token key attr-name">Restart</span><span class="token punctuation">=</span><span class="token value attr-value">always</span>
+<span class="token key attr-name">RestartSec</span><span class="token punctuation">=</span><span class="token value attr-value">5</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Install</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">WantedBy</span><span class="token punctuation">=</span><span class="token value attr-value">multi-user.target</span></code></pre>
+<p>Adjust <code>WorkingDirectory</code>, and check the path to <code>node</code> with <code>which node</code>. Then:</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl enable --now backend-node
+sudo systemctl status backend-node
+</code></pre>
+<p>The last command should say <code>active (running)</code>.</p>
+<h3 id="nginx-node-env" tabindex="-1">Settings the Node backend reads <a class="header-anchor" href="#nginx-node-env">#</a></h3>
+<p>These go in the systemd file, on their own lines, as <code>Environment=KEY=value</code>. All three have sensible defaults.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PORT</code></td>
+<td><code>3000</code></td>
+<td>The port Node listens on, must match the one in <code>nginx.conf</code></td>
+</tr>
+<tr>
+<td><code>HOST</code></td>
+<td><code>127.0.0.1</code></td>
+<td>Keep this as it is: it means local only, so Node is reachable through the web server and not directly from the internet</td>
+</tr>
+<tr>
+<td><code>DOCUMENT_ROOT</code></td>
+<td>detected</td>
+<td>Where <code>404.html</code> lives, the folder above <code>backend/</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Error detail is not set here. That's the <code>APP_ENV</code> key inside <code>config.js</code> or <code>config.php</code>, see <a href="#backend">Backend</a></p>
+</blockquote>
 
             </div>
           
@@ -1738,7 +2047,7 @@ translation needed.</p>
 
         <footer>
   <div class="footer-columns row">
-    <div class="col-6">
+    <div class="col-4">
       <h3>Nibula · Static site generator built on Eleventy</h3>
       <p>Nibula is an open-source static site generator built on Eleventy, made for people moving from hand-written HTML to a real project setup.</p>
     </div>

@@ -2,8 +2,6 @@ import '../global';
 
 // import { initExampleModule } from '../modules/exampleModule';
 
-document.addEventListener("DOMContentLoaded", () => {
-    // initExampleModule();
-});
+// initExampleModule();
 
 // Page logic here

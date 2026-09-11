@@ -16,7 +16,6 @@ const [, , cmd, ...rest] = process.argv;
 
 const CREATE = path.join(__dirname, 'create.js');
 const ASSISTANT = path.join(__dirname, '..', 'tools', 'assistant.js');
-const BUILDJS   = path.join(__dirname, '..', 'tools', 'buildJs.js');
 const CLEAN     = path.join(__dirname, '..', 'tools', 'cleanOutput.js');
 
 const REGISTRY = 'https://registry.npmjs.org/nibula/latest';
@@ -264,11 +263,6 @@ async function main() {
         case 'build': {
             const root = enterProject();
             runNpm(root, 'build');
-            break;
-        }
-        case 'build-js': {
-            enterProject();
-            run(BUILDJS, rest);
             break;
         }
         case 'clean': {

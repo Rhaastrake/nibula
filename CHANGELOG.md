@@ -19,14 +19,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING** A missing API key now returns 401 instead of 403. The previous code said "forbidden" for a request that was never authenticated.
 - **BREAKING** The backend no longer starts without `config.js` or `config.php`. It used to fall back to the example file, which ships a publicly known API key and allows every origin.
 - **BREAKING** The bundled `nginx.conf`, `.htaccess` and `web.config` now point at `backend/core` instead of `backend/_core`. Any custom server rule referring to the old path needs updating.
+- **BREAKING** Removed the `build-js` command. Projects now call `esbuild` directly in their `build:js` and `serve:js` scripts, with the entry pattern written out in full. `nib` is for the commands it offers, not a wrapper around the build.
 - Endpoints only receive the documented request values. They previously saw every local variable of the front controller by accident, which made internal renames a breaking change without anyone noticing.
 - `RateLimiter` is now created per request like `Response`, instead of taking the response helpers as trailing arguments.
 - The PHP backend removes the `X-Powered-By` header, which exposed the exact PHP version on every response.
 - `Response.php` no longer carries its own access guard and 404 fallback. Every request already goes through the front controller, so the guard could never fire, and it duplicated error-page logic inside a module that only formats responses.
+- Removed the `glob` dependency from new projects. It existed only to expand the entry pattern before handing it to esbuild, which expands it by itself.
 
 ### Fixed
 - A custom endpoint key or origin list set to an empty value no longer falls back to the general one.
 - The PHP exception handler no longer captures the config before it exists, which used to hide the real cause of startup errors behind a generic 500.
+
+### Notes
+- **`nib build-js` no longer exists.** A project created before this release has it in its `package.json` and its build will fail after updating. Replace the two scripts with:
+
+```
+  "build:js": "esbuild \"src/frontend/js/pages/*.js\" --bundle --outdir=out/js/pages --minify",
+  "serve:js": "esbuild \"src/frontend/js/pages/*.js\" --bundle --outdir=out/js/pages --watch"
+```
+
+  A TypeScript project uses `src/frontend/ts/pages/*.ts` instead.
+
+## [2.4.7] - 2026-09-04
+
+### Changed
+- **New page and global scripts no longer wrap their code in `DOMContentLoaded`.**
+  Scripts are loaded at the end of the body, so the page is already there when
+  they run: the wrapper was a precaution that a beginner had to understand before
+  being able to ignore it. The documentation explains when to add it back.
+- The TypeScript module template annotates its return type, so the first file a
+  TypeScript project opens actually shows TypeScript syntax.
 
 ## [2.4.6] - 2026-08-29
 

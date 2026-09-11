@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const settings = require('../tools/config/settings.json');
 const { writeSync } = require('fs');
 const { spawnSync } = require('child_process');
 const { color } = require('../tools/lib/colors');
@@ -143,18 +144,6 @@ const PROJECT_PACKAGE = {
     version:   '0.0.0',
     private:   true,
     outputDir: 'out',
-    "scripts": {
-        "build:css": "sass src/frontend/scss:out/css --no-source-map --style=compressed --quiet --load-path=node_modules",
-        "build:js": "nib build-js",
-        "build:11ty": "eleventy",
-        "build": "npm run clean && npm run build:css && npm run build:js && npm run build:11ty",
-        "serve:css": "sass --watch src/frontend/scss:out/css --no-source-map --quiet --load-path=node_modules",
-        "serve:js": "nib build-js --watch",
-        "serve:11ty": "eleventy --serve --quiet",
-        "clean": "nib clean",
-        "serve": "npm run clean && concurrently \"npm run serve:11ty\" \"npm run serve:css\" \"npm run serve:js\"",
-        "assistant": "nib cli"
-    },
     dependencies: {
         '@11ty/eleventy':     '^3.1.6',
         '@11ty/eleventy-img': '^7.0.0',
@@ -163,7 +152,6 @@ const PROJECT_PACKAGE = {
         'bootstrap-icons':    '^1.13.1',
         'bulma':              '^1.0.4',
         'foundation-sites':   '^6.9.0',
-        'glob':               '^13.0.6',
         'markdown-it-anchor': '^9.2.1',
         'markdown-it-attrs':  '^5.0.1',
         'uikit':              '^3.25.21',
@@ -177,6 +165,24 @@ const PROJECT_PACKAGE = {
 };
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
+
+function projectScripts(language) {
+    const { pages, extension } = settings.languages[language];
+    const entries = `${pages}/*.${extension}`;
+
+    return {
+        'build:css': 'sass src/frontend/scss:out/css --no-source-map --style=compressed --quiet --load-path=node_modules',
+        'build:js': `esbuild "${entries}" --bundle --outdir=out/js/pages --minify`,
+        'build:11ty': 'eleventy',
+        'build': 'npm run clean && npm run build:css && npm run build:js && npm run build:11ty',
+        'serve:css': 'sass --watch src/frontend/scss:out/css --no-source-map --quiet --load-path=node_modules',
+        'serve:js': `esbuild "${entries}" --bundle --outdir=out/js/pages --watch`,
+        'serve:11ty': 'eleventy --serve --quiet',
+        'clean': 'nib clean',
+        'serve': 'npm run clean && concurrently "npm run serve:11ty" "npm run serve:css" "npm run serve:js"',
+        'assistant': 'nib cli',
+    };
+}
 
 function log(msg) {
     writeSync(1, msg + '\n');
@@ -478,6 +484,7 @@ async function init() {
     // Build the project package.json. Clone the shared dependency maps so we
     // never mutate the PROJECT_PACKAGE constant.
     const pkg = { ...PROJECT_PACKAGE };
+    pkg.scripts = projectScripts(language);
     pkg.dependencies    = { ...PROJECT_PACKAGE.dependencies };
     pkg.devDependencies = { ...PROJECT_PACKAGE.devDependencies };
 

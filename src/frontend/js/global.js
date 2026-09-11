@@ -1,7 +1,5 @@
 // import { initExampleModule } from "./modules/exampleModule.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    // initExampleModule();
-});
+// initExampleModule();
 
 // Global logic here
