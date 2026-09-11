@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING** The backend no longer starts without `config.js` or `config.php`. It used to fall back to the example file, which ships a publicly known API key and allows every origin.
 - **BREAKING** The bundled `nginx.conf`, `.htaccess` and `web.config` now point at `backend/core` instead of `backend/_core`. Any custom server rule referring to the old path needs updating.
 - **BREAKING** Removed the `build-js` command. Projects now call `esbuild` directly in their `build:js` and `serve:js` scripts, with the entry pattern written out in full. `nib` is for the commands it offers, not a wrapper around the build.
+- **BREAKING** The global stylesheet is loaded by the layout instead of being imported by each page. `_global.scss` is now `global.scss`, so Sass compiles it into `out/css/global.css`, and `base.njk` links it before the page's own file. Until now every page's CSS carried a full copy of the framework and of every module, so a visitor reading three pages downloaded the same thing three times with no way to cache it.
+- **BREAKING** Page stylesheets no longer start with `@import "../global"`. A new page opens with the `@use "../root"` line and nothing else, since everything shared now arrives from the layout.
 - Endpoints only receive the documented request values. They previously saw every local variable of the front controller by accident, which made internal renames a breaking change without anyone noticing.
 - `RateLimiter` is now created per request like `Response`, instead of taking the response helpers as trailing arguments.
 - The PHP backend removes the `X-Powered-By` header, which exposed the exact PHP version on every response.
@@ -31,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The PHP exception handler no longer captures the config before it exists, which used to hide the real cause of startup errors behind a generic 500.
 
 ### Notes
+- **To migrate the stylesheets:** rename `_global.scss` to `global.scss`, remove `@import "../global"` from every file in `scss/pages/`, and add the global stylesheet link to `base.njk` above the page one.
 - **`nib build-js` no longer exists.** A project created before this release has it in its `package.json` and its build will fail after updating. Replace the two scripts with:
 
 ```
