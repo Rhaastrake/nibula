@@ -1,0 +1,2084 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-bs-theme="dark">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="dark">
+
+      
+
+        
+        
+
+      
+
+        <link rel="canonical" href="https://rhaastrake.github.io/nibula/docs/v3/"/>
+        <title>Documentation · Nibula</title>
+        <meta name="description" content="Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.">
+        <meta name="keywords" content="nibula documentation, nibula cli, install nibula, eleventy scaffolding guide, nibula configuration">
+        <meta name="author" content="Michele Garofalo">
+        <meta name="theme-color" content="dark">
+
+        
+
+        
+        <meta property="og:title" content="Documentation · Nibula">
+        <meta property="og:description" content="Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://rhaastrake.github.io/nibula/docs/v3/">
+        <meta property="og:image" content="https://rhaastrake.github.io/nibula/nibula/assets/brand/logo.svg">
+        <meta property="og:site_name" content="Nibula">
+
+        
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Documentation · Nibula">
+        <meta name="twitter:description" content="Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.">
+        <meta name="twitter:image" content="https://rhaastrake.github.io/nibula/nibula/assets/brand/logo.svg">
+
+      
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": &quot;Documentation · Nibula&quot;,
+            "description": &quot;Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.&quot;,
+            "url": &quot;https://rhaastrake.github.io/nibula/docs/v3/&quot;,
+            "author": {
+                "@type": "Person",
+                "name": &quot;Michele Garofalo&quot;,
+                "url": &quot;https://github.com/rhaastrake&quot;
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": &quot;Nibula&quot;,
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": &quot;https://rhaastrake.github.io/nibula/nibula/assets/brand/logo.svg&quot;
+                }
+            }
+        }
+        </script>
+
+      
+
+        <link rel="icon" type="image/svg+xml" href="/nibula/assets/brand/favicon.svg">
+        <link rel="icon" type="image/png" sizes="32x32" href="/nibula/assets/brand/favicon-32.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/nibula/assets/brand/apple-touch-icon.png">
+
+      
+
+        
+        <link rel="stylesheet" href="/nibula/css/prism.css">
+        
+        <link rel="stylesheet" href="/nibula/css/pages/docs.css"/>
+
+        
+        
+            
+        
+
+    </head>
+
+    <body>
+
+        <header>
+  <nav>
+    <div class="brand">
+      <a class="logo" href="/nibula/">
+        <img src="/nibula/assets/brand/logo.svg" alt="Nibula"/>
+      </a>
+
+      
+        <select id="docsVersionSelect" class="form-select docs-version-select" aria-label="Documentation version">
+          
+            <option value="/nibula/docs/v2/" >v2</option>
+          
+            <option value="/nibula/docs/v3/" selected>v3</option>
+          
+        </select>
+      
+    </div>
+
+    <button class="burger-menu" id="burger-btn" aria-label="Open menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <div class="links" id="nav-links">
+      <a href="/nibula/docs/v3/" class="button link-button">Documentation</a>
+      <a href="/nibula/team/" class="button link-button">Team</a>
+      <a href="/nibula/faq/" class="button link-button">FAQ</a>
+      <a
+        href="https://github.com/rhaastrake/nibula"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button link-button"
+        aria-label="GitHub repository"
+      >
+        <i class="bi bi-github" style="font-size: 1.5rem"></i>
+      </a>
+    </div>
+  </nav>
+</header>
+
+
+        <main>
+            
+
+<section id="docs-section" class="container">
+  <button
+    class="button edge-button docs-nav-tab d-lg-none"
+    type="button"
+    id="docsNavOpen"
+    aria-controls="docsNav"
+    aria-expanded="false"
+    aria-label="Open documentation navigation"
+  >
+    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+  </button>
+  <div class="row">
+    <nav class="col-12 col-lg-auto offcanvas-lg offcanvas-start docs-nav" tabindex="-1" id="docsNav" aria-labelledby="docsNavLabel">
+      <div class="offcanvas-header d-lg-none">
+        <h5 class="offcanvas-title" id="docsNavLabel">Docs navigation</h5>
+        <button class="button docs-nav-close" type="button" id="docsNavClose" aria-label="Close navigation menu">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="offcanvas-body">
+        
+  <ul class="">
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#introduction">Introduction</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="introduction-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="introduction-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-nibula">What is Nibula</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#why-choose-nibula">Why choose Nibula</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#when-not-to-use-it">When not to use it</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#quick-start">Quick start</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="quick-start-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="quick-start-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#prerequisites">Prerequisites</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#installation">Installation</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#project-creation">Project creation</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#page-structure">Page structure</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="page-structure-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="page-structure-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#composition">Composition</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#layouts">Layouts</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#nibula-cli">Nibula CLI</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#components">Components</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="components-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="components-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-a-component">What is a component</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-nunjucks">What is Nunjucks</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-markdown">What is Markdown</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#include-a-component">Include a component</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#styling">Styling</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="styling-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="styling-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-scss">What is SCSS</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#styling-structure">Structure</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#styling-modules">Modules</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#css-frameworks">CSS frameworks</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#javascript">Javascript</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="javascript-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="javascript-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#javascript-or-typescript">JavaScript or TypeScript</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#javascript-structure">Structure</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#javascript-modules">Modules</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#content-and-data">Content &amp; Data</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="content-and-data-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="content-and-data-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#assets-management">Assets management</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#data-files">Data files</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#seo">SEO</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="seo-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="seo-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#what-is-seo">What is SEO</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#each-page-seo">Each page SEO</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#seo-best-practices">Best practices</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#sitemap-generation">Sitemap generation</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#robots-and-crawlers">Robots &amp; Crawlers</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#backend">Backend</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="backend-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="backend-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#node-or-php">Node or PHP</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#backend-structure">Structure</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#endpoints-logic">Endpoints logic</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#database">Database</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#additional-packages">Additional packages</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#node-service">Node service</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#deploy">Deploy</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="deploy-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="deploy-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#how-to-deploy">How to deploy</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#hosting-options">Hosting options</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#apache-iis">Apache / IIS</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#nginx">Nginx</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+      <li>
+        
+          <div class="docs-nav-row">
+            <a class="button link-button" href="#about">About</a>
+            <button class="button subnav-toggle" type="button" aria-expanded="false" aria-controls="about-subnav" aria-label="Open navigation menu">
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="docs-subnav-wrapper" id="about-subnav">
+            
+  <ul class="docs-subnav">
+    
+      <li>
+        
+          <a class="button link-button" href="#changelog">Changelog</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#roadmap">Roadmap</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#dependencies">Dependencies</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#about-eleventy">About Eleventy</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#support-nibula">Support Nibula</a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+        
+      </li>
+    
+  </ul>
+
+      </div>
+    </nav>
+    <main class="col-12 col-lg docs-content">
+      <article class="markdown-body">
+        
+          
+            <div class="col-section">
+              <h1 id="introduction">Introduction</h1>
+<h2 id="what-is-nibula" tabindex="-1">✏️ What is Nibula <a class="header-anchor" href="#what-is-nibula">#</a></h2>
+<p><strong>Nibula</strong> is an open source static site generator built on top of
+<a href="https://www.11ty.dev/" target="_blank" rel="noopener noreferrer">Eleventy (11ty)</a></p>
+<p>It has one clear <strong>mission</strong>: make the jump from small hand-written practice sites
+to a real project setup as gentle as possible.</p>
+<h2 id="why-choose-nibula" tabindex="-1">🎯 Why choose Nibula <a class="header-anchor" href="#why-choose-nibula">#</a></h2>
+<h3 id="beginner-friendly" tabindex="-1">Beginner friendly <a class="header-anchor" href="#beginner-friendly">#</a></h3>
+<p>If you've only ever written <strong>HTML</strong>, <strong>CSS</strong> and a bit of <strong>JavaScript</strong>, moving
+to a <strong>framework</strong> usually feels like starting over. A new <strong>syntax</strong>, new
+<strong>rules</strong>, new <strong>folder structures</strong>, and a pile of documentation to get through
+before you can even see a page on screen.</p>
+<p><strong>Nibula</strong> is designed to avoid exactly that. You stay close to the three
+languages you already know, and the <strong>folder structure</strong> stays small enough to
+hold in your head — a handful of folders whose names say what's inside, instead
+of a convention you have to study before it makes sense.</p>
+<p>Everything else is <strong>optional</strong>. <a href="#what-is-nunjucks">Nunjucks</a> adds loops and
+includes to your <strong>HTML</strong>, <a href="#what-is-markdown">Markdown</a> files can carry the same logic, <a href="#data-files">data files</a>
+can feed a whole page — but none of it is needed on day one. A page written in
+plain <strong>HTML</strong> works just as well, and you pick the rest up when you have a reason
+to.</p>
+<h3 id="ready-to-publish" tabindex="-1">Ready to publish <a class="header-anchor" href="#ready-to-publish">#</a></h3>
+<p>The hard part of a first site usually isn't building it — it's everything that
+comes after. <strong>Meta tags</strong>, a <strong>sitemap</strong>, a <strong>robots.txt</strong>, the <a href="#deploy">server config</a>
+your host expects: four things nobody taught you, all at once, right when you
+thought you were done.</p>
+<p>Nibula writes them while you work. Fill in two <strong>data files</strong> and the <strong>SEO</strong>
+tags, the <strong>sitemap</strong> and <code>llms.txt</code> build themselves from your pages.
+<code>.htaccess</code> and <code>web.config</code> are already in the output folder, ready to upload,
+and an <code>nginx.conf</code> is waiting if you have your own server.</p>
+<p>When your pages are done, you're done — there's no second phase where you have to
+learn how to put a site online.</p>
+<h3 id="nothing-is-hidden" tabindex="-1">Nothing is hidden <a class="header-anchor" href="#nothing-is-hidden">#</a></h3>
+<p>Every one of those files lives in the project, in the folder you'd expect, in the
+form you'd have written by hand. When you need to change something, you open it
+and change it — there's no <strong>configuration layer</strong> to learn first, and no
+generated code you're not supposed to touch.</p>
+<p>Even the <strong>output folder</strong> is yours to move: one command points the whole build
+somewhere else — your local server's document root, for instance — and both the
+dev server and your own keep serving the same files as you save. See
+<a href="#nibula-cli">Nibula CLI</a>.</p>
+<h3 id="a-good-fit-for" tabindex="-1">A good fit for <a class="header-anchor" href="#a-good-fit-for">#</a></h3>
+<ul>
+<li><strong>Showcase sites and portfolios</strong> — a handful of pages, stable content, built
+to be found</li>
+<li><strong>Small business sites</strong> — where a contact form on cheap shared hosting is the
+whole requirement, and the PHP backend is exactly that</li>
+<li><strong>Landing pages</strong> — one page, fast, with the meta tags already in place</li>
+<li><strong>Project documentation</strong> — like the page you're reading</li>
+<li><strong>The project you build to learn</strong> — the one after the tutorials, when you want
+something real without picking up React first</li>
+<li><strong>A small blog</strong> — up to a point: the assistant creates pages one at a time,
+which is fine for twenty posts and wrong for two hundred</li>
+</ul>
+<h2 id="when-not-to-use-it" tabindex="-1">🤔 When not to use it <a class="header-anchor" href="#when-not-to-use-it">#</a></h2>
+<p><strong>Nibula builds static pages.</strong> If your site needs users to log in, save
+something, or see different content depending on who they are, you want a
+framework with a server behind it — Next.js, Nuxt, Laravel.</p>
+<p><strong>It doesn't scale to hundreds of pages</strong> coming from a database or a CMS. The
+assistant creates pages one at a time, by hand, which is right for a site with
+ten or twenty of them and wrong for a catalogue.</p>
+<p><strong>If you already work with React, Vue or Angular, stay there.</strong> Nibula's whole
+point is being a first step for people who don't — for you it would be a step
+sideways.</p>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="quick-start">Quick start</h1>
+<h2 id="prerequisites" tabindex="-1">📋 Prerequisites <a class="header-anchor" href="#prerequisites">#</a></h2>
+<h3 id="required" tabindex="-1">Required <a class="header-anchor" href="#required">#</a></h3>
+<ul>
+<li><strong>Node.js</strong> — v18.0.0 or higher</li>
+<li><strong>Composer</strong> — latest version, only if you pick the PHP backend</li>
+<li><strong>Better Nunjucks</strong> — VS Code extension by Ed Heltzel, for syntax highlighting in <strong>.njk</strong> files</li>
+</ul>
+<h3 id="recommended" tabindex="-1">Recommended <a class="header-anchor" href="#recommended">#</a></h3>
+<ul>
+<li><strong>Material Icon Theme</strong> — VS Code extension by Philipp Kief</li>
+</ul>
+<h2 id="installation" tabindex="-1">📦 Installation <a class="header-anchor" href="#installation">#</a></h2>
+<p>Install Nibula once, globally:</p>
+<pre><code class="button link-button copy">npm install -g nibula
+</code></pre>
+<p>This gives you the <strong>nib</strong> command, with <strong>nbl</strong> and <strong>nibula</strong> as aliases.</p>
+<p>Global means you install it once on your machine, not once per project — from
+then on <strong>nib</strong> is available from any folder.</p>
+<p>Once installed, these are the commands you'll use:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>nib new</strong></td>
+<td>Creates a new project</td>
+</tr>
+<tr>
+<td><strong>nib run</strong></td>
+<td>Starts the dev server and rebuilds as you save</td>
+</tr>
+<tr>
+<td><strong>nib build</strong></td>
+<td>Builds the site for publishing</td>
+</tr>
+<tr>
+<td><strong>nib clean</strong></td>
+<td>Empties the output folder</td>
+</tr>
+<tr>
+<td><strong>nib cli</strong></td>
+<td>Opens the assistant to add, rename or remove pages</td>
+</tr>
+<tr>
+<td><strong>nib update</strong></td>
+<td>Updates Nibula itself</td>
+</tr>
+<tr>
+<td><strong>nib ver</strong></td>
+<td>Prints the version in use</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="#nibula-cli">Nibula CLI</a> for what the assistant can do.</p>
+<h2 id="project-creation" tabindex="-1">🚀 Project creation <a class="header-anchor" href="#project-creation">#</a></h2>
+<p>From the folder where you keep your websites, run:</p>
+<pre><code class="button link-button copy">nib new your-project
+</code></pre>
+<p>The scaffolder asks you three things:</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language</td>
+<td><a href="#javascript-or-typescript">JavaScript or TypeScript</a></td>
+</tr>
+<tr>
+<td>CSS framework</td>
+<td>Bootstrap, Bulma, Foundation, UIkit, or none</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td><a href="#node-or-php">Node.js or PHP</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TypeScript</strong> adds types to JavaScript — pick it if you already know what that means, otherwise JavaScript is the safer start.</p>
+<p>The <strong>CSS framework</strong> can be switched later by commenting a few lines.</p>
+<p>The <strong>Backend</strong> is the choice worth getting right: Node and PHP offer the same API, but they run in very different places — see <a href="#deploy">Deploy</a>.</p>
+</blockquote>
+<p>Dependencies are installed for you. If you pick Node, the Composer step is
+skipped entirely, so you don't need Composer on your machine at all.</p>
+<p>Then move into the project and start the dev server:</p>
+<pre><code class="button link-button copy">cd your-project
+</code></pre>
+<pre><code class="button link-button copy">nib run
+</code></pre>
+<p>Your site is now at <strong>localhost:8080</strong>, and it rebuilds every time you save a file.</p>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="page-structure">Page structure</h1>
+<h2 id="composition" tabindex="-1">🧩 Composition <a class="header-anchor" href="#composition">#</a></h2>
+<h3 id="the-page-settings" tabindex="-1">The page settings <a class="header-anchor" href="#the-page-settings">#</a></h3>
+<p>Each page lives in <code>routes/</code> as a <strong>.njk</strong> file.</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+<span class="token variable">title</span><span class="token punctuation">:</span> <span class="token string">"my-page"</span>
+<span class="token variable">permalink</span><span class="token punctuation">:</span> <span class="token string">"/"</span>
+<span class="token variable">layout</span><span class="token punctuation">:</span> <span class="token variable">base</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>title</strong></td>
+<td>The internal name of the page. Changing it breaks its styles and scripts, so leave it as it is</td>
+</tr>
+<tr>
+<td><strong>permalink</strong></td>
+<td>The address the page will have on your site</td>
+</tr>
+<tr>
+<td><strong>layout</strong></td>
+<td>The look the page is built into (see <a href="#layouts">layouts</a>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The <strong>permalink</strong> needs a slash at both ends: <strong>/my-page/</strong>, not <strong>my-page</strong></p>
+</blockquote>
+<h3 id="what-a-page-is-made-of" tabindex="-1">What a page is made of <a class="header-anchor" href="#what-a-page-is-made-of">#</a></h3>
+<p>A page is made of three files, plus one entry in a shared <a href="#data-files">data file</a>.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routes/my-page.njk</code></td>
+<td>The page itself: its settings and its content</td>
+</tr>
+<tr>
+<td><code>scss/pages/myPage.scss</code></td>
+<td>The styles that apply only to this page</td>
+</tr>
+<tr>
+<td><code>js/pages/myPage.js</code></td>
+<td>The code that runs only on this page</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The route uses the name as you typed it; the stylesheet and script use its
+camelCase form. The assistant handles the conversion for you.</p>
+</blockquote>
+<p>That entry lives in <code>data/pages.json</code> (see <a href="#each-page-seo">Each page SEO</a>):</p>
+<pre class="language-json"><code class="language-json"><span class="token property">"myPage"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"seo"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My Page"</span><span class="token punctuation">,</span>
+    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"Description"</span><span class="token punctuation">,</span>
+    <span class="token property">"keywords"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token property">"noindex"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"canonical"</span><span class="token operator">:</span> <span class="token string">""</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"css"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>You can create, delete or rename them by hand, or let the
+<a href="#nibula-cli">Nibula CLI</a> do it for you — including that record, the easiest one to forget.</p>
+<p>Inside your page file (<code>routes/my-page.njk</code>) you write only the HTML content of that page — it goes automatically inside the <strong>main</strong> tag. Everything around it comes from the <a href="#layouts">layout</a>.</p>
+<p>You can write that content directly in the page, or split it into
+<a href="#what-is-a-component">components</a> — separate files you write once and pull into
+any page with a single line.</p>
+<h2 id="layouts" tabindex="-1">🧱 Layouts <a class="header-anchor" href="#layouts">#</a></h2>
+<p>A layout is the shell a page is rendered into. Your page provides the content; the layout provides everything around it — the <strong>head</strong>, the <strong>header</strong>, the <strong>footer</strong>, the stylesheets and the scripts.</p>
+<p>Layouts live in <code>src/frontend/layouts/</code>, and every page picks one in its
+settings:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+<span class="token variable">title</span><span class="token punctuation">:</span> <span class="token string">"homepage"</span>
+<span class="token variable">permalink</span><span class="token punctuation">:</span> <span class="token string">"/"</span>
+<span class="token variable">layout</span><span class="token punctuation">:</span> <span class="token variable">base</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span></code></pre>
+<h3 id="what-base-gives-you" tabindex="-1">What base.njk gives you <a class="header-anchor" href="#what-base-gives-you">#</a></h3>
+<p><code>base.njk</code> is the default, and it's the one every new page starts with. It writes for you:</p>
+<blockquote>
+<p>You can pick a different one with the <a href="#nibula-cli">Nibula CLI</a> when you create the page — if you have more than one</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>head</strong></td>
+<td>The page title, description, canonical link and social preview tags, taken from your <a href="#data-files">data files</a></td>
+</tr>
+<tr>
+<td><strong>favicon</strong></td>
+<td>The three icon tags, pointing at <code>assets/brand/</code></td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>The global stylesheet and the one of the current page, plus any CDN links you listed for it</td>
+</tr>
+<tr>
+<td><strong>header</strong> and <strong>footer</strong></td>
+<td>Included from <code>components/global/</code>, so they're identical on every page</td>
+</tr>
+<tr>
+<td><strong>JS</strong></td>
+<td>The script of the current page, the framework bundle, and any CDN scripts</td>
+</tr>
+</tbody>
+</table>
+<p>The page's own stylesheet and script are found by <strong>title</strong>: a page whose title is <strong>myPage</strong> loads <code>css/pages/myPage.css</code> and <code>js/pages/myPage.js</code>. The same name is the key of its record in <code>data/pages.json</code> — that's why the title shouldn't be changed by hand.</p>
+<p>The global stylesheet is loaded before the page one, so your page rules always win.</p>
+<h3 id="page-cdn" tabindex="-1">Loading something from a CDN <a class="header-anchor" href="#page-cdn">#</a></h3>
+<p>If a page needs a <strong>library</strong> that isn't in your project — a chart library, a font,
+an icon set — list its URL in that page's record in <code>data/pages.json</code>:</p>
+<pre class="language-json"><code class="language-json"><span class="token property">"myPage"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"seo"</span><span class="token operator">:</span> <span class="token punctuation">{</span> ... <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"css"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"https://cdn.example.com/lib.min.css"</span><span class="token punctuation">,</span>
+      <span class="token string">"https://cdn.another.com/lib.min.css"</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">"https://cdn.example.com/lib.min.js"</span><span class="token punctuation">,</span>
+      <span class="token string">"https://cdn.another.com/lib.min.js"</span>
+      <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The layout adds them to that page only, so a library used on one page isn't
+downloaded on all the others.</p>
+<blockquote>
+<p>If you want to add a <strong>CDN</strong> to all pages, you should add a link into the layout</p>
+</blockquote>
+<h3 id="custom-layouts" tabindex="-1">Making your own <a class="header-anchor" href="#custom-layouts">#</a></h3>
+<p>You may need a full-screen login that starts straight with the content, a
+<strong>different header</strong> on a group of pages, or a <strong>CDN</strong> loaded on all of them
+instead of one at a time.</p>
+<p>A custom layout is worth it when something changes for <em>some</em> pages. If it
+changes for all of them, edit <code>base.njk</code> directly.</p>
+<p>Copy <code>layouts/base.njk</code>, give the copy a name of your own, and change only what
+those pages need.</p>
+<h3 id="custom-layout-examples" tabindex="-1">Custom layouts examples <a class="header-anchor" href="#custom-layout-examples">#</a></h3>
+<p><strong>No header and no footer.</strong> For a page that fills the screen on its own, create
+<code>layouts/straight-content.njk</code> and remove the two global includes:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">body</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span> <span class="token variable">Drop</span> <span class="token variable">this</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span>
+    <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">include</span> <span class="token string">"global/header.njk"</span> <span class="token variable">ignore</span> <span class="token variable">missing</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+
+    <span class="token operator">&lt;</span><span class="token variable">main</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">content</span> <span class="token operator">|</span> <span class="token variable">safe</span> <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">main</span><span class="token operator">></span>
+
+    <span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span> <span class="token variable">Drop</span> <span class="token variable">this</span> <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span>
+    <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">include</span> <span class="token string">"global/footer.njk"</span> <span class="token variable">ignore</span> <span class="token variable">missing</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">body</span><span class="token operator">></span></code></pre>
+<blockquote>
+<p>Those two come from <code>components/global/</code> — see
+<a href="id=%22what-is-a-component%22">components</a></p>
+</blockquote>
+<p><strong>A different header.</strong> Point the <a href="id=%22include-a-component%22">include</a> at another
+component instead:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">include</span> <span class="token string">"global/landing-header.njk"</span> <span class="token variable">ignore</span> <span class="token variable">missing</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p><strong>A library on some pages only.</strong> Add the link in the head, next to the others —
+no need to repeat it in each page's <strong>CDN</strong> list:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">link</span> <span class="token variable">rel</span><span class="token operator">=</span><span class="token string">"stylesheet"</span> <span class="token variable">href</span><span class="token operator">=</span><span class="token string">"https://cdn.example.com/lib.min.css"</span><span class="token operator">></span></code></pre>
+<p>Everything you leave alone — the <a href="#seo">SEO</a> tags, the stylesheet and script links —
+keeps working without you touching it.</p>
+<p>Then point a page at your <strong>layout</strong>:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+<span class="token variable">title</span><span class="token punctuation">:</span> <span class="token string">"login"</span>
+<span class="token variable">permalink</span><span class="token punctuation">:</span> <span class="token string">"/login/"</span>
+<span class="token variable">layout</span><span class="token punctuation">:</span> <span class="token variable">straight</span><span class="token operator">-</span><span class="token variable">content</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span></code></pre>
+<h2 id="nibula-cli" tabindex="-1">🖱️ Nibula CLI <a class="header-anchor" href="#nibula-cli">#</a></h2>
+<h3 id="nibula-cli-options" tabindex="-1">Options <a class="header-anchor" href="#nibula-cli-options">#</a></h3>
+<p>The assistant writes the three files and the <code>pages.json</code> record for you, keeping the names in sync. Run it from anywhere inside a project:</p>
+<pre><code class="button link-button copy">nib cli
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Create page</strong></td>
+<td>Writes the three files and the record, asking which <a href="#layouts">layout</a> to use if you have more than one</td>
+</tr>
+<tr>
+<td><strong>Remove page</strong></td>
+<td>Deletes them all, after asking for confirmation</td>
+</tr>
+<tr>
+<td><strong>Rename page</strong></td>
+<td>Renames the files, updates the front matter, and moves the record</td>
+</tr>
+<tr>
+<td><strong>Configure output path</strong></td>
+<td>Changes where the site is built, across every file that references it</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>homepage</strong> <code>(index.njk)</code> and <strong>404</strong> are protected — the assistant won't touch them</p>
+</blockquote>
+<p>Renaming leaves the contents of the record alone: your SEO title, description and CDN links stay as you wrote them, and so do the components you included.</p>
+<p>A new page arrives empty apart from its settings and two commented examples — one for a <a href="#include-a-component">component</a>, one for a <a href="#what-is-markdown">markdown file</a>.</p>
+<h3 id="cli-output-path" tabindex="-1">Where the site is built <a class="header-anchor" href="#cli-output-path">#</a></h3>
+<p>By default the build goes to <code>out/</code>. Change it when the folder you build into isn't the folder you work in — a local server's document root, a shared drive, a path your host expects. The dev server follows, rebuilding there as you save, with nothing to copy by hand.</p>
+<p>Any absolute or relative path works:</p>
+<pre><code class="button link-button copy">C:/laragon/www
+</code></pre>
+<pre><code class="button link-button copy">../any-folder
+</code></pre>
+<p>If you want to reset the output path to the project root, just type <code>.</code> as path</p>
+<blockquote>
+<p>If you don't have a reason to change it, leave <code>out/</code> — it's already ignored by
+git and cleaned by <strong>nib clean</strong></p>
+</blockquote>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="components">Components</h1>
+<h2 id="what-is-a-component" tabindex="-1">What is a component <a class="header-anchor" href="#what-is-a-component">#</a></h2>
+<p>A component is a piece of a page you write once and use wherever you need it — a
+header, a card, a section of text. It's just a file in
+<code>src/frontend/components/</code>, and nothing has to be registered anywhere.</p>
+<p>There are two kinds, depending on what's inside.</p>
+<h3 id="create-a-component" tabindex="-1">Create a component <a class="header-anchor" href="#create-a-component">#</a></h3>
+<p>To create a component (<strong>.njk</strong> or <strong>.md</strong>), just create a new file under
+<code>src/frontend/components/</code> and fill it with your content.</p>
+<p>You can create your custom <strong>subfolders</strong> and organize the components path as you
+prefer.</p>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">components</span><span class="token operator">/</span>
+├── <span class="token variable">global</span><span class="token operator">/</span>
+│   ├── <span class="token variable">header</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+│   └── <span class="token variable">footer</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+├── <span class="token variable">legal</span><span class="token operator">/</span>
+│   ├── <span class="token variable">privacy</span><span class="token operator">-</span><span class="token variable">policy</span><span class="token punctuation">.</span><span class="token variable">md</span>
+│   └── <span class="token punctuation">.</span> <span class="token punctuation">.</span> <span class="token punctuation">.</span>
+├── <span class="token variable">cards</span><span class="token operator">/</span>
+│   ├── <span class="token variable">feature</span><span class="token operator">-</span><span class="token variable">card</span><span class="token punctuation">.</span><span class="token variable">njk</span>
+│   └── <span class="token punctuation">.</span> <span class="token punctuation">.</span> <span class="token punctuation">.</span>
+└── <span class="token punctuation">.</span> <span class="token punctuation">.</span> <span class="token punctuation">.</span></code></pre>
+<h2 id="what-is-nunjucks" tabindex="-1">What is Nunjucks <a class="header-anchor" href="#what-is-nunjucks">#</a></h2>
+<p>Nunjucks (<strong>.njk</strong>) is basically an <strong>HTML</strong> file that can do a few more things like <strong>if</strong>
+statements, <strong>for</strong> loops, <a href="#include-a-component">includes</a> of other components and
+access to your <a href="#content-and-data">data files</a>.</p>
+<p>That's what lets you write a header once and have it on every page, or build a
+list of cards from a <strong>JSON</strong> file instead of copying the same markup ten times.</p>
+<h3 id="nunjucks-component-examples" tabindex="-1">Nunjucks component examples <a class="header-anchor" href="#nunjucks-component-examples">#</a></h3>
+<p><code>components/feature-card.njk</code></p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">div</span> <span class="token variable">class</span><span class="token operator">=</span><span class="token string">"pricing-card"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">h3</span><span class="token operator">></span><span class="token variable">Professional</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">h3</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">p</span><span class="token operator">></span>€<span class="token number">19</span> <span class="token operator">/</span> <span class="token variable">month</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">p</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">ul</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token variable">Unlimited</span> <span class="token variable">projects</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token variable">Priority</span> <span class="token variable">support</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token variable">Custom</span> <span class="token variable">domain</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">ul</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">a</span> <span class="token variable">class</span><span class="token operator">=</span><span class="token string">"btn"</span> <span class="token variable">href</span><span class="token operator">=</span><span class="token string">"/signup/"</span><span class="token operator">></span><span class="token variable">Subscribe</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">a</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">div</span><span class="token operator">></span></code></pre>
+<p>Writing every item by hand is fine here, but it stops being fine when the list
+grows or when the same values appear on more than one page. This is where
+<strong>.njk</strong> files help: you list your values once and <strong>loop</strong> over them.</p>
+<p><code>components/feature-card.njk</code></p>
+<pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">set</span> <span class="token variable">features</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Unlimited projects"</span><span class="token punctuation">,</span> <span class="token string">"Priority support"</span><span class="token punctuation">,</span> <span class="token string">"Custom domain"</span><span class="token punctuation">]</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+
+<span class="token operator">&lt;</span><span class="token variable">div</span> <span class="token variable">class</span><span class="token operator">=</span><span class="token string">"pricing-card"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">h3</span><span class="token operator">></span><span class="token variable">Professional</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">h3</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">p</span><span class="token operator">></span>€<span class="token number">19</span> <span class="token operator">/</span> <span class="token variable">month</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">p</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">ul</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> <span class="token variable">feature</span> <span class="token keyword">in</span> <span class="token variable">features</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+            <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">feature</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">endfor</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">ul</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token variable">a</span> <span class="token variable">class</span><span class="token operator">=</span><span class="token string">"btn"</span> <span class="token variable">href</span><span class="token operator">=</span><span class="token string">"/signup/"</span><span class="token operator">></span><span class="token variable">Subscribe</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">a</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">div</span><span class="token operator">></span></code></pre>
+<p>With three items, writing them out by hand is shorter. <strong>Loops</strong> earn their keep when the <strong>list</strong> grows, or when the same values feed more than one page</p>
+<blockquote>
+<p>You don't have to use this. Writing the content out by hand works just as well, and you can come back to loops when you need them</p>
+</blockquote>
+<h2 id="what-is-markdown" tabindex="-1">What is Markdown <a class="header-anchor" href="#what-is-markdown">#</a></h2>
+<p>Markdown (<strong>.md</strong>) is your best choice of component if you just need to write text like <em><strong>documentation</strong></em> or an <strong>article</strong>.</p>
+<p>They are easy to write and read even in raw form. You can create <strong>headings</strong>, <strong>lists</strong>, <strong>links</strong>, <strong>tables</strong> etc with just 1 symbol instead of <strong>HTML</strong> tags</p>
+<h3 id="markdown-component-examples" tabindex="-1">Markdown component examples <a class="header-anchor" href="#markdown-component-examples">#</a></h3>
+<p><code>components/example.md</code></p>
+<pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">##</span> h2 title</span>
+
+A paragraph of plain text. You can make a word <span class="token bold"><span class="token punctuation">**</span><span class="token content">bold</span><span class="token punctuation">**</span></span> or <span class="token italic"><span class="token punctuation">_</span><span class="token content">italic</span><span class="token punctuation">_</span></span>.
+
+<span class="token list punctuation">-</span> List element
+<span class="token list punctuation">-</span> Another one
+
+<span class="token title important"><span class="token punctuation">###</span> h3 title</span>
+
+One more paragraph, with a <span class="token url">[<span class="token content">link</span>](<span class="token url">https://github.com/rhaastrake/nibula</span>)</span> in it.
+
+A table
+
+<span class="token table"><span class="token table-header-row"><span class="token punctuation">|</span><span class="token table-header important"> Column </span><span class="token punctuation">|</span><span class="token table-header important"> Another </span><span class="token punctuation">|</span>
+</span><span class="token table-line"><span class="token punctuation">|</span> <span class="token punctuation">------</span> <span class="token punctuation">|</span> <span class="token punctuation">-------</span> <span class="token punctuation">|</span>
+</span><span class="token table-data-rows"><span class="token punctuation">|</span><span class="token table-data"> Value  </span><span class="token punctuation">|</span><span class="token table-data"> Value   </span><span class="token punctuation">|</span>
+<span class="token punctuation">|</span><span class="token table-data"> Value  </span><span class="token punctuation">|</span><span class="token table-data"> Value   </span><span class="token punctuation">|</span>
+</span></span></code></pre>
+<details>
+<summary>Result</summary>
+<blockquote>
+<h2 class="reset" id="h2-title" tabindex="-1">h2 title <a class="header-anchor" href="#h2-title">#</a></h2>
+<p class="reset">A paragraph of plain text. You can make a word <strong>bold</strong> or <em>italic</em>.</p>
+<ul>
+<li class="reset">List element</li>
+<li class="reset">Another one</li>
+</ul>
+<h3 class="reset" id="h3-title" tabindex="-1">h3 title <a class="header-anchor" href="#h3-title">#</a></h3>
+<p class="reset">One more paragraph, with a <a href="https://github.com/rhaastrake/nibula" target="_blank" rel="noopener noreferrer">link</a> in it.</p>
+<p class="reset">A table</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Another</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Value</td>
+<td>Value</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Value</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</details>
+<p>From your <a href="#styling">SCSS</a>, target the tags inside <code>.markdown-body</code> to reach every <a href="#what-is-markdown">Markdown</a> file at once, and it's how you set things like heading <strong>colours</strong> or table <strong>borders</strong> across the whole site:</p>
+<pre class="language-scss"><code class="language-scss"><span class="token selector">.markdown-body </span><span class="token punctuation">{</span>
+  <span class="token selector">.red-color </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> red<span class="token punctuation">;</span>
+    . . .
+  <span class="token punctuation">}</span>
+  . . .
+<span class="token punctuation">}</span></code></pre>
+<p>Plain Markdown gives you no way to set an <strong>id</strong> or a <strong>class</strong>, and no logic. <strong>Nibula</strong> preconfigures both for you: <strong>Ids and classes</strong> in curly braces at the end of a line, so your <a href="#styling">SCSS</a> can reach a specific piece of text:</p>
+<pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">##</span> Title {id="title-id" class="highlight"}</span>
+
+Go to <span class="token url">[<span class="token content">the title</span>](<span class="token url">#title-id</span>)</span></code></pre>
+<details>
+<summary>Result</summary>
+<blockquote>
+<h2 id="example-title-id" class="highlight" tabindex="-1">Title <a class="header-anchor" href="#example-title-id">#</a></h2>
+<p>Go to <a href="#example-title-id">the title</a></p>
+</blockquote>
+</details>
+<blockquote>
+<p>Headings already get an <strong>id</strong> from their text. Writing one yourself <strong>replaces</strong> it with a custom one</p>
+</blockquote>
+<p><strong>Nibula</strong> also preconfigures Nunjucks inside Markdown, so the same <strong>if</strong>, <strong>for</strong> and variables you use in a <code>.njk</code> file work in a <code>.md</code> file too:</p>
+<p><code>components/plans.md</code></p>
+<pre class="language-njk"><code class="language-njk">## <span class="token variable">Our</span> <span class="token variable">plans</span>
+
+<span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">set</span> <span class="token variable">plans</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token string">"Team"</span><span class="token punctuation">]</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+
+<span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> <span class="token variable">plan</span> <span class="token keyword">in</span> <span class="token variable">plans</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">-</span> <span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span> <span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">endfor</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<details>
+<summary>Result</summary>
+<blockquote>
+<h2 class="reset" id="our-plans" tabindex="-1">Our plans <a class="header-anchor" href="#our-plans">#</a></h2>
+<ul>
+<li class="reset">Free</li>
+<li class="reset">Pro</li>
+<li class="reset">Team</li>
+</ul>
+</blockquote>
+</details>
+<blockquote>
+<p>Values from a <a href="#data-files">data file</a> work too, but only if you pass them when you <a href="#include-markdown">include the file</a> — a <code>.md</code> doesn't see your data on its own</p>
+</blockquote>
+<h2 id="include-a-component" tabindex="-1">Include a component <a class="header-anchor" href="#include-a-component">#</a></h2>
+<p>A component does nothing until a page asks for it. You write that line in a <a href="#page-structure">page</a>, in a <a href="#layouts">layout</a>, or in another component — a card can pull in a button, a section can pull in three cards.</p>
+<p>The two kinds are included differently, because <code>.njk</code> is already a template while <code>.md</code> has to be turned into HTML first.</p>
+<h3 id="include-njk" tabindex="-1">Include njk <a class="header-anchor" href="#include-njk">#</a></h3>
+<pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">include</span> <span class="token string">"feature-card.njk"</span> <span class="token variable">ignore</span> <span class="token variable">missing</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>Paths start from <code>src/frontend/components/</code>, so you never write that part.</p>
+<blockquote>
+<p>If the component is in a subfolder, include the path too — for example <code>cards/feature-card.njk</code></p>
+<p><strong>ignore missing</strong> tells the build to skip the include instead of stopping when the file isn't there</p>
+<p>The component sees the same values the page sees, so `` works without passing anything</p>
+</blockquote>
+<h3 id="include-markdown" tabindex="-1">Include markdown <a class="header-anchor" href="#include-markdown">#</a></h3>
+<p>A <code>.md</code> file needs <code>renderFile</code>, which converts it and drops the result in place. This very page is built that way, mixing <strong>.njk</strong> components and <strong>.md</strong> files.</p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">div</span> <span class="token variable">class</span><span class="token operator">=</span><span class="token string">"markdown-body"</span><span class="token operator">></span>
+    <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">renderFile</span> <span class="token string">"your-file.md"</span> <span class="token operator">|</span> <span class="token variable">componentsPath</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token variable">site</span><span class="token punctuation">:</span> <span class="token variable">site</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"njk,md"</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">div</span><span class="token operator">></span></code></pre>
+<p>Five parts to that line:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>markdown-body</strong></td>
+<td>The wrapper that applies the Markdown styling</td>
+</tr>
+<tr>
+<td><strong>renderFile</strong></td>
+<td>Turns the file into HTML and puts it in the page</td>
+</tr>
+<tr>
+<td><strong>componentsPath</strong></td>
+<td>Fills in the <code>src/frontend/components/</code> part of the path</td>
+</tr>
+<tr>
+<td><strong>{ site: site }</strong></td>
+<td>Hands the file the data it needs</td>
+</tr>
+<tr>
+<td><strong>&quot;njk,md&quot;</strong></td>
+<td>Tells Eleventy the file is Nunjucks + Markdown</td>
+</tr>
+</tbody>
+</table>
+<p>The curly braces list what the <strong>Markdown</strong> is allowed to see: on the left the name the file will use, on the right the data you're passing. So <code>{ site: site }</code> lets you write `` inside the file — see <a href="#data-files">data files</a>.</p>
+<blockquote>
+<p>Pass as many as the file needs: <strong>{ site: site, pages: pages }</strong>. Without them, a `` written inside the Markdown comes out empty</p>
+<p><strong>Subfolders</strong> work the same way as <code>.njk</code> files — <code>legal/privacy-policy.md</code></p>
+</blockquote>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="styling">Styling</h1>
+<h2 id="what-is-scss" tabindex="-1">🎨 What is SCSS <a class="header-anchor" href="#what-is-scss">#</a></h2>
+<p><strong>SCSS</strong> is basically the <strong>CSS</strong> you already know, with variables and nesting added. If you write it the way you're used to, it still works as you'd expect.</p>
+<p>The browser doesn't read <code>.scss</code> directly: your files are compiled into <strong>CSS</strong> when the site builds. <strong>Nibula</strong> handles that, so there's nothing to set up.</p>
+<h2 id="styling-structure" tabindex="-1">Structure <a class="header-anchor" href="#styling-structure">#</a></h2>
+<p>Every page has its own <strong>SCSS</strong> file, named after the page in <strong>camel case</strong>. It's created for you under <code>src/frontend/scss/pages/</code> when you add a page with the <a href="#nibula-cli">Nibula CLI</a>.</p>
+<blockquote>
+<p>For example <code>my-page.njk</code> (page file) is automatically linked to <code>myPage.scss</code></p>
+</blockquote>
+<p>You can write your rules there without touching anything else. They apply to that <strong>page</strong> only, so each page downloads just the <strong>CSS</strong> it needs.</p>
+<p><code>scss/pages/myPage.scss</code></p>
+<pre class="language-scss"><code class="language-scss"><span class="token keyword">@use</span> <span class="token string">"../root"</span> <span class="token module-modifier keyword">as</span> root<span class="token punctuation">;</span> <span class="token comment">// Usage: root.$value-name</span>
+
+<span class="token selector">.page-element </span><span class="token punctuation">{</span>
+    <span class="token property">background-color</span><span class="token punctuation">:</span> root.<span class="token variable">$custom-color</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>That single line gives the page access to <strong>root</strong>, a container with all your custom <strong>named values</strong>:</p>
+<p><code>scss/_root.scss</code></p>
+<pre class="language-scss"><code class="language-scss"><span class="token property"><span class="token variable">$header-height</span></span><span class="token punctuation">:</span> 10vh<span class="token punctuation">;</span>
+<span class="token property"><span class="token variable">$header-padding-y</span></span><span class="token punctuation">:</span> 15px<span class="token punctuation">;</span>
+<span class="token property"><span class="token variable">$header-padding-x</span></span><span class="token punctuation">:</span> 15px<span class="token punctuation">;</span>
+
+<span class="token property"><span class="token variable">$header-footer-color</span></span><span class="token punctuation">:</span> #11474b<span class="token punctuation">;</span></code></pre>
+<p>The rules shared by every page live in <code>scss/global.scss</code>, which the <a href="#what-base-gives-you">layout</a> loads before the page's own file. You don't import it anywhere: it arrives on its own, and the browser downloads it once for the whole site.</p>
+<p>Here are the modules <strong>Nibula</strong> already creates for you, all of them imported in <strong>global</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it styles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_typography.scss</code></td>
+<td>Fonts and text rules</td>
+</tr>
+<tr>
+<td><code>_header.scss</code></td>
+<td>The header styles</td>
+</tr>
+<tr>
+<td><code>_footer.scss</code></td>
+<td>The footer styles</td>
+</tr>
+<tr>
+<td><code>_markdown.scss</code></td>
+<td><a href="#include-markdown">Markdown files</a> style</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>_markdown.scss</code> is generated rather than written by hand, so there's no reason to edit it</p>
+<p>The leading underscore marks a file meant to be imported rather than compiled into a stylesheet of its own. <code>global.scss</code> doesn't have it, because it becomes a real <code>.css</code> file that the layout loads</p>
+</blockquote>
+<h2 id="styling-modules" tabindex="-1">Modules <a class="header-anchor" href="#styling-modules">#</a></h2>
+<p>You can create your custom <strong>SCSS</strong> module under <code>src/frontend/scss/modules/</code>, with an underscore in front of the name.</p>
+<p>Remember to declare <code>@use &quot;../root&quot; as root;</code> to access the values that you named and want to reuse.</p>
+<p><code>modules/_exampleModule.scss</code></p>
+<pre class="language-scss"><code class="language-scss"><span class="token keyword">@use</span> <span class="token string">"../root"</span> <span class="token module-modifier keyword">as</span> root<span class="token punctuation">;</span>
+
+<span class="token selector">.default-card </span><span class="token punctuation">{</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> 1rem<span class="token punctuation">;</span>
+  <span class="token property">border-radius</span><span class="token punctuation">:</span> 6px<span class="token punctuation">;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> root.<span class="token variable">$primary-color</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p>Subfolders work too. One level deeper the path changes: <code>@use &quot;../../root&quot; as root</code></p>
+</blockquote>
+<p>Once you created your module, <code>@import</code> it in <strong>global</strong> if every page needs it, or in a single page file if only that page does.</p>
+<blockquote>
+<p>Order matters: a rule imported later wins over an earlier one with the same specificity. That's why the <strong>CSS framework</strong> comes first and your own modules after</p>
+</blockquote>
+<h2 id="css-frameworks" tabindex="-1">CSS frameworks <a class="header-anchor" href="#css-frameworks">#</a></h2>
+<p>A <strong>CSS framework</strong> is a library of pre-existing styles already built for you. You <strong>chose</strong> one between <strong>Bootstrap</strong> and <strong>Bulma</strong> when you created your project, and <strong>Nibula</strong> installed it for you.</p>
+<blockquote>
+<p>You're free to avoid them if you want to stay simple, but here's the linked documentation for each one</p>
+<ul>
+<li><a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener noreferrer">Bootstrap</a></li>
+<li><a href="https://bulma.io/documentation/" target="_blank" rel="noopener noreferrer">Bulma</a></li>
+</ul>
+</blockquote>
+<p>They're <strong>imported</strong> in <code>scss/global.scss</code> before your own modules, so your rules always win.</p>
+<p>Sometimes a full <strong>CSS</strong> framework is heavier than your pages need, especially if you use only a few things from it. You can filter it by commenting the imports you don't need in <code>scss/modules/frameworks/_FRAMEWORK.scss</code>.</p>
+<p><code>scss/modules/frameworks/_bootstrap.scss</code></p>
+<pre class="language-scss"><code class="language-scss"><span class="token keyword">@import</span> <span class="token string">"bootstrap/scss/alert"</span><span class="token punctuation">;</span>            <span class="token comment">// Alerts</span>
+<span class="token keyword">@import</span> <span class="token string">"bootstrap/scss/badge"</span><span class="token punctuation">;</span>            <span class="token comment">// Badges</span>
+<span class="token keyword">@import</span> <span class="token string">"bootstrap/scss/breadcrumb"</span><span class="token punctuation">;</span>       <span class="token comment">// Breadcrumbs</span>
+. . .</code></pre>
+<p>You can also <strong>switch</strong> between them, or set <strong>none</strong>, by commenting and uncommenting a few lines in three files.</p>
+<blockquote>
+<p>The classes in your pages are another matter: each framework has its own, so a <code>btn btn-primary</code> becomes a <code>button is-primary</code>. The switch is cheap on day one, expensive once you have twenty pages</p>
+</blockquote>
+<p><code>scss/global.scss</code></p>
+<pre class="language-scss"><code class="language-scss">. . .
+<span class="token keyword">@import</span> <span class="token string">"modules/frameworks/bootstrap"</span><span class="token punctuation">;</span>
+<span class="token comment">// @import "modules/frameworks/bulma";</span>
+. . .</code></pre>
+<p><code>frontend/layouts/base.njk</code> (or your <a href="#layouts">custom layout</a> file)</p>
+<pre class="language-njk"><code class="language-njk"><span class="token punctuation">{</span># <span class="token variable">Bootstrap</span> <span class="token variable">JS</span> #<span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token variable">script</span> <span class="token variable">src</span><span class="token operator">=</span><span class="token string">"{{ '/js/bootstrap.bundle.min.js' | url }}"</span> <span class="token variable">defer</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">script</span><span class="token operator">></span>
+
+<span class="token punctuation">{</span># <span class="token variable">Bulma</span> — <span class="token variable">no</span> <span class="token variable">JS</span> <span class="token variable">needed</span> #<span class="token punctuation">}</span></code></pre>
+<p><code>.eleventy.js</code></p>
+<pre class="language-js"><code class="language-js">eleventyConfig<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+<span class="token comment">// Bootstrap</span>
+<span class="token string-property property">"node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"</span><span class="token operator">:</span> <span class="token string">"js/bootstrap.bundle.min.js"</span><span class="token punctuation">,</span>
+<span class="token string-property property">"node_modules/bootstrap-icons/font/fonts"</span><span class="token operator">:</span> <span class="token string">"css/fonts"</span><span class="token punctuation">,</span>
+
+<span class="token comment">// Bulma — CSS only, no JS passthrough needed</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="javascript">Javascript</h1>
+<blockquote>
+<p>Examples use <strong>JavaScript</strong>. Everything applies to <strong>TypeScript</strong> too, except that imports leave the extension out and the project has an extra <code>tsconfig.json</code></p>
+</blockquote>
+<h2 id="javascript-or-typescript" tabindex="-1">Javascript or TypeScript <a class="header-anchor" href="#javascript-or-typescript">#</a></h2>
+<p>When creating a project, <strong>Nibula</strong> asks you whether to use <strong>JavaScript</strong> or <strong>TypeScript</strong>. The difference is that TypeScript makes you say what kind of value each thing holds: a <strong>string</strong>, a <strong>number</strong>, the <strong>return</strong> of the function. It checks that you're consistent while you write, so a whole class of mistakes shows up in your editor instead of in the browser.</p>
+<p>It's more to learn, though. If you're not sure, start with <strong>JavaScript</strong>. You can always write the next project in TypeScript.</p>
+<h2 id="javascript-structure" tabindex="-1">Structure <a class="header-anchor" href="#javascript-structure">#</a></h2>
+<p>The <strong>JavaScript</strong> structure is much the same as the <a href="#styling-structure">SCSS</a> one, but imports work a little differently.</p>
+<p>Every <strong>page</strong> has its own file, named after the page in <strong>camel case</strong>, created for you under <code>src/frontend/js/pages/</code> when you add a page with the <a href="#nibula-cli">Nibula CLI</a>.</p>
+<blockquote>
+<p>Example: <code>my-page.njk</code> (page file) is automatically linked to <code>myPage.js</code></p>
+</blockquote>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">js</span><span class="token operator">/</span>
+├── <span class="token variable">global</span><span class="token punctuation">.</span><span class="token variable">js</span>
+├── <span class="token variable">modules</span><span class="token operator">/</span>
+└── <span class="token variable">pages</span><span class="token operator">/</span></code></pre>
+<p><code>pages/</code> holds one file per page, <code>modules/</code> the pieces you reuse, and <code>global.js</code> what runs everywhere.</p>
+<p>Each page file imports <code>global.js</code>, so you write the shared behaviour once:</p>
+<p><code>js/pages/myPage.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">'../global.js'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// import { initExampleModule } from '../modules/exampleModule.js';</span>
+
+<span class="token comment">// initExampleModule();</span>
+
+<span class="token comment">// Page logic here</span></code></pre>
+<blockquote>
+<p>Unlike <strong>SCSS</strong>, there's no central file to register anything in. Each page pulls in what it needs</p>
+</blockquote>
+<h2 id="javascript-modules" tabindex="-1">Modules <a class="header-anchor" href="#javascript-modules">#</a></h2>
+<p>A module is a file holding one piece of behaviour: a menu, a slider, a form check. Add it under <code>src/frontend/js/modules/</code>.</p>
+<p><code>modules/exampleModule.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">initExampleModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"Example module is working!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The <strong>export</strong> is what makes the function reachable from outside the file. Anything you don't export stays private to the module.</p>
+<blockquote>
+<p>Wrap the behaviour in an <strong>init</strong> function rather than running it as soon as the file loads. That way the page decides <strong>when</strong> it starts</p>
+</blockquote>
+<p><strong>Importing</strong> a module makes its functions available. Calling the <strong>init</strong> function is what actually starts it, so you need both lines.</p>
+<p>In a page file, for behaviour only that page needs:</p>
+<p><code>js/pages/myPage.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">'../global.js'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> initExampleModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../modules/exampleModule.js'</span><span class="token punctuation">;</span>
+
+<span class="token function">initExampleModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In <code>global.js</code>, for behaviour every page needs:</p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> initBurgerMenu <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./modules/burgerMenu.js"</span><span class="token punctuation">;</span>
+
+<span class="token function">initBurgerMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="content-and-data">Content &amp; Data</h1>
+<p>Two folders hold the things your site needs but that aren't markup: <code>assets/</code> and <code>data/</code>. The difference is <strong>when</strong> they're used.</p>
+<p><code>assets/</code> is copied into the <strong>out</strong> folder as it is, so the browser can reach its files while the page is running. Images, fonts, icons, downloadable files, and <strong>JSON</strong> your <strong>JavaScript</strong> wants to fetch.</p>
+<p><code>data/</code> is read while the site <strong>builds</strong> and then left behind. Its <strong>JSON</strong> files feed your <a href="#what-is-a-component">components</a> and <a href="#what-is-markdown">Markdown</a>, and never reach the <strong>out</strong> folder, so nothing in there is downloadable or reachable by JavaScript.</p>
+<h2 id="assets-management" tabindex="-1">Assets management <a class="header-anchor" href="#assets-management">#</a></h2>
+<p>Everything the browser has to load goes in <code>src/frontend/assets/</code>, in whatever structure you like. The folder is copied keeping that structure, so the path you write is the path it has.</p>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">frontend</span><span class="token operator">/</span><span class="token variable">assets</span><span class="token operator">/</span>
+├── <span class="token variable">brand</span><span class="token operator">/</span>
+│   ├── <span class="token variable">favicon</span><span class="token punctuation">.</span><span class="token variable">svg</span>
+│   ├── <span class="token variable">logo</span><span class="token punctuation">.</span><span class="token variable">svg</span>
+│   └── <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+├── <span class="token variable">images</span><span class="token operator">/</span>
+└── <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
+<blockquote>
+<p>You can create your own custom folders</p>
+</blockquote>
+<h3 id="assets-json" tabindex="-1">JSON the browser can read <a class="header-anchor" href="#assets-json">#</a></h3>
+<p>A <strong>JSON</strong> file in <code>assets/</code> can be fetched by your <strong>JavaScript</strong> while the page is running:</p>
+<p><code>assets/data/products.json</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">19</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span></code></pre>
+<p><code>js/modules/plans.js</code></p>
+<pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"/assets/data/products.json"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> products <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>That's the choice to make when the data changes without rebuilding the site, or when you only need it after the visitor does something.</p>
+<blockquote>
+<p>Anything in <code>assets/</code> is public. Never put keys, credentials or anything private in there</p>
+</blockquote>
+<h2 id="data-files" tabindex="-1">Data files <a class="header-anchor" href="#data-files">#</a></h2>
+<p><code>src/frontend/data/</code> holds the <strong>JSON</strong> files your templates read while the site builds.</p>
+<p>Two are there from the start: <code>site.json</code> with your site-wide settings, and <code>pages.json</code> with the <a href="#seo">SEO</a> of each page.</p>
+<p>Any other <code>.json</code> you add becomes available on its own, with the name of the file:</p>
+<p><code>data/plans.json</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Free"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"0"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Pro"</span><span class="token punctuation">,</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"19"</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span></code></pre>
+<p><code>frontend/components/plans.njk</code></p>
+<pre class="language-njk"><code class="language-njk"><span class="token operator">&lt;</span><span class="token variable">ul</span><span class="token operator">></span>
+  <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token keyword">for</span> <span class="token variable">plan</span> <span class="token keyword">in</span> <span class="token variable">plans</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token variable">li</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">name</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> — €<span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token variable">plan</span><span class="token punctuation">.</span><span class="token variable">price</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">li</span><span class="token operator">></span>
+  <span class="token punctuation">{</span><span class="token operator">%</span> <span class="token variable">endfor</span> <span class="token operator">%</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token variable">ul</span><span class="token operator">></span></code></pre>
+<p>No import, no configuration, no restart. The variable is named after the file, so <code>plans.json</code> becomes <code>plans</code>.</p>
+<h3 id="data-in-markdown" tabindex="-1">In a Markdown file <a class="header-anchor" href="#data-in-markdown">#</a></h3>
+<p>A <code>.md</code> file can use the same values, but it doesn't see them on its own. Pass them when you include the <a href="#include-markdown">markdown component</a>:</p>
+<pre class="language-njk"><code class="language-njk"><span class="token delimiter punctuation">{%</span> <span class="token tag keyword">renderFile</span> <span class="token string">"example.md"</span> <span class="token operator">|</span> <span class="token variable">componentsPath</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token variable">plans</span><span class="token punctuation">:</span> <span class="token variable">plans</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token string">"md"</span> <span class="token operator">%</span><span class="token punctuation">}</span></code></pre>
+<p>Building the values into the page is faster for the visitor: the content is already there when the page arrives, and search engines can read it. Fetching is what you want when the data changes on its own, or when it's too much to put in every page.</p>
+<blockquote>
+<p>Keep <code>data/</code> where it is. It was moved out of <code>assets/</code> in an early version precisely so it wouldn't be published</p>
+</blockquote>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="seo">SEO</h1>
+<h2 id="each-page-seo" tabindex="-1">Each page SEO <a class="header-anchor" href="#each-page-seo">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="what-is-seo" tabindex="-1">What is SEO <a class="header-anchor" href="#what-is-seo">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="best-practices" tabindex="-1">Best practices <a class="header-anchor" href="#best-practices">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="sitemap-generation" tabindex="-1">Sitemap generation <a class="header-anchor" href="#sitemap-generation">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="robot-and-crawlers" tabindex="-1">Robots &amp; Crawlers <a class="header-anchor" href="#robot-and-crawlers">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="backend">Backend</h1>
+<h2 id="node-or-php" tabindex="-1">Node.js or PHP <a class="header-anchor" href="#node-or-php">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="backend-structure" tabindex="-1">Structure <a class="header-anchor" href="#backend-structure">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="endpoints-logic" tabindex="-1">Endpoints logic <a class="header-anchor" href="#endpoints-logic">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="database" tabindex="-1">Database <a class="header-anchor" href="#database">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="additional-packages" tabindex="-1">Additional packages <a class="header-anchor" href="#additional-packages">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="node-service" tabindex="-1">Node service <a class="header-anchor" href="#node-service">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="deploy">Deploy</h1>
+<h2 id="how-to-deploy" tabindex="-1">How to deploy <a class="header-anchor" href="#how-to-deploy">#</a></h2>
+<p>Publishing means copying the <code>out</code> folder onto a web server. What you can use depends on the backend you picked when you created the project.</p>
+<p><strong>PHP</strong> runs once per visit: a request arrives, PHP answers, PHP exits. Nothing stays running, so there's nothing to look after. That's why it works on cheap hosting.</p>
+<p><strong>Node is itself a server</strong>: a program that has to stay running in the background while the web server forwards <code>/api</code> requests to it. Somebody has to start it and restart it if the machine reboots.</p>
+<p>That's why shared hosting can't run the Node backend. On plans like Aruba or cPanel you upload files into a folder and that's all you can do. If that's your host, choose PHP.</p>
+<blockquote>
+<p><strong>Shared hosting</strong> is a plan where you share a server with other customers and only get a folder to upload into. <strong>A VPS</strong> is a whole machine that's yours, where you can install and run whatever you want</p>
+</blockquote>
+<h3 id="deploy-requirements" tabindex="-1">What you need <a class="header-anchor" href="#deploy-requirements">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PHP</strong></td>
+<td>A host with PHP support, and Composer to install the backend's dependencies</td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td>Node.js 18 or newer, and command-line access to start the backend</td>
+</tr>
+<tr>
+<td><strong>None</strong></td>
+<td>Nothing at all: any static hosting will do</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hosting-options" tabindex="-1">Hosting options <a class="header-anchor" href="#hosting-options">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Frontend</th>
+<th>PHP backend</th>
+<th>Node backend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared hosting (Apache)</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌ nothing can stay running</td>
+</tr>
+<tr>
+<td>Windows hosting (IIS)</td>
+<td>✅</td>
+<td>✅</td>
+<td>⚠️ only with the ARR module</td>
+</tr>
+<tr>
+<td>Your own VPS (Nginx)</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Static hosting (Netlify, Vercel, GitHub Pages)</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<p>Static hosting serves files and nothing else. Perfect if your site has no <code>/api</code> endpoints, unusable if it does.</p>
+<h3 id="deploy-server-config" tabindex="-1">Editing the server config <a class="header-anchor" href="#deploy-server-config">#</a></h3>
+<p>Every server needs a file telling it how to behave: which page to show on a 404, which files to keep private, where to send <code>/api</code> requests. <strong>Nibula</strong> writes these for you.</p>
+<p><code>.htaccess</code> and <code>web.config</code> are already inside <code>out</code>, ready to upload. To change a rule, edit the original in <code>src/frontend/hosting/</code>. Anything you change directly inside <code>out</code> is erased the next time you build.</p>
+<p><code>nginx.conf</code> is different. It sits in your project root and is <strong>not</strong> copied into <code>out</code>, because Nginx doesn't read config files from the site folder. You install it on the server yourself.</p>
+<h2 id="apache-iis" tabindex="-1">Apache / IIS <a class="header-anchor" href="#apache-iis">#</a></h2>
+<p>Upload <strong>the contents of <code>out</code></strong>, not the folder itself, into your web root. Depending on the host it's called <code>htdocs</code>, <code>public_html</code> or <code>www</code>.</p>
+<p>That's it. The config file is already in there and the server reads it automatically: folder listings are off, errors show your <code>/404.html</code>, sensitive files are blocked, the backend source is sealed off, and <code>/api/*</code> is routed.</p>
+<h3 id="deploy-api-routing" tabindex="-1">Where /api goes <a class="header-anchor" href="#deploy-api-routing">#</a></h3>
+<p><strong>On Apache</strong>, if the server has <code>mod_proxy</code> the request is forwarded to Node. If it doesn't, which is the usual case on shared hosting, <code>/api</code> goes to PHP instead. To force PHP on a server that does have <code>mod_proxy</code>, comment out the <code>mod_proxy</code> block in <code>.htaccess</code>.</p>
+<p><strong>On IIS</strong>, <code>/api</code> goes to PHP by default. To use Node instead, uncomment the <code>ApiToNode</code> rule in <code>web.config</code> and delete <code>ApiToPhp</code>. This only works if the server has the ARR and URL Rewrite modules with proxying turned on, which means a server you control.</p>
+<blockquote>
+<p>If you chose Node and your host has no ARR, don't upload the <code>backend</code> folder. Without it the static site works fine and <code>/api/*</code> shows your <code>404.html</code>. Upload it and every <code>/api</code> request returns an empty 404 instead</p>
+</blockquote>
+<h2 id="nginx" tabindex="-1">Nginx <a class="header-anchor" href="#nginx">#</a></h2>
+<p>Nginx doesn't read config files from the site folder: the whole site is described in one file kept elsewhere on the machine. <strong>Nibula</strong> ships that file as <code>nginx.conf</code> in your project root, and it handles both backends with no edits. <code>/api</code> goes to Node, and if Node isn't running the request falls through to PHP automatically.</p>
+<p>Upload the contents of <code>out</code> to <code>/var/www/SITE_FOLDER</code>, then work through the steps below.</p>
+<h3 id="nginx-placeholders" tabindex="-1">Fill in the placeholders <a class="header-anchor" href="#nginx-placeholders">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>What to put there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>YOUR_DOMAIN</code></td>
+<td>Your domain, twice: once for port 80 and once for 443</td>
+</tr>
+<tr>
+<td><code>SITE_FOLDER</code></td>
+<td>The folder name you used under <code>/var/www/</code></td>
+</tr>
+<tr>
+<td><code>YOUR_CERTIFICATE</code></td>
+<td>The folder name under <code>/etc/letsencrypt/live/</code></td>
+</tr>
+<tr>
+<td><code>SITE_NAME</code></td>
+<td>The file name you'll use in the commands below</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nginx-install" tabindex="-1">Install what's missing <a class="header-anchor" href="#nginx-install">#</a></h3>
+<pre><code>sudo apt update
+sudo apt install -y nginx certbot python3-certbot-nginx
+</code></pre>
+<p>With the PHP backend, also:</p>
+<pre><code>sudo apt install -y php-fpm
+</code></pre>
+<h3 id="nginx-certificate" tabindex="-1">Get an HTTPS certificate <a class="header-anchor" href="#nginx-certificate">#</a></h3>
+<p>This is what makes your site load over <code>https://</code>. Certificates are free and last 90 days; the second command renews them automatically.</p>
+<pre><code>sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
+</code></pre>
+<pre><code>sudo systemctl enable --now certbot.timer
+</code></pre>
+<h3 id="nginx-site-file" tabindex="-1">Install the site file <a class="header-anchor" href="#nginx-site-file">#</a></h3>
+<p>Go to the folder where Nginx keeps site files, create the file, and paste in the contents of your edited <code>nginx.conf</code>:</p>
+<pre><code>cd /etc/nginx/sites-available
+sudo nano SITE_NAME
+</code></pre>
+<p>Save with <code>CTRL + O</code>, <code>ENTER</code>, <code>CTRL + X</code>. Then switch the site on and apply it:</p>
+<pre><code>sudo cp SITE_NAME ../sites-enabled/
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx
+</code></pre>
+<blockquote>
+<p>If <code>nginx -t</code> reports an error, fix it before reloading. Nginx keeps running on the old config until the reload succeeds, so your site stays up</p>
+</blockquote>
+<h3 id="nginx-troubleshooting" tabindex="-1">If something goes wrong <a class="header-anchor" href="#nginx-troubleshooting">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What it usually means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cannot load certificate ... Permission denied</code></td>
+<td>You ran <code>nginx -t</code> without <code>sudo</code></td>
+</tr>
+<tr>
+<td><code>cannot load certificate ... No such file</code></td>
+<td>Wrong certificate name</td>
+</tr>
+<tr>
+<td><code>no alternative certificate subject name</code></td>
+<td>The certificate doesn't cover this domain</td>
+</tr>
+<tr>
+<td><code>unknown directive &quot;http2&quot;</code></td>
+<td>Nginx older than 1.25, check with <code>nginx -v</code></td>
+</tr>
+<tr>
+<td>NXDOMAIN or a timeout during certbot</td>
+<td>Your domain's DNS isn't pointing at this server yet</td>
+</tr>
+<tr>
+<td>A blank 500 instead of your 404 page</td>
+<td><code>404.html</code> is missing from the upload</td>
+</tr>
+<tr>
+<td>502 on <code>/api</code>, Node backend</td>
+<td>The Node program isn't running</td>
+</tr>
+<tr>
+<td>502 on <code>/api</code>, PHP backend</td>
+<td>Wrong php-fpm socket path in the config</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nginx-node-service" tabindex="-1">Starting the Node backend <a class="header-anchor" href="#nginx-node-service">#</a></h3>
+<p>Only for the Node backend. After uploading <code>out</code>, install its dependencies:</p>
+<pre><code>cd /var/www/SITE_FOLDER/backend
+npm install
+</code></pre>
+<p>Make sure <code>config.js</code> exists in <code>out/backend/</code>. If it doesn't, copy <code>example.config.js</code> to <code>config.js</code> and fill in your values. The backend won't start without it.</p>
+<p><strong>Try it out first.</strong> <code>screen</code> lets you start a program, walk away, and come back to it later:</p>
+<pre><code>screen -S node-backend
+sudo node /var/www/SITE_FOLDER/backend/core/index.js
+</code></pre>
+<pre><code>curl http://127.0.0.1:3000/api/example-public
+</code></pre>
+<p>If <code>curl</code> prints a JSON response, the backend is alive. Press <code>CTRL + A</code> then <code>D</code> to leave the screen without stopping the program; <code>screen -r node-backend</code> brings you back.</p>
+<p><strong>Then set it up for real.</strong> <code>screen</code> is for testing: the program dies if the server reboots. For a live site use <strong>systemd</strong>, the part of Linux that manages background programs. It starts your backend at boot and restarts it if it crashes.</p>
+<p>Create <code>/etc/systemd/system/backend-node.service</code>:</p>
+<pre class="language-ini"><code class="language-ini"><span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Unit</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Description</span><span class="token punctuation">=</span><span class="token value attr-value">Nibula Node backend</span>
+<span class="token key attr-name">After</span><span class="token punctuation">=</span><span class="token value attr-value">network.target</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Service</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">Type</span><span class="token punctuation">=</span><span class="token value attr-value">simple</span>
+<span class="token key attr-name">User</span><span class="token punctuation">=</span><span class="token value attr-value">www-data</span>
+<span class="token key attr-name">WorkingDirectory</span><span class="token punctuation">=</span><span class="token value attr-value">/var/www/SITE_FOLDER/backend</span>
+<span class="token key attr-name">ExecStart</span><span class="token punctuation">=</span><span class="token value attr-value">/usr/bin/node /var/www/SITE_FOLDER/backend/core/index.js</span>
+<span class="token key attr-name">Restart</span><span class="token punctuation">=</span><span class="token value attr-value">always</span>
+<span class="token key attr-name">RestartSec</span><span class="token punctuation">=</span><span class="token value attr-value">5</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Install</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">WantedBy</span><span class="token punctuation">=</span><span class="token value attr-value">multi-user.target</span></code></pre>
+<p>Adjust <code>WorkingDirectory</code>, and check the path to <code>node</code> with <code>which node</code>. Then:</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl enable --now backend-node
+sudo systemctl status backend-node
+</code></pre>
+<p>The last command should say <code>active (running)</code>.</p>
+<h3 id="nginx-node-env" tabindex="-1">Settings the Node backend reads <a class="header-anchor" href="#nginx-node-env">#</a></h3>
+<p>These go in the systemd file, on their own lines, as <code>Environment=KEY=value</code>. All three have sensible defaults.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PORT</code></td>
+<td><code>3000</code></td>
+<td>The port Node listens on, must match the one in <code>nginx.conf</code></td>
+</tr>
+<tr>
+<td><code>HOST</code></td>
+<td><code>127.0.0.1</code></td>
+<td>Keep this as it is: it means local only, so Node is reachable through the web server and not directly from the internet</td>
+</tr>
+<tr>
+<td><code>DOCUMENT_ROOT</code></td>
+<td>detected</td>
+<td>Where <code>404.html</code> lives, the folder above <code>backend/</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Error detail is not set here. That's the <code>APP_ENV</code> key inside <code>config.js</code> or <code>config.php</code>, see <a href="#backend">Backend</a></p>
+</blockquote>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+          
+            <div class="col-section">
+              <h1 id="about">About</h1>
+<h2 id="changelog" tabindex="-1">Changelog <a class="header-anchor" href="#changelog">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="roadmap" tabindex="-1">Roadmap <a class="header-anchor" href="#roadmap">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="dependecies" tabindex="-1">Dependecies <a class="header-anchor" href="#dependecies">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<h2 id="about-eleventy" tabindex="-1">⚙️ About Eleventy (11ty) <a class="header-anchor" href="#about-eleventy">#</a></h2>
+<p><strong>Eleventy is the engine underneath.</strong> It takes your templates and your data and
+turns them into plain HTML files, once, when you build — which is why the result
+is just a folder you can upload anywhere.</p>
+<p><strong>Nibula is a layer on top, not a replacement.</strong> Eleventy gives you the build;
+Nibula adds the folder structure, the <strong>SCSS</strong> and <strong>JavaScript</strong> pipeline, the
+page assistant, the <strong>SEO</strong> files and the server configs. Everything Eleventy can
+do, your project can do — including the parts Nibula doesn't set up for you.</p>
+<p><code>.eleventy.js</code> sits in your project root, and it's the same configuration file
+you'd find in any Eleventy project. When you need something beyond what Nibula
+wires up — a new filter, a collection, a different output folder — the
+<a href="https://www.11ty.dev/docs/" target="_blank" rel="noopener noreferrer">Eleventy documentation</a> applies directly, with no
+translation needed.</p>
+<h2 id="support-nibula" tabindex="-1">⭐ Support Nibula <a class="header-anchor" href="#support-nibula">#</a></h2>
+<p>Thanks for giving <strong>Nibula</strong> a try.</p>
+<p>It's a one-person project, so every bit of feedback counts more than you'd think: if something breaks, if the documentation isn't clear, or if a feature is missing, open an <a href="https://github.com/Rhaastrake/Nibula/issues" target="_blank" rel="noopener noreferrer">issue</a>.</p>
+<p>If <strong>Nibula</strong> was useful to you, leaving a ⭐ on the <a href="https://github.com/Rhaastrake/Nibula" target="_blank" rel="noopener noreferrer">repository</a> is the easiest way to help other people find it.</p>
+<p>You can also support the project by buying me a coffee on <a href="https://paypal.me/rhaastrake" target="_blank" rel="noopener noreferrer">PayPal</a> ☕🫡</p>
+
+            </div>
+          
+          
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          
+        
+      </article>
+    </main>
+    <aside class="col-auto d-none d-xl-block docs-aside" tabindex="-1" id="docsAside">
+      <p>This documentation may be incomplete.</p>
+      <p>If you notice something missing, please let us know by <a class="link-button-active" href="https://github.com/rhaastrake/nibula/issues" target="_blank">opening an issue</a></p>
+      <div class="card">
+        <p>Based on Eleventy 3.1.6</p>
+        <a class="button link-button-active" href="https://www.11ty.dev/" target="_blank">11ty.dev/</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+        </main>
+
+        <footer>
+  <div class="footer-columns row">
+    <div class="col-4">
+      <h3>Nibula · Static site generator built on Eleventy</h3>
+      <p>Nibula is an open-source static site generator built on Eleventy, made for people moving from hand-written HTML to a real project setup.</p>
+    </div>
+    <div class="col-auto">
+      <h3>Sitemap</h3>
+      <ul>
+        <li><a class="button link-button" href="/nibula/">Homepage</a></li>
+        <li><a class="button link-button" href="/nibula/docs/v3/">Documentation</a></li>
+        <li><a class="button link-button" href="/nibula/team/">Team</a></li>
+        <li><a class="button link-button" href="/nibula/faq/">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="col-auto">
+      <h3>Social</h3>
+      <ul>
+        <li>
+          <a class="button link-button" href="https://github.com/rhaastrake/nibula"
+             target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+        <li>
+          <a class="button link-button"
+             target="_blank" rel="noopener noreferrer" href="https://www.npmjs.com/package/nibula">
+            <i class="bi bi-box" aria-hidden="true"></i> Npmjs
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-auto">
+      <h3>Legal</h3>
+      <ul>
+        <li><a class="button link-button" href="{{ site.legal.privacy }}">Privacy Policy</a></li>
+        <li><a class="button link-button" href="{{ site.legal.cookie }}">Cookie Policy</a></li>
+        <li><a class="button link-button" href="{{ site.legal.terms }}">Terms and conditions</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="footer-copyright">
+    <p>
+      &copy; 2026
+      Nibula
+    </p>
+    <p>Licensed under the Apache License 2.0.</p>
+  </div>
+</footer>
+
+      
+
+        
+        
+        <script src="/nibula/js/bootstrap.bundle.min.js" defer></script>
+
+        
+        
+
+        
+        
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        <script src="/nibula/js/pages/docs.js"></script>
+
+    </body>
+
+</html>

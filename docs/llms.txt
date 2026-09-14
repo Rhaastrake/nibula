@@ -6,7 +6,8 @@ Nibula is a command-line tool that generates ready-to-build Eleventy projects: i
 
 ## Documentation
 - [Nibula · A gentler way into static site generators](https://rhaastrake.github.io/nibula/): Scaffold a complete Eleventy project — structure, SEO, server configs and an optional backend — while staying close to plain HTML, CSS and JavaScript.
-- [Documentation · Nibula](https://rhaastrake.github.io/nibula/docs/): Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.
+- [Documentation · Nibula](https://rhaastrake.github.io/nibula/docs/v2/): Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.
+- [Documentation · Nibula](https://rhaastrake.github.io/nibula/docs/v3/): Install Nibula, create your first project and learn the folder structure, components, styling, backend and deployment — with copy-paste examples throughout.
 - [FAQ · Nibula](https://rhaastrake.github.io/nibula/faq/): Answers to common questions about Nibula: supported Node versions, how it compares to other generators, backend options and troubleshooting.
 - [About the project · Nibula](https://rhaastrake.github.io/nibula/team/): Who maintains Nibula, and how to contribute, report a bug or suggest a feature.
 
