@@ -40,19 +40,19 @@ const COMMENT_STYLE = Object.freeze({
 // ── CHOICES ──────────────────────────────────────────────────────────────────
 
 const LANGUAGE_CHOICES = [
-    { label: 'JavaScript (simpler to start)', value: LANGUAGE.JAVASCRIPT },
-    { label: 'TypeScript (catches mistakes)', value: LANGUAGE.TYPESCRIPT },
+    { label: 'JavaScript', note: 'simpler to start', value: LANGUAGE.JAVASCRIPT },
+    { label: 'TypeScript', note: 'catches mistakes', value: LANGUAGE.TYPESCRIPT },
 ];
 
 const FRAMEWORK_CHOICES = [
-    { label: 'Bootstrap (the most common)',   value: FRAMEWORK.BOOTSTRAP  },
-    { label: 'Bulma (lighter, no JS)',        value: FRAMEWORK.BULMA      },
-    { label: 'None',                          value: FRAMEWORK.NONE       },
+    { label: 'Bootstrap', note: 'the most common', value: FRAMEWORK.BOOTSTRAP },
+    { label: 'Bulma',     note: 'lighter, no JS',  value: FRAMEWORK.BULMA     },
+    { label: 'None',                               value: FRAMEWORK.NONE      },
 ];
 
 const BACKEND_CHOICES = [
-    { label: 'Node.js (needs a VPS)',         value: BACKEND.NODE },
-    { label: 'PHP (any hosting)',             value: BACKEND.PHP  },
+    { label: 'Node.js', note: 'needs a VPS',  value: BACKEND.NODE },
+    { label: 'PHP',     note: 'any hosting',  value: BACKEND.PHP  },
 ];
 
 // Runtime dependencies for the Node backend, read from the backend's own
@@ -344,7 +344,7 @@ function installDependencies(backend) {
 function applyFramework(framework) {
     const config = FRAMEWORKS[framework];
 
-    const globalScssPath = path.join(targetDir, 'src/frontend/scss/_global.scss');
+    const globalScssPath = path.join(targetDir, 'src/frontend/scss/global.scss');
     if (fs.existsSync(globalScssPath)) {
         let content = fs.readFileSync(globalScssPath, 'utf8');
         ALL_FRAMEWORKS.forEach(fw => {
@@ -385,13 +385,20 @@ function askChoice(question, choices) {
 
         log(`\n>> ${question} (Use arrow keys and press Enter):\n`);
 
+        const labelWidth = Math.max(...choices.map((choice) => choice.label.length));
+
         const render = (firstTime = false) => {
             if (!firstTime) process.stdout.write(`\x1B[${choices.length}A`);
-            const output = choices.map((choice, index) =>
-                index === selectedIndex
-                    ? `  \x1b[36m◉ ${choice.label}\x1b[0m\x1B[K\n`
-                    : `  * ${choice.label}\x1B[K\n`
-            ).join('');
+
+            const output = choices.map((choice, index) => {
+                const selected = index === selectedIndex;
+                const symbol = selected ? `${color.cyan}◉` : '*';
+                const label = selected ? `${choice.label}${color.reset}` : choice.label;
+                const note = choice.note ? `${color.dim} — ${choice.note}${color.reset}` : '';
+
+                return `  ${symbol} ${label}${note}\x1B[K\n`;
+            }).join('');
+
             process.stdout.write(output);
         };
 
