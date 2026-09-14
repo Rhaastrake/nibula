@@ -46,6 +46,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Foundation and UIkit are no longer offered.** An existing project that uses one keeps working: nothing is removed from it. A new project that wants them can install the package and add the import by hand, the same way any other library works.
 
+## [2.5.0] - 2026-09-07
+
+### Changed
+- The data record a new page gets in `pages.json` comes from `tools/res/templates/template.json` instead of being written inside `settings.json`. It's content, like the route, the stylesheet and the script, and it now sits with the other three templates rather than in the CLI's configuration.
+
 ## [2.4.7] - 2026-09-04
 
 ### Changed

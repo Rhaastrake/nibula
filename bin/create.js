@@ -40,19 +40,19 @@ const COMMENT_STYLE = Object.freeze({
 // ── CHOICES ──────────────────────────────────────────────────────────────────
 
 const LANGUAGE_CHOICES = [
-    { label: 'JavaScript (recommended)', value: LANGUAGE.JAVASCRIPT },
-    { label: 'TypeScript',           value: LANGUAGE.TYPESCRIPT },
+    { label: 'JavaScript (simpler to start)', value: LANGUAGE.JAVASCRIPT },
+    { label: 'TypeScript (catches mistakes)', value: LANGUAGE.TYPESCRIPT },
 ];
 
 const FRAMEWORK_CHOICES = [
-    { label: 'Bootstrap',           value: FRAMEWORK.BOOTSTRAP  },
-    { label: 'Bulma',               value: FRAMEWORK.BULMA      },
-    { label: 'None',                value: FRAMEWORK.NONE       },
+    { label: 'Bootstrap (the most common)',   value: FRAMEWORK.BOOTSTRAP  },
+    { label: 'Bulma (lighter, no JS)',        value: FRAMEWORK.BULMA      },
+    { label: 'None',                          value: FRAMEWORK.NONE       },
 ];
 
 const BACKEND_CHOICES = [
-    { label: 'Node.js (No composer required)', value: BACKEND.NODE },
-    { label: 'PHP (Can run everywhere)',  value: BACKEND.PHP  },
+    { label: 'Node.js (needs a VPS)',         value: BACKEND.NODE },
+    { label: 'PHP (any hosting)',             value: BACKEND.PHP  },
 ];
 
 // Runtime dependencies for the Node backend, read from the backend's own
