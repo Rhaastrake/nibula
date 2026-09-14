@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING** Removed the `build-js` command. Projects now call `esbuild` directly in their `build:js` and `serve:js` scripts, with the entry pattern written out in full. `nib` is for the commands it offers, not a wrapper around the build.
 - **BREAKING** The global stylesheet is loaded by the layout instead of being imported by each page. `_global.scss` is now `global.scss`, so Sass compiles it into `out/css/global.css`, and `base.njk` links it before the page's own file. Until now every page's CSS carried a full copy of the framework and of every module, so a visitor reading three pages downloaded the same thing three times with no way to cache it.
 - **BREAKING** Page stylesheets no longer start with `@import "../global"`. A new page opens with the `@use "../root"` line and nothing else, since everything shared now arrives from the layout.
+- **BREAKING** Removed Foundation and UIkit from the frameworks offered at project creation. Four libraries covering the same ground made the choice harder without covering a case the other two miss, and each one carried a module file, a set of markers and a dependency in every project.
 - Endpoints only receive the documented request values. They previously saw every local variable of the front controller by accident, which made internal renames a breaking change without anyone noticing.
 - `RateLimiter` is now created per request like `Response`, instead of taking the response helpers as trailing arguments.
 - The PHP backend removes the `X-Powered-By` header, which exposed the exact PHP version on every response.
@@ -42,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ```
 
   A TypeScript project uses `src/frontend/ts/pages/*.ts` instead.
+
+- **Foundation and UIkit are no longer offered.** An existing project that uses one keeps working: nothing is removed from it. A new project that wants them can install the package and add the import by hand, the same way any other library works.
 
 ## [2.4.7] - 2026-09-04
 

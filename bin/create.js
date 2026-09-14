@@ -24,8 +24,6 @@ const LANGUAGE = Object.freeze({
 const FRAMEWORK = Object.freeze({
     BOOTSTRAP:  'bootstrap',
     BULMA:      'bulma',
-    FOUNDATION: 'foundation',
-    UIKIT:      'uikit',
     NONE:       'none',
 });
 
@@ -47,10 +45,8 @@ const LANGUAGE_CHOICES = [
 ];
 
 const FRAMEWORK_CHOICES = [
-    { label: 'Bootstrap (recommended)', value: FRAMEWORK.BOOTSTRAP  },
+    { label: 'Bootstrap',           value: FRAMEWORK.BOOTSTRAP  },
     { label: 'Bulma',               value: FRAMEWORK.BULMA      },
-    { label: 'Foundation',          value: FRAMEWORK.FOUNDATION },
-    { label: 'UIkit',               value: FRAMEWORK.UIKIT      },
     { label: 'None',                value: FRAMEWORK.NONE       },
 ];
 
@@ -110,16 +106,6 @@ const FRAMEWORKS = {
         njk:      [],
         eleventy: [],
     },
-    [FRAMEWORK.FOUNDATION]: {
-        scss:     'foundation',
-        njk:      ['/js/foundation.min.js'],
-        eleventy: ['foundation-sites/dist/js/foundation.min.js'],
-    },
-    [FRAMEWORK.UIKIT]: {
-        scss:     'uikit',
-        njk:      ['/js/uikit.min.js', '/js/uikit-icons.min.js'],
-        eleventy: ['uikit/dist/js/uikit.min.js', 'uikit/dist/js/uikit-icons.min.js'],
-    },
     [FRAMEWORK.NONE]: {
         scss:     null,
         njk:      [],
@@ -151,10 +137,8 @@ const PROJECT_PACKAGE = {
         'bootstrap':          '^5.3.8',
         'bootstrap-icons':    '^1.13.1',
         'bulma':              '^1.0.4',
-        'foundation-sites':   '^6.9.0',
         'markdown-it-anchor': '^9.2.1',
         'markdown-it-attrs':  '^5.0.1',
-        'uikit':              '^3.25.21',
     },
     devDependencies: {
         'nibula': `^${SELF_VERSION}`,

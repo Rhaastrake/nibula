@@ -21,8 +21,7 @@
     "seo-optimization",
     "ssg",
     "static-site-generator",
-    "typescript",
-    "uikit"
+    "typescript"
   ],
   "author": "Michele Garofalo",
   "license": "Apache-2.0",
@@ -62,10 +61,8 @@
     "bulma": "^1.0.4",
     "concurrently": "^9.2.4",
     "esbuild": "^0.28.2",
-    "foundation-sites": "^6.9.0",
     "markdown-it-anchor": "^9.2.1",
     "markdown-it-attrs": "^5.0.1",
-    "sass": "^1.103.1",
-    "uikit": "^3.25.21"
+    "sass": "^1.103.1"
   }
 }
