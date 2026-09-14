@@ -40,7 +40,7 @@ ErrorDocument 403 /404.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-    RewriteRule ^api/(.*)$ backend/_core/index.php [QSA,L]
+    RewriteRule ^api/(.*)$ backend/core/index.php [QSA,L]
 </IfModule>
 
 # === Static files ===========================================================

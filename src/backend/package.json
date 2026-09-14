@@ -2,11 +2,11 @@
   "name": "backend-node",
   "version": "1.0.0",
   "private": true,
-  "description": "Node.js backend for a Nibula site. Coexists with the PHP backend; pick one at scaffold time. Front controller: _core/index.js.",
-  "main": "_core/index.js",
+  "description": "Node.js backend for a Nibula site. Coexists with the PHP backend; pick one at scaffold time. Front controller: core/index.js.",
+  "main": "core/index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node _core/index.js"
+    "start": "node core/index.js"
   },
   "engines": {
     "node": ">=18"

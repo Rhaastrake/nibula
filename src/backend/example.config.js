@@ -1,12 +1,16 @@
 "use strict";
 
 /**
- * Mirror of src/backend/example.config.php
- *
- * Copy this file to config.js and fill in real values. config.js is git-ignored and stays local.
+ * Template for config.php, which holds the real values and is git-ignored.
+ * If config.js is missing, copy this file over it.
  */
 
 module.exports = {
+
+  // Environment: "production" hides error details from anyone calling your API
+  // Switch to "debug" while you build to see full error messages
+  APP_ENV: "production",
+
   // Default key for protected endpoints that don't have a specific key in CUSTOM_ENDPOINT_KEYS
   GENERAL_API_KEY: "DEFAULT_KEY",
 
@@ -30,7 +34,4 @@ module.exports = {
   DB_NAME: "example_db",
   DB_USER: "root",
   DB_PASS: "",
-
-  // Environment: 'production' hides error details; anything else = debug.
-  APP_ENV: "production",
 };

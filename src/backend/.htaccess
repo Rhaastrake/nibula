@@ -2,6 +2,6 @@
     RewriteEngine On
     RewriteBase /api/
 
-    RewriteRule ^_core/index\.php$ - [L]
-    RewriteRule ^(.*)$ _core/index.php [QSA,L]
+    RewriteRule ^core/index\.php$ - [L]
+    RewriteRule ^(.*)$ core/index.php [QSA,L]
 </IfModule>

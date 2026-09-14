@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const settings = require('../tools/config/settings.json');
 const { writeSync } = require('fs');
 const { spawnSync } = require('child_process');
 const { color } = require('../tools/lib/colors');
@@ -23,8 +24,6 @@ const LANGUAGE = Object.freeze({
 const FRAMEWORK = Object.freeze({
     BOOTSTRAP:  'bootstrap',
     BULMA:      'bulma',
-    FOUNDATION: 'foundation',
-    UIKIT:      'uikit',
     NONE:       'none',
 });
 
@@ -41,21 +40,19 @@ const COMMENT_STYLE = Object.freeze({
 // ── CHOICES ──────────────────────────────────────────────────────────────────
 
 const LANGUAGE_CHOICES = [
-    { label: 'JavaScript (recommended)', value: LANGUAGE.JAVASCRIPT },
-    { label: 'TypeScript',           value: LANGUAGE.TYPESCRIPT },
+    { label: 'JavaScript', note: 'simpler to start', value: LANGUAGE.JAVASCRIPT },
+    { label: 'TypeScript', note: 'catches mistakes', value: LANGUAGE.TYPESCRIPT },
 ];
 
 const FRAMEWORK_CHOICES = [
-    { label: 'Bootstrap (recommended)', value: FRAMEWORK.BOOTSTRAP  },
-    { label: 'Bulma',               value: FRAMEWORK.BULMA      },
-    { label: 'Foundation',          value: FRAMEWORK.FOUNDATION },
-    { label: 'UIkit',               value: FRAMEWORK.UIKIT      },
-    { label: 'None',                value: FRAMEWORK.NONE       },
+    { label: 'Bootstrap', note: 'the most common', value: FRAMEWORK.BOOTSTRAP },
+    { label: 'Bulma',     note: 'lighter, no JS',  value: FRAMEWORK.BULMA     },
+    { label: 'None',                               value: FRAMEWORK.NONE      },
 ];
 
 const BACKEND_CHOICES = [
-    { label: 'Node.js (No composer required)', value: BACKEND.NODE },
-    { label: 'PHP (Can run everywhere)',  value: BACKEND.PHP  },
+    { label: 'Node.js', note: 'needs a VPS',  value: BACKEND.NODE },
+    { label: 'PHP',     note: 'any hosting',  value: BACKEND.PHP  },
 ];
 
 // Runtime dependencies for the Node backend, read from the backend's own
@@ -109,16 +106,6 @@ const FRAMEWORKS = {
         njk:      [],
         eleventy: [],
     },
-    [FRAMEWORK.FOUNDATION]: {
-        scss:     'foundation',
-        njk:      ['/js/foundation.min.js'],
-        eleventy: ['foundation-sites/dist/js/foundation.min.js'],
-    },
-    [FRAMEWORK.UIKIT]: {
-        scss:     'uikit',
-        njk:      ['/js/uikit.min.js', '/js/uikit-icons.min.js'],
-        eleventy: ['uikit/dist/js/uikit.min.js', 'uikit/dist/js/uikit-icons.min.js'],
-    },
     [FRAMEWORK.NONE]: {
         scss:     null,
         njk:      [],
@@ -130,7 +117,7 @@ const FRAMEWORKS = {
 
 const GITIGNORE_CONTENT = `
 node_modules/
-src/backend/_core/vendor/
+src/backend/core/vendor/
 out/
 src/backend/config.php
 src/backend/config.js
@@ -143,18 +130,6 @@ const PROJECT_PACKAGE = {
     version:   '0.0.0',
     private:   true,
     outputDir: 'out',
-    "scripts": {
-        "build:css": "sass src/frontend/scss:out/css --no-source-map --style=compressed --quiet --load-path=node_modules",
-        "build:js": "nib build-js",
-        "build:11ty": "eleventy",
-        "build": "npm run clean && npm run build:css && npm run build:js && npm run build:11ty",
-        "serve:css": "sass --watch src/frontend/scss:out/css --no-source-map --quiet --load-path=node_modules",
-        "serve:js": "nib build-js --watch",
-        "serve:11ty": "eleventy --serve --quiet",
-        "clean": "nib clean",
-        "serve": "npm run clean && concurrently \"npm run serve:11ty\" \"npm run serve:css\" \"npm run serve:js\"",
-        "assistant": "nib cli"
-    },
     dependencies: {
         '@11ty/eleventy':     '^3.1.6',
         '@11ty/eleventy-img': '^7.0.0',
@@ -162,11 +137,8 @@ const PROJECT_PACKAGE = {
         'bootstrap':          '^5.3.8',
         'bootstrap-icons':    '^1.13.1',
         'bulma':              '^1.0.4',
-        'foundation-sites':   '^6.9.0',
-        'glob':               '^13.0.6',
         'markdown-it-anchor': '^9.2.1',
         'markdown-it-attrs':  '^5.0.1',
-        'uikit':              '^3.25.21',
     },
     devDependencies: {
         'nibula': `^${SELF_VERSION}`,
@@ -177,6 +149,24 @@ const PROJECT_PACKAGE = {
 };
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
+
+function projectScripts(language) {
+    const { pages, extension } = settings.languages[language];
+    const entries = `${pages}/*.${extension}`;
+
+    return {
+        'build:css': 'sass src/frontend/scss:out/css --no-source-map --style=compressed --quiet --load-path=node_modules',
+        'build:js': `esbuild "${entries}" --bundle --outdir=out/js/pages --minify`,
+        'build:11ty': 'eleventy',
+        'build': 'npm run clean && npm run build:css && npm run build:js && npm run build:11ty',
+        'serve:css': 'sass --watch src/frontend/scss:out/css --no-source-map --quiet --load-path=node_modules',
+        'serve:js': `esbuild "${entries}" --bundle --outdir=out/js/pages --watch`,
+        'serve:11ty': 'eleventy --serve --quiet',
+        'clean': 'nib clean',
+        'serve': 'npm run clean && concurrently "npm run serve:11ty" "npm run serve:css" "npm run serve:js"',
+        'assistant': 'nib cli',
+    };
+}
 
 function log(msg) {
     writeSync(1, msg + '\n');
@@ -300,7 +290,7 @@ function njkUncomment(content, marker) {
 }
 
 function installDependencies(backend) {
-    const backendCore = path.join(targetDir, 'src', 'backend', '_core');
+    const backendCore = path.join(targetDir, 'src', 'backend', 'core');
 
     log(`${color.blue}\n>> Installing Node modules...${color.reset}`);
     const npm = spawnSync('npm', ['install'], {
@@ -335,7 +325,7 @@ function installDependencies(backend) {
 
     if (probe.status !== 0) {
         log('\n(!) Composer not found — skipping backend dependencies.');
-        log('    Install Composer, then run: cd src/backend/_core && composer install\n');
+        log('    Install Composer, then run: cd src/backend/core && composer install\n');
         return true;
     }
 
@@ -354,7 +344,7 @@ function installDependencies(backend) {
 function applyFramework(framework) {
     const config = FRAMEWORKS[framework];
 
-    const globalScssPath = path.join(targetDir, 'src/frontend/scss/_global.scss');
+    const globalScssPath = path.join(targetDir, 'src/frontend/scss/global.scss');
     if (fs.existsSync(globalScssPath)) {
         let content = fs.readFileSync(globalScssPath, 'utf8');
         ALL_FRAMEWORKS.forEach(fw => {
@@ -395,13 +385,20 @@ function askChoice(question, choices) {
 
         log(`\n>> ${question} (Use arrow keys and press Enter):\n`);
 
+        const labelWidth = Math.max(...choices.map((choice) => choice.label.length));
+
         const render = (firstTime = false) => {
             if (!firstTime) process.stdout.write(`\x1B[${choices.length}A`);
-            const output = choices.map((choice, index) =>
-                index === selectedIndex
-                    ? `  \x1b[36m◉ ${choice.label}\x1b[0m\x1B[K\n`
-                    : `  * ${choice.label}\x1B[K\n`
-            ).join('');
+
+            const output = choices.map((choice, index) => {
+                const selected = index === selectedIndex;
+                const symbol = selected ? `${color.cyan}◉` : '*';
+                const label = selected ? `${choice.label}${color.reset}` : choice.label;
+                const note = choice.note ? `${color.dim} — ${choice.note}${color.reset}` : '';
+
+                return `  ${symbol} ${label}${note}\x1B[K\n`;
+            }).join('');
+
             process.stdout.write(output);
         };
 
@@ -478,6 +475,7 @@ async function init() {
     // Build the project package.json. Clone the shared dependency maps so we
     // never mutate the PROJECT_PACKAGE constant.
     const pkg = { ...PROJECT_PACKAGE };
+    pkg.scripts = projectScripts(language);
     pkg.dependencies    = { ...PROJECT_PACKAGE.dependencies };
     pkg.devDependencies = { ...PROJECT_PACKAGE.devDependencies };
 

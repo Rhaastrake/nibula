@@ -2,12 +2,16 @@
 declare(strict_types=1);
 
 /**
- * Mirror of src/backend/example.config.php
- *
- * Copy this file to config.php and fill in real values. config.php is git-ignored and stays local.
+ * Template for config.php, which holds the real values and is git-ignored.
+ * If config.php is missing, copy this file over it.
  */
 
 return [
+
+    // Environment: 'production' hides error details from anyone calling your API
+    // Switch to 'debug' while you build to see full error messages
+    'APP_ENV' => 'production',
+
     // Default key for protected endpoints that don't have a specific key in CUSTOM_ENDPOINT_KEYS
     'GENERAL_API_KEY' => 'DEFAULT_KEY',
 
@@ -30,8 +34,5 @@ return [
     'DB_HOST' => '127.0.0.1',
     'DB_NAME' => 'example_db',
     'DB_USER' => 'root',
-    'DB_PASS' => '',
-
-    // Environment: 'production' hides error details; anything else = debug.
-    'APP_ENV' => 'production',
+    'DB_PASS' => ''
 ];

@@ -109,13 +109,6 @@ module.exports = function (eleventyConfig) {
     "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js": "js/bootstrap.bundle.min.js",
     "node_modules/bootstrap-icons/font/fonts": "css/fonts",
 
-    // Foundation
-    // "node_modules/foundation-sites/dist/js/foundation.min.js": "js/foundation.min.js",
-
-    // UIkit
-    // "node_modules/uikit/dist/js/uikit.min.js": "js/uikit.min.js",
-    // "node_modules/uikit/dist/js/uikit-icons.min.js": "js/uikit-icons.min.js",
-
     // Bulma — CSS only, no JS passthrough needed
   });
 

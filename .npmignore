@@ -1,5 +1,5 @@
 docs
-src/backend/_core/vendor/
+src/backend/core/vendor/
 src/backend/config.php
 src/backend/config.js
 out/

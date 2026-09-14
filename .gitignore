@@ -1,5 +1,5 @@
-node_modules/
-src/backend/_core/vendor/
 out/
+node_modules/
+src/backend/core/vendor/
 src/backend/config.php
 src/backend/config.js
