@@ -5,6 +5,15 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] - 2026-09-21
+
+### Fixed
+- Creating a page with the CLI didn't add its record to `pages.json`. The template the record is built from, `tools/res/templates/template.json`, was lost when the 3.0.0 changes were merged, so the assistant created the three files and silently skipped the record.
+- Commands run outside a project printed `undefined` instead of saying so. The message was imported from a module that no longer exported it.
+
+### Notes
+- Pages created with 3.0.0 have no record in `pages.json`. Their SEO falls back to the site-wide values from `site.json`; add a record for each one by hand, or remove and recreate the page with the CLI.
+
 ## [3.0.0] - 2026-09-14
 
 ### Added

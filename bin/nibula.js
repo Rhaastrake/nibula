@@ -5,7 +5,7 @@ const path = require('path');
 const https = require('https');
 const readline = require('readline');
 const { spawnSync } = require('child_process');
-const { findProjectRoot, NOT_INSIDE_PROJECT_MESSAGE } = require('../tools/lib/paths');
+const { findProjectRoot } = require('../tools/lib/paths');
 const { color } = require('../tools/lib/colors');
 const { message } = require('../tools/lib/logger');
 const { delegateToLocal } = require('./delegate');
@@ -33,7 +33,7 @@ function run(script, args) {
 function requireProjectRoot() {
     const root = findProjectRoot(process.cwd());
     if (!root) {
-        console.error(NOT_INSIDE_PROJECT_MESSAGE);
+        console.error(`\n${color.red}${message('project.notInside')}${color.reset}\n`);
         process.exit(1);
     }
     return root;

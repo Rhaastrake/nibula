@@ -1,0 +1,13 @@
+{
+  "seo": {
+    "title": "{title}",
+    "description": "Description",
+    "keywords": "",
+    "noindex": false,
+    "canonical": ""
+  },
+  "cdn": {
+    "css": [],
+    "js": []
+  }
+}
