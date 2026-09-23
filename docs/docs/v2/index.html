@@ -569,24 +569,6 @@
     
       <li>
         
-          <a class="button link-button" href="#changelog">Changelog</a>
-        
-      </li>
-    
-      <li>
-        
-          <a class="button link-button" href="#roadmap">Roadmap</a>
-        
-      </li>
-    
-      <li>
-        
-          <a class="button link-button" href="#dependencies">Dependencies</a>
-        
-      </li>
-    
-      <li>
-        
           <a class="button link-button" href="#about-eleventy">About Eleventy</a>
         
       </li>
@@ -594,6 +576,12 @@
       <li>
         
           <a class="button link-button" href="#support-nibula">Support Nibula</a>
+        
+      </li>
+    
+      <li>
+        
+          <a class="button link-button" href="#roadmap">Roadmap</a>
         
       </li>
     
@@ -1648,12 +1636,42 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <p><strong>Use <code>noindex</code> for the pages that shouldn't be found</strong> — a thank-you page after a form, a staging copy, a page you keep only for a link you sent someone.</p>
 <p><strong>The <code>url</code> in <code>site.json</code> has to be the real one.</strong> It builds the canonical link and the addresses in your sitemap. Get it wrong and you're pointing search engines at a site that doesn't exist.</p>
 <h2 id="sitemap-generation" tabindex="-1">Sitemap generation <a class="header-anchor" href="#sitemap-generation">#</a></h2>
-<p>A <strong>sitemap</strong> is a file listing your pages, so a search engine finds them all without having to follow links.</p>
-<p><code>sitemap.xml</code> is built at every build from the same data you already filled in. Pages marked <strong>noindex</strong> and the <strong>404</strong> page are left out.</p>
-<p>You don't edit it: add a page with the CLI and it appears, remove one and it goes.</p>
-<p>An <code>llms.txt</code> is generated the same way, in the plain-text format AI crawlers read.</p>
+<p>From those same two files <strong>Nibula</strong> also generates, at every build, three things that help machines read your site:</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Who reads it</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sitemap.xml</code></td>
+<td>Search engines</td>
+<td>The list of your pages, so they're all found without following links</td>
+</tr>
+<tr>
+<td><code>llms.txt</code></td>
+<td>AI crawlers</td>
+<td>The same list in plain text, with a short line about the site</td>
+</tr>
+<tr>
+<td><strong>JSON-LD</strong></td>
+<td>Both</td>
+<td>A small block inside every page describing what the page is</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>JSON-LD</strong> lives in <code>src/frontend/layouts/base.njk</code> and needs nothing from you. Pages marked <strong>noindex</strong> and the <strong>404</strong> page are left out of the sitemap.</p>
+<p>You never edit <code>sitemap.xml</code> directly: add a page with the CLI and it appears, remove one and it goes. What you <em>can</em> change is in <code>src/frontend/indexing/sitemap.njk</code>:</p>
+<pre><code>&lt;changefreq&gt;weekly&lt;/changefreq&gt;
+&lt;priority&gt;0.8&lt;/priority&gt;
+</code></pre>
+<p><strong>changefreq</strong> is how often the page changes: <code>daily</code> for a news section, <code>weekly</code> for a blog, <code>monthly</code> or <code>yearly</code> for pages you rarely touch. <strong>priority</strong> goes from <code>0.0</code> to <code>1.0</code> and says which pages matter most to you, with the homepage usually at <code>1.0</code>. Both are hints, and search engines are free to ignore them, so don't lose time over it.</p>
+<p>In <code>src/frontend/indexing/llms.njk</code> you can add a couple of lines about what your site does and which pages matter, right under the title. It's a young format and few crawlers read it yet, but it costs one minute.</p>
 <blockquote>
-<p>Both are built from <code>pages.json</code>, so a page without a record is missing from them</p>
+<p>All three are built from <code>pages.json</code>, so a page without a record is missing from them</p>
 </blockquote>
 <h2 id="robots-and-crawlers" tabindex="-1">Robots &amp; Crawlers <a class="header-anchor" href="#robots-and-crawlers">#</a></h2>
 <p>A <strong>crawler</strong> is the program a search engine sends around the web to read pages. <code>robots.txt</code> sits at the root of your site and tells it what it may visit.</p>
@@ -1663,12 +1681,11 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 User-agent: *
 Disallow:
 </code></pre>
-<p>That's the right default for a public site. To keep a section out, edit <code>robots.njk</code> and add a rule under <code>User-agent: *</code>:</p>
+<p>That's the right default for a public site. To keep a section out, edit <code>robots.njk</code> and add one line per path under <code>User-agent: *</code>:</p>
 <pre><code>Disallow: /private/
 </code></pre>
-<p>One line per path. Edit the <code>.njk</code>, never the generated file in <code>out</code>: that one is rewritten at every build.</p>
 <blockquote>
-<p><code>robots.txt</code> asks crawlers not to visit. It doesn't stop anyone: the page is still reachable by whoever has the address, and a page blocked here can still show up in search results if another site links to it. To keep a page out of the results, use <strong>noindex</strong></p>
+<p><code>robots.txt</code> asks crawlers not to visit. It doesn't stop anyone: the page is still reachable by whoever has the address. To keep a page out of search results, use <strong>noindex</strong></p>
 </blockquote>
 
             </div>
@@ -1691,47 +1708,187 @@ Disallow:
             <div class="col-section">
               <h1 id="backend">Backend</h1>
 <h2 id="node-or-php" tabindex="-1">Node.js or PHP <a class="header-anchor" href="#node-or-php">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>If you picked a backend when you created the project, you already have a small API working under <code>/api</code>. It's the same API written twice, once in <strong>Node.js</strong> and once in <strong>PHP</strong>: same folders, same way of writing an endpoint. Only the language changes.</p>
+<p><strong>PHP</strong> runs once per request and then exits, so it works on any cheap hosting.</p>
+<p><strong>Node</strong> is itself a program that stays running, so it needs a machine you control.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>PHP</th>
+<th>Node</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runs on shared hosting</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Needs something always running</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Extra packages</td>
+<td>Composer</td>
+<td>npm</td>
+</tr>
+</tbody>
+</table>
+<p>If you're unsure, pick <strong>PHP</strong>: it runs everywhere. What each one needs on the server is in <a href="#deploy">Deploy</a>.</p>
+<blockquote>
+<p>Picked <strong>None</strong>? You have no <code>backend</code> folder and the site is pure static. You can still call somebody else's API from JavaScript</p>
+</blockquote>
 <h2 id="backend-structure" tabindex="-1">Structure <a class="header-anchor" href="#backend-structure">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Everything lives in <code>src/backend</code>:</p>
+<pre><code>src/backend/
+├── _core/           the engine, you don't touch this
+├── api/
+│   ├── public/      anyone can call these
+│   └── protected/   only with an API key
+├── database/
+│   ├── Database.js / .php
+│   └── migrations/  your .sql files
+└── example.config.js / .php
+</code></pre>
+<p>You work in <strong>api</strong>. A file's path is its URL: <code>api/public/contact.js</code> answers at <code>/api/contact</code>, and subfolders work the same way.</p>
+<p><strong>_core</strong> receives every request, checks the API key when needed, and calls your file. Nothing to configure.</p>
+<h3 id="backend-config" tabindex="-1">The config file <a class="header-anchor" href="#backend-config">#</a></h3>
+<p><code>example.config.js</code> (or <code>.php</code>) is a template with no real values in it. Copy it to <code>config.js</code> and fill that one in:</p>
+<pre><code>cd src/backend
+copy example.config.js config.js
+</code></pre>
+<p><code>config.js</code> is ignored by git, so your passwords stay on your machine and never end up online. The example file stays where it is, as the list of what a new copy needs.</p>
+<pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token constant">GENERAL_API_KEY</span><span class="token operator">:</span> <span class="token string">'DEFAULT_KEY'</span><span class="token punctuation">,</span>
+
+    <span class="token constant">CUSTOM_ENDPOINT_KEYS</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token string-property property">'subfolder/example-protected'</span><span class="token operator">:</span> <span class="token string">'custom-key'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token constant">GENERAL_ALLOWED_ORIGINS</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">'*'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+    <span class="token constant">CUSTOM_ENDPOINT_ORIGINS</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token string-property property">'subfolder/example-protected'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'https://app.example.com'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+    <span class="token constant">DB_HOST</span><span class="token operator">:</span> <span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span>
+    <span class="token constant">DB_NAME</span><span class="token operator">:</span> <span class="token string">'example_db'</span><span class="token punctuation">,</span>
+    <span class="token constant">DB_USER</span><span class="token operator">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span>
+    <span class="token constant">DB_PASS</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+
+    <span class="token constant">APP_ENV</span><span class="token operator">:</span> <span class="token string">'production'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p><strong>GENERAL_API_KEY</strong> is the password every protected endpoint asks for. A client sends it in the <code>X-Api-Key</code> header, and without it the request is refused. Change it before you publish: <code>DEFAULT_KEY</code> is written in the documentation of every <strong>Nibula</strong> site.</p>
+<p><strong>CUSTOM_ENDPOINT_KEYS</strong> gives one endpoint a key of its own, so you can hand a single client access to a single endpoint without giving away the general key. The name is the path under <code>protected</code>, without the extension.</p>
+<p><strong>GENERAL_ALLOWED_ORIGINS</strong> is the list of sites allowed to call your API from a browser. <code>*</code> means anyone, which is fine while you're building and on a public API. When the API is only for your own site, put your address there instead:</p>
+<pre class="language-js"><code class="language-js"><span class="token constant">GENERAL_ALLOWED_ORIGINS</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'https://example.com'</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span></code></pre>
+<p><strong>CUSTOM_ENDPOINT_ORIGINS</strong> does the same for a single endpoint.</p>
+<p><strong>DB_</strong> are the four values your database needs: where it is, its name, the user and the password. Leave them as they are if you have no database.</p>
+<p><strong>APP_ENV</strong> decides what an error says. On <code>production</code> the client only sees <em>Internal server error</em>; on anything else it sees the real message, useful while you're working, too talkative once the site is online.</p>
+<blockquote>
+<p>Every one of these values is read when the backend starts, so restart it after you change the file</p>
+</blockquote>
 <h2 id="endpoints-logic" tabindex="-1">Endpoints logic <a class="header-anchor" href="#endpoints-logic">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>An endpoint is one file that answers the request and stops:</p>
+<pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> method<span class="token punctuation">,</span> requestParams<span class="token punctuation">,</span> Response <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>method <span class="token operator">!==</span> <span class="token string">'GET'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Response<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Method not allowed'</span><span class="token punctuation">,</span> <span class="token number">405</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    Response<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'It works'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">params</span><span class="token operator">:</span> requestParams<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>The same file in PHP:</p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">require_once</span> <span class="token constant">CORE_PATH</span> <span class="token operator">.</span> <span class="token string single-quoted-string">'/modules/Response.php'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$method</span> <span class="token operator">!==</span> <span class="token string single-quoted-string">'GET'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token class-name static-context">Response</span><span class="token operator">::</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'Method not allowed'</span><span class="token punctuation">,</span> <span class="token number">405</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token class-name static-context">Response</span><span class="token operator">::</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token string single-quoted-string">'message'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'It works'</span><span class="token punctuation">,</span>
+    <span class="token string single-quoted-string">'params'</span>  <span class="token operator">=></span> <span class="token variable">$requestParams</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></code></pre>
+<p>The request arrives already unpacked:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td><code>GET</code>, <code>POST</code>, and so on</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>What comes after the <code>?</code>: <code>?page=2</code> gives <code>page: '2'</code></td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>The JSON the client sent, already parsed</td>
+</tr>
+<tr>
+<td><code>requestParams</code></td>
+<td>The extra pieces of the path</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>The request headers</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Everything from your config file</td>
+</tr>
+</tbody>
+</table>
+<p><code>Response.success(data, code)</code> and <code>Response.error(message, code)</code> send the answer and stop the request: nothing after them runs.</p>
+<p><strong>Extra pieces of the path.</strong> With only <code>users.js</code> in place, a call to <code>/api/users/42</code> still runs <code>users.js</code>, and <code>42</code> arrives in <code>requestParams</code>.</p>
+<blockquote>
+<p>Never trust what a client sends: check every value before you use it, above all before it reaches the database</p>
+</blockquote>
 <h2 id="database" tabindex="-1">Database <a class="header-anchor" href="#database">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p><code>Database.getInstance()</code> opens the connection with the values from your config, and reuses it for every call.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> Database <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../database/Database'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> db <span class="token operator">=</span> Database<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span>rows<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> db<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token string">'SELECT * FROM users WHERE id = ?'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token variable">$db</span> <span class="token operator">=</span> <span class="token class-name static-context">Database</span><span class="token operator">::</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span> <span class="token operator">=</span> <span class="token variable">$db</span><span class="token operator">-></span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'SELECT * FROM users WHERE id = ?'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span><span class="token operator">-></span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token variable">$id</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$stmt</span><span class="token operator">-></span><span class="token function">fetchAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Note the <code>?</code> with the value passed separately. That's what keeps somebody from typing SQL into your form and having it run. Never build a query by gluing strings together.</p>
+<p>In <code>database/migrations</code> you keep the <code>.sql</code> files that create your tables: you run them on the server once, and they stay as the written history of your database.</p>
+<blockquote>
+<p>With <strong>Node</strong> the database needs one extra package, see below. With <strong>PHP</strong> it works out of the box</p>
+</blockquote>
 <h2 id="additional-packages" tabindex="-1">Additional packages <a class="header-anchor" href="#additional-packages">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>The backend has its own dependencies, separate from the site's.</p>
+<p><strong>Node</strong> reads <code>src/backend/package.json</code>:</p>
+<pre><code>cd src/backend
+npm install mysql2
+</code></pre>
+<p><strong>PHP</strong> uses Composer, from <code>src/backend/_core</code>:</p>
+<pre><code>cd src/backend/_core
+composer require vlucas/phpdotenv
+</code></pre>
+<p>Both are copied into <code>out</code> at build time, dependencies included.</p>
 <h2 id="node-service" tabindex="-1">Node service <a class="header-anchor" href="#node-service">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>Only the Node backend needs this: somebody has to start the program, and start it again when the server reboots.</p>
+<p>While you're working, <code>npm run serve</code> does it for you. On the server you hand it to <strong>systemd</strong>, the part of Linux that keeps programs running. The whole procedure is in <a href="#nginx-node-service">Deploy</a>.</p>
 
             </div>
           
@@ -2018,27 +2175,6 @@ sudo systemctl status backend-node
           
             <div class="col-section">
               <h1 id="about">About</h1>
-<h2 id="changelog" tabindex="-1">Changelog <a class="header-anchor" href="#changelog">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="roadmap" tabindex="-1">Roadmap <a class="header-anchor" href="#roadmap">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="dependecies" tabindex="-1">Dependecies <a class="header-anchor" href="#dependecies">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 <h2 id="about-eleventy" tabindex="-1">⚙️ About Eleventy (11ty) <a class="header-anchor" href="#about-eleventy">#</a></h2>
 <p><strong>Eleventy is the engine underneath.</strong> It takes your templates and your data and
 turns them into plain HTML files, once, when you build — which is why the result
@@ -2057,14 +2193,17 @@ translation needed.</p>
 <p>It's a one-person project, so every bit of feedback counts more than you'd think: if something breaks, if the documentation isn't clear, or if a feature is missing, open an <a href="https://github.com/Rhaastrake/Nibula/issues" target="_blank" rel="noopener noreferrer">issue</a>.</p>
 <p>If <strong>Nibula</strong> was useful to you, leaving a ⭐ on the <a href="https://github.com/Rhaastrake/Nibula" target="_blank" rel="noopener noreferrer">repository</a> is the easiest way to help other people find it.</p>
 <p>You can also support the project by buying me a coffee on <a href="https://paypal.me/rhaastrake" target="_blank" rel="noopener noreferrer">PayPal</a> ☕🫡</p>
+<h2 id="roadmap" tabindex="-1">Roadmap <a class="header-anchor" href="#roadmap">#</a></h2>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
 
             </div>
           
           
-            
-              
-            
-              
             
               
             
