@@ -1697,7 +1697,7 @@ Disallow:
             <div class="col-section">
               <h1 id="backend">Backend</h1>
 <h2 id="node-or-php" tabindex="-1">Node.js or PHP <a class="header-anchor" href="#node-or-php">#</a></h2>
-<p>If you picked a backend when you created the project, you already have a small API working under <code>/api</code>. It's the same API written twice, once in <strong>Node.js</strong> and once in <strong>PHP</strong>: same folders, same way of writing an endpoint. Only the language changes.</p>
+<p>If you picked a backend when you created the project, you already have a small API working under <code>/api</code>. It's the same API written twice, once in <strong>Node.js</strong> and once in <strong>PHP</strong>: same folders, same routing, same way of writing an endpoint. Only the language changes.</p>
 <p><strong>PHP</strong> runs once per request and then exits, so it works on any cheap hosting.</p>
 <p><strong>Node</strong> is itself a program that stays running, so it needs a machine you control.</p>
 <table>
@@ -1728,7 +1728,7 @@ Disallow:
 </table>
 <p>If you're unsure, pick <strong>PHP</strong>: it runs everywhere. What each one needs on the server is in <a href="#deploy">Deploy</a>.</p>
 <blockquote>
-<p>Picked <strong>None</strong>? You have no <code>backend</code> folder and the site is pure static. You can still call somebody else's API from JavaScript</p>
+<p>Examples below are in <strong>Node</strong>, whose syntax is the shorter one to read. The logic is the same in PHP: same names, same folders, same order of things.</p>
 </blockquote>
 <h2 id="backend-structure" tabindex="-1">Structure <a class="header-anchor" href="#backend-structure">#</a></h2>
 <p>Everything lives in <code>src/backend</code>:</p>
@@ -1798,25 +1798,6 @@ copy example.config.js config.js
     Response<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token punctuation">,</span> email <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">201</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
-<p>In PHP you return the same thing as an array of functions:</p>
-<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token keyword">require_once</span> <span class="token constant">CORE_PATH</span> <span class="token operator">.</span> <span class="token string single-quoted-string">'/modules/Response.php'</span><span class="token punctuation">;</span>
-<span class="token keyword">require_once</span> <span class="token constant">CORE_PATH</span> <span class="token operator">.</span> <span class="token string single-quoted-string">'/modules/Validate.php'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">return</span> <span class="token punctuation">[</span>
-    <span class="token string single-quoted-string">'get'</span> <span class="token operator">=></span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token keyword type-hint">array</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token class-name static-context">Response</span><span class="token operator">::</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'message'</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'It works'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'query'</span> <span class="token operator">=></span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'query'</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-
-    <span class="token string single-quoted-string">'post'</span> <span class="token operator">=></span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token keyword type-hint">array</span> <span class="token variable">$request</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token variable">$body</span>  <span class="token operator">=</span> <span class="token variable">$request</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'body'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token variable">$name</span>  <span class="token operator">=</span> <span class="token class-name static-context">Validate</span><span class="token operator">::</span><span class="token function">required</span><span class="token punctuation">(</span><span class="token variable">$body</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token constant">null</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token variable">$email</span> <span class="token operator">=</span> <span class="token class-name static-context">Validate</span><span class="token operator">::</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token variable">$body</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'email'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token constant">null</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'email'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token class-name static-context">Response</span><span class="token operator">::</span><span class="token function">success</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span> <span class="token operator">=></span> <span class="token variable">$name</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'email'</span> <span class="token operator">=></span> <span class="token variable">$email</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">201</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-</span></code></pre>
 <p>The request arrives already unpacked:</p>
 <table>
 <thead>
@@ -1885,10 +1866,6 @@ copy example.config.js config.js
 
 <span class="token keyword">const</span> db <span class="token operator">=</span> Database<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> <span class="token punctuation">[</span>rows<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> db<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token string">'SELECT * FROM users WHERE id = ?'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<pre class="language-php"><code class="language-php"><span class="token variable">$db</span> <span class="token operator">=</span> <span class="token class-name static-context">Database</span><span class="token operator">::</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token variable">$stmt</span> <span class="token operator">=</span> <span class="token variable">$db</span><span class="token operator">-></span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'SELECT * FROM users WHERE id = ?'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token variable">$stmt</span><span class="token operator">-></span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token variable">$id</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$stmt</span><span class="token operator">-></span><span class="token function">fetchAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 <p>Note the <code>?</code> with the value passed separately. That's what keeps somebody from typing SQL into your form and having it run. Never build a query by gluing strings together.</p>
 <p>In <code>database/migrations</code> you keep the <code>.sql</code> files that create your tables: you run them on the server once, and they stay as the written history of your database.</p>
 <blockquote>
