@@ -1548,41 +1548,108 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
           
             <div class="col-section">
               <h1 id="seo">SEO</h1>
-<h2 id="each-page-seo" tabindex="-1">Each page SEO <a class="header-anchor" href="#each-page-seo">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
 <h2 id="what-is-seo" tabindex="-1">What is SEO <a class="header-anchor" href="#what-is-seo">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="best-practices" tabindex="-1">Best practices <a class="header-anchor" href="#best-practices">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p><strong>SEO</strong> is everything that helps search engines understand what every page of your site is about, so they can show it to the right people.</p>
+<p>Someone looking for computer repair in their city searches for the service, not for your site name, they don't know it yet.</p>
+<p>Most of it is content: a clear title, text that answers what someone searched for. The rest is a set of tags in the <strong>head</strong> tag of every page the title, the description, the image shown when the page is shared. Those tags are what <strong>Nibula</strong> writes for you.</p>
+<p>You fill in two data files, and the layout turns them into tags, page by page.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data/site.json</code></td>
+<td>The values shared by the whole site, used whenever a page doesn't set its own</td>
+</tr>
+<tr>
+<td><code>data/pages.json</code></td>
+<td>One record per page, with its own title, description and the rest</td>
+</tr>
+</tbody>
+</table>
+<h2 id="each-page-seo" tabindex="-1">Each page SEO <a class="header-anchor" href="#each-page-seo">#</a></h2>
+<p>Every page has a record in <code>data/pages.json</code>, created for you when you add a page with the <a href="#nibula-cli">Nibula CLI</a>:</p>
+<pre class="language-json"><code class="language-json"><span class="token property">"myPage"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"seo"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My Page"</span><span class="token punctuation">,</span>
+    <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"Description"</span><span class="token punctuation">,</span>
+    <span class="token property">"keywords"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token property">"noindex"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"canonical"</span><span class="token operator">:</span> <span class="token string">""</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"cdn"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"css"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"js"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>title</strong></td>
+<td>What appears in the browser tab and as the clickable line in search results</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>The paragraph under that line. Search engines often rewrite it, but it's your best shot</td>
+</tr>
+<tr>
+<td><strong>keywords</strong></td>
+<td>Ignored by search engines since years, but it stays your own data: useful if you build an internal search or related pages</td>
+</tr>
+<tr>
+<td><strong>noindex</strong></td>
+<td><code>true</code> keeps the page out of search results</td>
+</tr>
+<tr>
+<td><strong>canonical</strong></td>
+<td>The address search engines should treat as the real one, when the same content is reachable from more than one URL</td>
+</tr>
+</tbody>
+</table>
+<p>Leave a field empty and the value from <code>site.json</code> is used instead. An empty <strong>canonical</strong> falls back to the page's own address, which is what you want almost always.</p>
+<blockquote>
+<p>The key is the page's <strong>title</strong> from its front matter, and that's how the layout finds the record. Change one without the other and the page loses its tags</p>
+</blockquote>
+<h2 id="seo-best-practices" tabindex="-1">Best practices <a class="header-anchor" href="#seo-best-practices">#</a></h2>
+<p><strong>Write one title per page, and make it specific.</strong> <em>Pricing · Acme</em> tells a reader more than <em>Home</em>. Keep it under about 60 characters, or search engines cut it off.</p>
+<p><strong>Write the description for a person, not a robot.</strong> It doesn't affect your ranking directly, but it's what convinces someone to click. Around 150 characters.</p>
+<p><strong>Don't repeat the same description on every page.</strong> Two identical descriptions tell a search engine the two pages are interchangeable.</p>
+<p><strong>Fill in <code>site.json</code> before you publish.</strong> Every page falls back to those values, so a site with <em>Site description</em> still in there ships that text everywhere.</p>
+<p><strong>Use <code>noindex</code> for the pages that shouldn't be found</strong> — a thank-you page after a form, a staging copy, a page you keep only for a link you sent someone.</p>
+<p><strong>The <code>url</code> in <code>site.json</code> has to be the real one.</strong> It builds the canonical link and the addresses in your sitemap. Get it wrong and you're pointing search engines at a site that doesn't exist.</p>
 <h2 id="sitemap-generation" tabindex="-1">Sitemap generation <a class="header-anchor" href="#sitemap-generation">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<h2 id="robot-and-crawlers" tabindex="-1">Robots &amp; Crawlers <a class="header-anchor" href="#robot-and-crawlers">#</a></h2>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
-<p>.</p>
+<p>A <strong>sitemap</strong> is a file listing your pages, so a search engine finds them all without having to follow links.</p>
+<p><code>sitemap.xml</code> is built at every build from the same data you already filled in. Pages marked <strong>noindex</strong> and the <strong>404</strong> page are left out.</p>
+<p>You don't edit it: add a page with the CLI and it appears, remove one and it goes.</p>
+<p>An <code>llms.txt</code> is generated the same way, in the plain-text format AI crawlers read.</p>
+<blockquote>
+<p>Both are built from <code>pages.json</code>, so a page without a record is missing from them</p>
+</blockquote>
+<h2 id="robots-and-crawlers" tabindex="-1">Robots &amp; Crawlers <a class="header-anchor" href="#robots-and-crawlers">#</a></h2>
+<p>A <strong>crawler</strong> is the program a search engine sends around the web to read pages. <code>robots.txt</code> sits at the root of your site and tells it what it may visit.</p>
+<p><strong>Nibula</strong> generates it from <code>src/frontend/indexing/robots.njk</code>, pointing at your sitemap and allowing everything:</p>
+<pre><code>Sitemap: https://yoursite.com/sitemap.xml
+
+User-agent: *
+Disallow:
+</code></pre>
+<p>That's the right default for a public site. To keep a section out, edit <code>robots.njk</code> and add a rule under <code>User-agent: *</code>:</p>
+<pre><code>Disallow: /private/
+</code></pre>
+<p>One line per path. Edit the <code>.njk</code>, never the generated file in <code>out</code>: that one is rewritten at every build.</p>
+<blockquote>
+<p><code>robots.txt</code> asks crawlers not to visit. It doesn't stop anyone: the page is still reachable by whoever has the address, and a page blocked here can still show up in search results if another site links to it. To keep a page out of the results, use <strong>noindex</strong></p>
+</blockquote>
 
             </div>
           
