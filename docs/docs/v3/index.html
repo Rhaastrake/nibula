@@ -131,7 +131,13 @@
       <a href="/nibula/docs/v3/" class="button link-button">Documentation</a>
       <a href="/nibula/team/" class="button link-button">Team</a>
       <a href="/nibula/faq/" class="button link-button">FAQ</a>
-      <a href="https://github.com/rhaastrake/nibula" target="_blank" rel="noopener noreferrer" class="button link-button" aria-label="GitHub repository"><i class="bi bi-github" style="font-size: 1.5rem"></i></a>
+
+      
+        <div class="nav-slot nav-search-slot" id="nav-search-slot"></div>
+        <div class="nav-slot nav-index-slot" id="nav-index-slot"></div>
+      
+
+      <a href="https://github.com/rhaastrake/nibula" target="_blank" rel="noopener noreferrer" class="button link-button nav-social" aria-label="GitHub repository"><i class="bi bi-github" style="font-size: 1.5rem"></i></a>
     </div>
   </nav>
 </header>
@@ -140,25 +146,9 @@
             
 
 <section id="docs-section" class="container">
-  <button
-    class="button edge-button docs-nav-tab d-lg-none"
-    type="button"
-    id="docsNavOpen"
-    aria-controls="docsNav"
-    aria-expanded="false"
-    aria-label="Open documentation navigation"
-  >
-    <i class="bi bi-chevron-right" aria-hidden="true"></i>
-  </button>
   <div class="row">
-    <nav class="col-12 col-lg-auto offcanvas-lg offcanvas-start docs-nav" tabindex="-1" id="docsNav" aria-labelledby="docsNavLabel">
-      <div class="offcanvas-header d-lg-none">
-        <h5 class="offcanvas-title" id="docsNavLabel">Docs navigation</h5>
-        <button class="button docs-nav-close" type="button" id="docsNavClose" aria-label="Close navigation menu">
-          <i class="bi bi-x-lg" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="offcanvas-body">
+    <nav class="col-12 col-lg-auto docs-nav" id="docsNav" aria-label="Documentation index">
+      <div class="docs-index">
         
   <ul class="">
     
@@ -2221,7 +2211,6 @@ translation needed.</p>
     </aside>
   </div>
 </section>
-
 
         </main>
 
