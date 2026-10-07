@@ -699,7 +699,7 @@ sideways.</p>
 </ul>
 <h2 id="installation" tabindex="-1">📦 Installation <a class="header-anchor" href="#installation">#</a></h2>
 <p>Install Nibula once, globally:</p>
-<pre><code class="clickable button link-button">npm install -g nibula
+<pre><code class="clickable button link-button copy">npm install -g nibula
 </code></pre>
 <p>This gives you the <strong>nib</strong> command, with <strong>nbl</strong> and <strong>nibula</strong> as aliases.</p>
 <p>Global means you install it once on your machine, not once per project — from
@@ -746,7 +746,7 @@ then on <strong>nib</strong> is available from any folder.</p>
 <p>See <a href="#nibula-cli">Nibula CLI</a> for what the assistant can do.</p>
 <h2 id="project-creation" tabindex="-1">🚀 Project creation <a class="header-anchor" href="#project-creation">#</a></h2>
 <p>From the folder where you keep your websites, run:</p>
-<pre><code class="clickable button link-button">nib new your-project
+<pre><code class="clickable button link-button copy">nib new your-project
 </code></pre>
 <p>The scaffolder asks you three things:</p>
 <table>
@@ -779,9 +779,9 @@ then on <strong>nib</strong> is available from any folder.</p>
 <p>Dependencies are installed for you. If you pick Node, the Composer step is
 skipped entirely, so you don't need Composer on your machine at all.</p>
 <p>Then move into the project and start the dev server:</p>
-<pre><code class="clickable button link-button">cd your-project
+<pre><code class="clickable button link-button copy">cd your-project
 </code></pre>
-<pre><code class="clickable button link-button">nib run
+<pre><code class="clickable button link-button copy">nib run
 </code></pre>
 <p>Your site is now at <strong>localhost:8080</strong>, and it rebuilds every time you save a file.</p>
 
@@ -991,7 +991,7 @@ keeps working without you touching it.</p>
 <h2 id="nibula-cli" tabindex="-1">🖱️ Nibula CLI <a class="header-anchor" href="#nibula-cli">#</a></h2>
 <h3 id="nibula-cli-options" tabindex="-1">Options <a class="header-anchor" href="#nibula-cli-options">#</a></h3>
 <p>The assistant writes the three files and the <code>pages.json</code> record for you, keeping the names in sync. Run it from anywhere inside a project:</p>
-<pre><code class="clickable button link-button">nib cli
+<pre><code class="clickable button link-button copy">nib cli
 </code></pre>
 <table>
 <thead>
@@ -1027,9 +1027,9 @@ keeps working without you touching it.</p>
 <h3 id="cli-output-path" tabindex="-1">Where the site is built <a class="header-anchor" href="#cli-output-path">#</a></h3>
 <p>By default the build goes to <code>out/</code>. Change it when the folder you build into isn't the folder you work in — a local server's document root, a shared drive, a path your host expects. The dev server follows, rebuilding there as you save, with nothing to copy by hand.</p>
 <p>Any absolute or relative path works:</p>
-<pre><code class="clickable button link-button">C:/laragon/www
+<pre><code class="clickable button link-button copy">C:/laragon/www
 </code></pre>
-<pre><code class="clickable button link-button">../any-folder
+<pre><code class="clickable button link-button copy">../any-folder
 </code></pre>
 <p>If you want to reset the output path to the project root, just type <code>.</code> as path</p>
 <blockquote>
@@ -2017,25 +2017,25 @@ composer require vlucas/phpdotenv
 </tbody>
 </table>
 <h3 id="nginx-install" tabindex="-1">Install what's missing <a class="header-anchor" href="#nginx-install">#</a></h3>
-<pre><code class="clickable button link-button">sudo apt update
+<pre><code class="clickable button link-button copy">sudo apt update
 sudo apt install -y nginx certbot python3-certbot-nginx
 </code></pre>
 <p>With the PHP backend, also:</p>
-<pre><code class="clickable button link-button">sudo apt install -y php-fpm
+<pre><code class="clickable button link-button copy">sudo apt install -y php-fpm
 </code></pre>
 <h3 id="nginx-certificate" tabindex="-1">Get an HTTPS certificate <a class="header-anchor" href="#nginx-certificate">#</a></h3>
 <p>This is what makes your site load over <code>https://</code>. Certificates are free and last 90 days; the second command renews them automatically.</p>
-<pre><code class="clickable button link-button">sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
+<pre><code class="clickable button link-button copy">sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
 </code></pre>
-<pre><code class="clickable button link-button">sudo systemctl enable --now certbot.timer
+<pre><code class="clickable button link-button copy">sudo systemctl enable --now certbot.timer
 </code></pre>
 <h3 id="nginx-site-file" tabindex="-1">Install the site file <a class="header-anchor" href="#nginx-site-file">#</a></h3>
 <p>Go to the folder where Nginx keeps site files, create the file, and paste in the contents of your edited <code>nginx.conf</code>:</p>
-<pre><code class="clickable button link-button">cd /etc/nginx/sites-available
+<pre><code class="clickable button link-button copy">cd /etc/nginx/sites-available
 sudo nano SITE_NAME
 </code></pre>
 <p>Save with <code>CTRL + O</code>, <code>ENTER</code>, <code>CTRL + X</code>. Then switch the site on and apply it:</p>
-<pre><code class="clickable button link-button">sudo cp SITE_NAME ../sites-enabled/
+<pre><code class="clickable button link-button copy">sudo cp SITE_NAME ../sites-enabled/
 sudo nginx -t &amp;&amp; sudo systemctl reload nginx
 </code></pre>
 <blockquote>
@@ -2086,15 +2086,15 @@ sudo nginx -t &amp;&amp; sudo systemctl reload nginx
 </table>
 <h3 id="nginx-node-service" tabindex="-1">Starting the Node backend <a class="header-anchor" href="#nginx-node-service">#</a></h3>
 <p>Only for the Node backend. After uploading <code>out</code>, install its dependencies:</p>
-<pre><code class="clickable button link-button">cd /var/www/SITE_FOLDER/backend
+<pre><code class="clickable button link-button copy">cd /var/www/SITE_FOLDER/backend
 npm install
 </code></pre>
 <p>Make sure <code>config.js</code> exists in <code>out/backend/</code>. If it doesn't, copy <code>example.config.js</code> to <code>config.js</code> and fill in your values. The backend won't start without it.</p>
 <p><strong>Try it out first.</strong> <code>screen</code> lets you start a program, walk away, and come back to it later:</p>
-<pre><code class="clickable button link-button">screen -S node-backend
+<pre><code class="clickable button link-button copy">screen -S node-backend
 sudo node /var/www/SITE_FOLDER/backend/core/index.js
 </code></pre>
-<pre><code class="clickable button link-button">curl http://127.0.0.1:3000/api/example-public
+<pre><code class="clickable button link-button copy">curl http://127.0.0.1:3000/api/example-public
 </code></pre>
 <p>If <code>curl</code> prints a <strong>JSON</strong> response, the backend is alive. Press <code>CTRL + A</code> then <code>D</code> to leave the screen without stopping the program; <code>screen -r node-backend</code> brings you back.</p>
 <p><strong>Then set it up for real.</strong> <code>screen</code> is for testing: the program dies if the server reboots. For a live site use <strong>systemd</strong>, the part of Linux that manages background programs. It starts your backend at boot and restarts it if it crashes.</p>
@@ -2114,7 +2114,7 @@ sudo node /var/www/SITE_FOLDER/backend/core/index.js
 <span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Install</span><span class="token punctuation">]</span></span>
 <span class="token key attr-name">WantedBy</span><span class="token punctuation">=</span><span class="token value attr-value">multi-user.target</span></code></pre>
 <p>Adjust <code>WorkingDirectory</code>, and check the path to <code>node</code> with <code>which node</code>. Then:</p>
-<pre><code class="clickable button link-button">sudo systemctl daemon-reload
+<pre><code class="clickable button link-button copy">sudo systemctl daemon-reload
 sudo systemctl enable --now backend-node
 sudo systemctl status backend-node
 </code></pre>
@@ -2211,7 +2211,7 @@ translation needed.</p>
                 <h1 id="migration">Migration</h1>
 <h2 id="migration-overview" tabindex="-1">What you need to change <a class="header-anchor" href="#migration-overview">#</a></h2>
 <p>Start from the project root by updating <strong>Nibula</strong> itself:</p>
-<pre><code class="clickable button link-button">npm update nibula
+<pre><code class="clickable button link-button copy">npm update nibula
 </code></pre>
 <p>Version 3 moves the global stylesheet out of every page and renames two backend folders. Nothing in your content, your pages or your data files changes.</p>
 <table>
@@ -2253,7 +2253,7 @@ translation needed.</p>
 <span class="token property">"serve:js"</span><span class="token operator">:</span> <span class="token string">"esbuild \"src/frontend/js/pages/*.js\" --bundle --outdir=out/js/pages --watch"</span></code></pre>
 <p>A <strong>TypeScript</strong> project uses <code>src/frontend/ts/pages/*.ts</code> instead.</p>
 <p>Then remove the dependency that only existed to expand that pattern:</p>
-<pre><code class="clickable button link-button">npm uninstall glob
+<pre><code class="clickable button link-button copy">npm uninstall glob
 </code></pre>
 <h2 id="migration-backend" tabindex="-1">Backend <a class="header-anchor" href="#migration-backend">#</a></h2>
 <p>Skip this section if you picked <strong>None</strong>.</p>
@@ -2279,7 +2279,7 @@ translation needed.</p>
 <p>The second one holds your route files, while <code>/api</code> stays the public URL prefix: your endpoints are still reached at <code>yoursite.com/api/endpoint</code>.</p>
 <p><strong>2.</strong> Update the path in the server files you edited yourself. The bundled <code>nginx.conf</code>, <code>.htaccess</code> and <code>web.config</code> already point at <code>backend/core</code>, but any rule you added by hand still names <code>_core</code>.</p>
 <p><strong>3.</strong> Make sure <code>config.js</code> (or <code>config.php</code>) exists next to the example file. The backend used to fall back to <code>example.config.js</code> when it was missing, which ships a publicly known API key and allows every origin. Now it refuses to start:</p>
-<pre><code class="clickable button link-button">cd src/backend
+<pre><code class="clickable button link-button copy">cd src/backend
 copy example.config.js config.js
 </code></pre>
 <p><strong>4.</strong> A request to a protected endpoint without its key now answers <strong>401</strong> instead of <strong>403</strong>. If something on your side handles that answer, update it.</p>
@@ -2287,11 +2287,11 @@ copy example.config.js config.js
 <p>While <code>APP_ENV</code> is not <code>production</code>, every response carries a <code>Debug-Mode</code> header. A quick way to tell whether a live site was left in debug mode</p>
 </blockquote>
 <h2 id="migration-check" tabindex="-1">Checking it worked <a class="header-anchor" href="#migration-check">#</a></h2>
-<pre><code class="clickable button link-button">nib build
+<pre><code class="clickable button link-button copy">nib build
 </code></pre>
 <p>A clean build writes <code>out/css/global.css</code> next to the page stylesheets. Open a page and check in your browser's network tab that both files load.</p>
 <p>With a backend, call an endpoint to see it answer:</p>
-<pre><code class="clickable button link-button">curl http://localhost:8080/api/example-public
+<pre><code class="clickable button link-button copy">curl http://localhost:8080/api/example-public
 </code></pre>
 <blockquote>
 <p>Nothing in <code>data/</code>, <code>routes/</code>, <code>components/</code> or <code>layouts/</code> needs touching beyond the one line added to <code>base.njk</code></p>

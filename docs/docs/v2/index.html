@@ -693,7 +693,7 @@ sideways.</p>
 </ul>
 <h2 id="installation" tabindex="-1">📦 Installation <a class="header-anchor" href="#installation">#</a></h2>
 <p>Install Nibula once, globally:</p>
-<pre><code class="clickable button link-button">npm install -g nibula
+<pre><code class="clickable button link-button copy">npm install -g nibula
 </code></pre>
 <p>This gives you the <strong>nib</strong> command, with <strong>nbl</strong> and <strong>nibula</strong> as aliases.</p>
 <p>Global means you install it once on your machine, not once per project — from
@@ -740,7 +740,7 @@ then on <strong>nib</strong> is available from any folder.</p>
 <p>See <a href="#nibula-cli">Nibula CLI</a> for what the assistant can do.</p>
 <h2 id="project-creation" tabindex="-1">🚀 Project creation <a class="header-anchor" href="#project-creation">#</a></h2>
 <p>From the folder where you keep your websites, run:</p>
-<pre><code class="clickable button link-button">nib new your-project
+<pre><code class="clickable button link-button copy">nib new your-project
 </code></pre>
 <p>The scaffolder asks you three things:</p>
 <table>
@@ -773,9 +773,9 @@ then on <strong>nib</strong> is available from any folder.</p>
 <p>Dependencies are installed for you. If you pick Node, the Composer step is
 skipped entirely, so you don't need Composer on your machine at all.</p>
 <p>Then move into the project and start the dev server:</p>
-<pre><code class="clickable button link-button">cd your-project
+<pre><code class="clickable button link-button copy">cd your-project
 </code></pre>
-<pre><code class="clickable button link-button">nib run
+<pre><code class="clickable button link-button copy">nib run
 </code></pre>
 <p>Your site is now at <strong>localhost:8080</strong>, and it rebuilds every time you save a file.</p>
 
@@ -984,7 +984,7 @@ keeps working without you touching it.</p>
 <h2 id="nibula-cli" tabindex="-1">🖱️ Nibula CLI <a class="header-anchor" href="#nibula-cli">#</a></h2>
 <h3 id="nibula-cli-options" tabindex="-1">Options <a class="header-anchor" href="#nibula-cli-options">#</a></h3>
 <p>The assistant writes the three files and the <code>pages.json</code> record for you, keeping the names in sync. Run it from anywhere inside a project:</p>
-<pre><code class="clickable button link-button">nib cli
+<pre><code class="clickable button link-button copy">nib cli
 </code></pre>
 <table>
 <thead>
@@ -2024,25 +2024,25 @@ composer require vlucas/phpdotenv
 </tbody>
 </table>
 <h3 id="nginx-install" tabindex="-1">Install what's missing <a class="header-anchor" href="#nginx-install">#</a></h3>
-<pre><code class="clickable button link-button">sudo apt update
+<pre><code class="clickable button link-button copy">sudo apt update
 sudo apt install -y nginx certbot python3-certbot-nginx
 </code></pre>
 <p>With the PHP backend, also:</p>
-<pre><code class="clickable button link-button">sudo apt install -y php-fpm
+<pre><code class="clickable button link-button copy">sudo apt install -y php-fpm
 </code></pre>
 <h3 id="nginx-certificate" tabindex="-1">Get an HTTPS certificate <a class="header-anchor" href="#nginx-certificate">#</a></h3>
 <p>This is what makes your site load over <code>https://</code>. Certificates are free and last 90 days; the second command renews them automatically.</p>
-<pre><code class="clickable button link-button">sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
+<pre><code class="clickable button link-button copy">sudo certbot certonly --nginx --cert-name SITE_NAME -d YOUR_DOMAIN
 </code></pre>
-<pre><code class="clickable button link-button">sudo systemctl enable --now certbot.timer
+<pre><code class="clickable button link-button copy">sudo systemctl enable --now certbot.timer
 </code></pre>
 <h3 id="nginx-site-file" tabindex="-1">Install the site file <a class="header-anchor" href="#nginx-site-file">#</a></h3>
 <p>Go to the folder where Nginx keeps site files, create the file, and paste in the contents of your edited <code>nginx.conf</code>:</p>
-<pre><code class="clickable button link-button">cd /etc/nginx/sites-available
+<pre><code class="clickable button link-button copy">cd /etc/nginx/sites-available
 sudo nano SITE_NAME
 </code></pre>
 <p>Save with <code>CTRL + O</code>, <code>ENTER</code>, <code>CTRL + X</code>. Then switch the site on and apply it:</p>
-<pre><code class="clickable button link-button">sudo cp SITE_NAME ../sites-enabled/
+<pre><code class="clickable button link-button copy">sudo cp SITE_NAME ../sites-enabled/
 sudo nginx -t &amp;&amp; sudo systemctl reload nginx
 </code></pre>
 <blockquote>
@@ -2093,15 +2093,15 @@ sudo nginx -t &amp;&amp; sudo systemctl reload nginx
 </table>
 <h3 id="nginx-node-service" tabindex="-1">Starting the Node backend <a class="header-anchor" href="#nginx-node-service">#</a></h3>
 <p>Only for the Node backend. After uploading <code>out</code>, install its dependencies:</p>
-<pre><code class="clickable button link-button">cd /var/www/SITE_FOLDER/backend
+<pre><code class="clickable button link-button copy">cd /var/www/SITE_FOLDER/backend
 npm install
 </code></pre>
 <p>Make sure <code>config.js</code> exists in <code>out/backend/</code>. If it doesn't, copy <code>example.config.js</code> to <code>config.js</code> and fill in your values.</p>
 <p><strong>Try it out first.</strong> <code>screen</code> lets you start a program, walk away, and come back to it later:</p>
-<pre><code class="clickable button link-button">screen -S node-backend
+<pre><code class="clickable button link-button copy">screen -S node-backend
 sudo node /var/www/SITE_FOLDER/backend/_core/index.js
 </code></pre>
-<pre><code class="clickable button link-button">curl http://127.0.0.1:3000/api/example-public
+<pre><code class="clickable button link-button copy">curl http://127.0.0.1:3000/api/example-public
 </code></pre>
 <p>If <code>curl</code> prints a <strong>JSON</strong> response, the backend is alive. Press <code>CTRL + A</code> then <code>D</code> to leave the screen without stopping the program; <code>screen -r node-backend</code> brings you back.</p>
 <p><strong>Then set it up for real.</strong> <code>screen</code> is for testing: the program dies if the server reboots. For a live site use <strong>systemd</strong>, the part of Linux that manages background programs. It starts your backend at boot and restarts it if it crashes.</p>
@@ -2121,7 +2121,7 @@ sudo node /var/www/SITE_FOLDER/backend/_core/index.js
 <span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">Install</span><span class="token punctuation">]</span></span>
 <span class="token key attr-name">WantedBy</span><span class="token punctuation">=</span><span class="token value attr-value">multi-user.target</span></code></pre>
 <p>Adjust <code>WorkingDirectory</code>, and check the path to <code>node</code> with <code>which node</code>. Then:</p>
-<pre><code class="clickable button link-button">sudo systemctl daemon-reload
+<pre><code class="clickable button link-button copy">sudo systemctl daemon-reload
 sudo systemctl enable --now backend-node
 sudo systemctl status backend-node
 </code></pre>
