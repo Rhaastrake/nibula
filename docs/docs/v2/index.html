@@ -145,11 +145,12 @@
         <main>
             
 
-<section id="docs-section" class="container">
-  <div class="row">
-    <nav class="col-12 col-lg-auto docs-nav" id="docsNav" aria-label="Documentation index">
-      <div class="docs-index">
-        
+<section id="docs-section">
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-12 col-lg-auto docs-nav" id="docsNav" aria-label="Documentation index">
+        <div class="docs-index">
+          
   <ul class="">
     
       <li>
@@ -592,14 +593,14 @@
     
   </ul>
 
-      </div>
-    </nav>
-    <main class="col-12 col-lg docs-content">
-      <article class="markdown-body">
-        
+        </div>
+      </nav>
+      <main class="col-12 col-lg docs-content">
+        <article class="markdown-body">
           
-            <div class="col-section">
-              <h1 id="introduction">Introduction</h1>
+            
+              <div class="col-section">
+                <h1 id="introduction">Introduction</h1>
 <h2 id="what-is-nibula" tabindex="-1">✏️ What is Nibula <a class="header-anchor" href="#what-is-nibula">#</a></h2>
 <p><strong>Nibula</strong> is an open source static site generator built on top of
 <a href="https://www.11ty.dev/" target="_blank" rel="noopener noreferrer">Eleventy (11ty)</a></p>
@@ -664,21 +665,21 @@ ten or twenty of them and wrong for a catalogue.</p>
 point is being a first step for people who don't — for you it would be a step
 sideways.</p>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="quick-start">Quick start</h1>
+            
+              <div class="col-section">
+                <h1 id="quick-start">Quick start</h1>
 <h2 id="prerequisites" tabindex="-1">📋 Prerequisites <a class="header-anchor" href="#prerequisites">#</a></h2>
 <h3 id="required" tabindex="-1">Required <a class="header-anchor" href="#required">#</a></h3>
 <ul>
@@ -778,21 +779,21 @@ skipped entirely, so you don't need Composer on your machine at all.</p>
 </code></pre>
 <p>Your site is now at <strong>localhost:8080</strong>, and it rebuilds every time you save a file.</p>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="page-structure">Page structure</h1>
+            
+              <div class="col-section">
+                <h1 id="page-structure">Page structure</h1>
 <h2 id="composition" tabindex="-1">🧩 Composition <a class="header-anchor" href="#composition">#</a></h2>
 <h3 id="the-page-settings" tabindex="-1">The page settings <a class="header-anchor" href="#the-page-settings">#</a></h3>
 <p>Each page lives in <code>routes/</code> as a <strong>.njk</strong> file.</p>
@@ -1029,21 +1030,21 @@ keeps working without you touching it.</p>
 git and cleaned by <strong>nib clean</strong></p>
 </blockquote>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="components">Components</h1>
+            
+              <div class="col-section">
+                <h1 id="components">Components</h1>
 <h2 id="what-is-a-component" tabindex="-1">What is a component <a class="header-anchor" href="#what-is-a-component">#</a></h2>
 <p>A component is a piece of a page you write once and use wherever you need it — a
 header, a card, a section of text. It's just a file in
@@ -1256,23 +1257,23 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <p><strong>Subfolders</strong> work the same way as <code>.njk</code> files — <code>legal/privacy-policy.md</code></p>
 </blockquote>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="styling">Styling</h1>
+            
+              <div class="col-section">
+                <h1 id="styling">Styling</h1>
 <h2 id="what-is-scss" tabindex="-1">🎨 What is SCSS <a class="header-anchor" href="#what-is-scss">#</a></h2>
 <p><strong>SCSS</strong> is basically the <strong>CSS</strong> you already know, with variables and nesting added. If you write it the way you're used to, it still works as you'd expect.</p>
 <p>The browser doesn't read <code>.scss</code> directly: your files are compiled into one <strong>CSS</strong> file when the site builds. <strong>Nibula</strong> handles that, so there's nothing to set up.</p>
@@ -1405,23 +1406,23 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <span class="token comment">// Bulma — CSS only, no JS passthrough needed</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="javascript">Javascript</h1>
+            
+              <div class="col-section">
+                <h1 id="javascript">Javascript</h1>
 <blockquote>
 <p>Examples use <strong>JavaScript</strong>. Everything applies to <strong>TypeScript</strong> too, except that imports leave the extension out and the project has an extra <code>tsconfig.json</code></p>
 </blockquote>
@@ -1474,21 +1475,21 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 
 <span class="token function">initBurgerMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="content-and-data">Content &amp; Data</h1>
+            
+              <div class="col-section">
+                <h1 id="content-and-data">Content &amp; Data</h1>
 <p>Two folders hold the things your site needs but that aren't markup: <code>assets/</code> and <code>data/</code>. The difference is <strong>when</strong> they're used.</p>
 <p><code>assets/</code> is copied into the <strong>out</strong> folder as it is, so the browser can reach its files while the page is running. Images, fonts, icons, downloadable files, and <strong>JSON</strong> your <strong>JavaScript</strong> wants to fetch.</p>
 <p><code>data/</code> is read while the site <strong>builds</strong> and then left behind. Its <strong>JSON</strong> files feed your <a href="#what-is-a-component">components</a> and <a href="#what-is-markdown">Markdown</a>, and never reach the <strong>out</strong> folder, so nothing in there is downloadable or reachable by JavaScript.</p>
@@ -1542,19 +1543,19 @@ Go to <span class="token url">[<span class="token content">the title</span>](<sp
 <p>Keep <code>data/</code> where it is. It was moved out of <code>assets/</code> in an early version precisely so it wouldn't be published</p>
 </blockquote>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="seo">SEO</h1>
+            
+              <div class="col-section">
+                <h1 id="seo">SEO</h1>
 <h2 id="what-is-seo" tabindex="-1">What is SEO <a class="header-anchor" href="#what-is-seo">#</a></h2>
 <p><strong>SEO</strong> is everything that helps search engines understand what every page of your site is about, so they can show it to the right people.</p>
 <p>Someone looking for computer repair in their city searches for the service, not for your site name, they don't know it yet.</p>
@@ -1687,25 +1688,25 @@ Disallow:
 <p><code>robots.txt</code> asks crawlers not to visit. It doesn't stop anyone: the page is still reachable by whoever has the address. To keep a page out of search results, use <strong>noindex</strong></p>
 </blockquote>
 
-            </div>
+              </div>
+            
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
           
-          
             
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-          
-        
-          
-            <div class="col-section">
-              <h1 id="backend">Backend</h1>
+              <div class="col-section">
+                <h1 id="backend">Backend</h1>
 <h2 id="node-or-php" tabindex="-1">Node.js or PHP <a class="header-anchor" href="#node-or-php">#</a></h2>
 <p>If you picked a backend when you created the project, you already have a small API working under <code>/api</code>. It's the same API written twice, once in <strong>Node.js</strong> and once in <strong>PHP</strong>: same folders, same way of writing an endpoint. Only the language changes.</p>
 <p><strong>PHP</strong> runs once per request and then exits, so it works on any cheap hosting.</p>
@@ -1889,27 +1890,27 @@ composer require vlucas/phpdotenv
 <p>Only the Node backend needs this: somebody has to start the program, and start it again when the server reboots.</p>
 <p>While you're working, <code>npm run serve</code> does it for you. On the server you hand it to <strong>systemd</strong>, the part of Linux that keeps programs running. The whole procedure is in <a href="#nginx-node-service">Deploy</a>.</p>
 
-            </div>
+              </div>
+            
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
           
-          
             
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-              
-            
-          
-        
-          
-            <div class="col-section">
-              <h1 id="deploy">Deploy</h1>
+              <div class="col-section">
+                <h1 id="deploy">Deploy</h1>
 <h2 id="how-to-deploy" tabindex="-1">How to deploy <a class="header-anchor" href="#how-to-deploy">#</a></h2>
 <p>Publishing means copying the <code>out</code> folder onto a web server. What you can use depends on the backend you picked when you created the project.</p>
 <p><strong>PHP</strong> runs once per visit: a request arrives, PHP answers, PHP exits. Nothing stays running, so there's nothing to look after. That's why it works on cheap hosting.</p>
@@ -2157,23 +2158,23 @@ sudo systemctl status backend-node
 <p>Error detail is not set here. That's the <code>APP_ENV</code> key inside <code>config.js</code> or <code>config.php</code>, see <a href="#backend">Backend</a></p>
 </blockquote>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-          
-            <div class="col-section">
-              <h1 id="about">About</h1>
+            
+              <div class="col-section">
+                <h1 id="about">About</h1>
 <h2 id="about-eleventy" tabindex="-1">⚙️ About Eleventy (11ty) <a class="header-anchor" href="#about-eleventy">#</a></h2>
 <p><strong>Eleventy is the engine underneath.</strong> It takes your templates and your data and
 turns them into plain HTML files, once, when you build — which is why the result
@@ -2200,28 +2201,29 @@ translation needed.</p>
 <p>.</p>
 <p>.</p>
 
-            </div>
-          
-          
+              </div>
+            
             
               
-            
+                
               
-            
+                
+              
+                
               
             
           
-        
-      </article>
-    </main>
-    <aside class="col-auto d-none d-xl-block docs-aside" tabindex="-1" id="docsAside">
-      <p>This documentation may be incomplete.</p>
-      <p>If you notice something missing, please let us know by <a class="link-button-active" href="https://github.com/rhaastrake/nibula/issues" target="_blank">opening an issue</a></p>
-      <div class="card">
-        <p>Based on Eleventy 3.1.6</p>
-        <a class="button link-button-active" href="https://www.11ty.dev/" target="_blank">11ty.dev/</a>
-      </div>
-    </aside>
+        </article>
+      </main>
+      <aside class="col-auto d-none d-xl-block docs-aside" tabindex="-1" id="docsAside">
+        <p>This documentation may be incomplete.</p>
+        <p>If you notice something missing, please let us know by <a class="link-button-active" href="https://github.com/rhaastrake/nibula/issues" target="_blank">opening an issue</a></p>
+        <div class="card">
+          <p>Based on Eleventy 3.1.6</p>
+          <a class="button link-button-active" href="https://www.11ty.dev/" target="_blank">11ty.dev/</a>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 
@@ -2229,11 +2231,11 @@ translation needed.</p>
 
         <footer>
   <div class="footer-columns row">
-    <div class="col-4">
+    <div class="col-12 col-md-4">
       <h3>Nibula · Static site generator built on Eleventy</h3>
       <p>Nibula is an open-source static site generator built on Eleventy, made for people moving from hand-written HTML to a real project setup.</p>
     </div>
-    <div class="col-auto">
+    <div class="col-6 col-md-auto">
       <h3>Sitemap</h3>
       <ul>
         <li><a class="button link-button" href="/nibula/">Homepage</a></li>
@@ -2242,7 +2244,7 @@ translation needed.</p>
         <li><a class="button link-button" href="/nibula/faq/">FAQ</a></li>
       </ul>
     </div>
-    <div class="col-auto">
+    <div class="col-6 col-md-auto">
       <h3>Social</h3>
       <ul>
         <li>
