@@ -1006,10 +1006,6 @@ keeps working without you touching it.</p>
 <td><strong>Rename page</strong></td>
 <td>Renames the files, updates the front matter, and moves the record</td>
 </tr>
-<tr>
-<td><strong>Configure output path</strong></td>
-<td>Changes where the site is built, across every file that references it</td>
-</tr>
 </tbody>
 </table>
 <blockquote>
@@ -1017,18 +1013,6 @@ keeps working without you touching it.</p>
 </blockquote>
 <p>Renaming leaves the contents of the record alone: your SEO title, description and CDN links stay as you wrote them, and so do the components you included.</p>
 <p>A new page arrives empty apart from its settings and two commented examples — one for a <a href="#include-a-component">component</a>, one for a <a href="#what-is-markdown">markdown file</a>.</p>
-<h3 id="cli-output-path" tabindex="-1">Where the site is built <a class="header-anchor" href="#cli-output-path">#</a></h3>
-<p>By default the build goes to <code>out/</code>. Change it when the folder you build into isn't the folder you work in — a local server's document root, a shared drive, a path your host expects. The dev server follows, rebuilding there as you save, with nothing to copy by hand.</p>
-<p>Any absolute or relative path works:</p>
-<pre><code class="button link-button copy">C:/laragon/www
-</code></pre>
-<pre><code class="button link-button copy">../any-folder
-</code></pre>
-<p>If you want to reset the output path to the project root, just type <code>.</code> as path</p>
-<blockquote>
-<p>If you don't have a reason to change it, leave <code>out/</code> — it's already ignored by
-git and cleaned by <strong>nib clean</strong></p>
-</blockquote>
 
               </div>
             
@@ -1743,23 +1727,19 @@ Disallow:
 </blockquote>
 <h2 id="backend-structure" tabindex="-1">Structure <a class="header-anchor" href="#backend-structure">#</a></h2>
 <p>Everything lives in <code>src/backend</code>:</p>
-<pre><code>src/backend/
-├── _core/           the engine, you don't touch this
-├── api/
-│   ├── public/      anyone can call these
-│   └── protected/   only with an API key
-├── database/
-│   ├── Database.js / .php
-│   └── migrations/  your .sql files
-└── example.config.js / .php
-</code></pre>
+<pre class="language-njk"><code class="language-njk"><span class="token variable">src</span><span class="token operator">/</span><span class="token variable">backend</span><span class="token operator">/</span>
+├── <span class="token variable">_core</span><span class="token operator">/</span>           <span class="token variable">the</span> <span class="token variable">engine</span><span class="token punctuation">,</span> <span class="token variable">you</span> <span class="token variable">don</span>'<span class="token variable">t</span> <span class="token variable">touch</span> <span class="token variable">this</span>
+├── <span class="token variable">api</span><span class="token operator">/</span>
+│   ├── <span class="token variable">public</span><span class="token operator">/</span>      <span class="token variable">anyone</span> <span class="token variable">can</span> <span class="token variable">call</span> <span class="token variable">these</span>
+│   └── <span class="token variable">protected</span><span class="token operator">/</span>   <span class="token variable">only</span> <span class="token keyword">with</span> <span class="token variable">an</span> <span class="token variable">API</span> <span class="token variable">key</span>
+├── <span class="token variable">database</span><span class="token operator">/</span>
+│   ├── <span class="token variable">Database</span><span class="token punctuation">.</span><span class="token variable">js</span> <span class="token operator">/</span> <span class="token punctuation">.</span><span class="token variable">php</span>
+│   └── <span class="token variable">migrations</span><span class="token operator">/</span>  <span class="token variable">your</span> <span class="token punctuation">.</span><span class="token variable">sql</span> <span class="token variable">files</span>
+└── <span class="token variable">example</span><span class="token punctuation">.</span><span class="token variable">config</span><span class="token punctuation">.</span><span class="token variable">js</span> <span class="token operator">/</span> <span class="token punctuation">.</span><span class="token variable">php</span></code></pre>
 <p>You work in <strong>api</strong>. A file's path is its URL: <code>api/public/contact.js</code> answers at <code>/api/contact</code>, and subfolders work the same way.</p>
 <p><strong>_core</strong> receives every request, checks the API key when needed, and calls your file. Nothing to configure.</p>
 <h3 id="backend-config" tabindex="-1">The config file <a class="header-anchor" href="#backend-config">#</a></h3>
 <p><code>example.config.js</code> (or <code>.php</code>) is a template with no real values in it. Copy it to <code>config.js</code> and fill that one in:</p>
-<pre><code>cd src/backend
-copy example.config.js config.js
-</code></pre>
 <p><code>config.js</code> is ignored by git, so your passwords stay on your machine and never end up online. The example file stays where it is, as the list of what a new copy needs.</p>
 <pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
     <span class="token constant">GENERAL_API_KEY</span><span class="token operator">:</span> <span class="token string">'DEFAULT_KEY'</span><span class="token punctuation">,</span>
@@ -1875,17 +1855,6 @@ copy example.config.js config.js
 <blockquote>
 <p>With <strong>Node</strong> the database needs one extra package, see below. With <strong>PHP</strong> it works out of the box</p>
 </blockquote>
-<h2 id="additional-packages" tabindex="-1">Additional packages <a class="header-anchor" href="#additional-packages">#</a></h2>
-<p>The backend has its own dependencies, separate from the site's.</p>
-<p><strong>Node</strong> reads <code>src/backend/package.json</code>:</p>
-<pre><code>cd src/backend
-npm install mysql2
-</code></pre>
-<p><strong>PHP</strong> uses Composer, from <code>src/backend/_core</code>:</p>
-<pre><code>cd src/backend/_core
-composer require vlucas/phpdotenv
-</code></pre>
-<p>Both are copied into <code>out</code> at build time, dependencies included.</p>
 <h2 id="node-service" tabindex="-1">Node service <a class="header-anchor" href="#node-service">#</a></h2>
 <p>Only the Node backend needs this: somebody has to start the program, and start it again when the server reboots.</p>
 <p>While you're working, <code>npm run serve</code> does it for you. On the server you hand it to <strong>systemd</strong>, the part of Linux that keeps programs running. The whole procedure is in <a href="#nginx-node-service">Deploy</a>.</p>
