@@ -1,7 +1,5 @@
 docs
 src/backend/core/vendor/
-src/backend/config.php
-src/backend/config.js
 out/
 node_modules/
 .github
