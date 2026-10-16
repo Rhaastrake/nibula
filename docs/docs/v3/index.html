@@ -92,8 +92,8 @@
         <img src="/nibula/assets/brand/logo.svg" alt="Nibula"/>
       </a>
 
-      
-        <div class="brand-extras">
+      <div class="brand-extras">
+        
           <select id="docsVersionSelect" class="form-select docs-version-select" aria-label="Documentation version">
             
               <option value="/nibula/docs/v2/" >v2</option>
@@ -101,24 +101,24 @@
               <option value="/nibula/docs/v3/" selected>v3</option>
             
           </select>
+        
 
-          <div
-            class="site-search"
-            data-index="/nibula/search.json"
-            data-base="/nibula/"
-            data-version="v3"
+        <div
+          class="site-search"
+          data-index="/nibula/search.json"
+          data-base="/nibula/"
+          data-version="v3"
+        >
+          <input
+            type="search"
+            class="form-control site-search-input"
+            placeholder="Search docs..."
+            aria-label="Search"
+            autocomplete="off"
           >
-            <input
-              type="search"
-              class="form-control site-search-input"
-              placeholder="Search..."
-              aria-label="Search"
-              autocomplete="off"
-            >
-            <ul class="site-search-results" role="listbox" hidden></ul>
-          </div>
+          <ul class="site-search-results" role="listbox" hidden></ul>
         </div>
-      
+      </div>
     </div>
 
     <button class="burger-menu" id="burger-btn" aria-label="Open menu">
@@ -132,8 +132,8 @@
       <a href="/nibula/team/" class="button link-button">Team</a>
       <a href="/nibula/faq/" class="button link-button">FAQ</a>
 
+      <div class="nav-slot nav-search-slot" id="nav-search-slot"></div>
       
-        <div class="nav-slot nav-search-slot" id="nav-search-slot"></div>
         <div class="nav-slot nav-index-slot" id="nav-index-slot"></div>
       
 

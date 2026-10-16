@@ -92,7 +92,25 @@
         <img src="/nibula/assets/brand/logo.svg" alt="Nibula"/>
       </a>
 
-      
+      <div class="brand-extras">
+        
+
+        <div
+          class="site-search"
+          data-index="/nibula/search.json"
+          data-base="/nibula/"
+          data-version="v3"
+        >
+          <input
+            type="search"
+            class="form-control site-search-input"
+            placeholder="Search docs..."
+            aria-label="Search"
+            autocomplete="off"
+          >
+          <ul class="site-search-results" role="listbox" hidden></ul>
+        </div>
+      </div>
     </div>
 
     <button class="burger-menu" id="burger-btn" aria-label="Open menu">
@@ -106,6 +124,7 @@
       <a href="/nibula/team/" class="button link-button">Team</a>
       <a href="/nibula/faq/" class="button link-button">FAQ</a>
 
+      <div class="nav-slot nav-search-slot" id="nav-search-slot"></div>
       
 
       <a href="https://github.com/rhaastrake/nibula" target="_blank" rel="noopener noreferrer" class="button link-button nav-social" aria-label="GitHub repository"><i class="bi bi-github" style="font-size: 1.5rem"></i></a>
@@ -115,12 +134,44 @@
 
         <main>
             
+
+
 <section id="hero">
-    <div class="title">
-        <h1>Welcome to Nibula</h1>
-        <p>The boilerplate you need, simplified</p>
-        <div class="hero-buttons">
-            <a href="/nibula/docs/v3/" class="button generic-button">Get started</a>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="title">
+                <h1>Welcome to Nibula</h1>
+                <p>The boilerplate you need, simplified</p>
+                <article class="markdown-body">
+                    <pre><code class="clickable button link-button copy">npm install -g nibula
+</code></pre>
+
+                </article>
+                <br>
+                <div class="hero-buttons">
+                    <a href="/nibula/docs/v3/#quick-start" class="button generic-button">Quick start</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="feature-cards">
+                
+                <div class="card">
+                    <h3>Centralized SEO</h3>
+                    <p>Meta tags, sitemap and Open Graph from a single config file.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Deploy ready</h3>
+                    <p>Production build and CI workflow out of the box.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>API included</h3>
+                    <p>Built-in data layer to fetch and render remote content.</p>
+                </div>
+                
+            </div>
         </div>
     </div>
 </section>

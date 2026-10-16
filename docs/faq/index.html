@@ -92,7 +92,25 @@
         <img src="/nibula/assets/brand/logo.svg" alt="Nibula"/>
       </a>
 
-      
+      <div class="brand-extras">
+        
+
+        <div
+          class="site-search"
+          data-index="/nibula/search.json"
+          data-base="/nibula/"
+          data-version="v3"
+        >
+          <input
+            type="search"
+            class="form-control site-search-input"
+            placeholder="Search docs..."
+            aria-label="Search"
+            autocomplete="off"
+          >
+          <ul class="site-search-results" role="listbox" hidden></ul>
+        </div>
+      </div>
     </div>
 
     <button class="burger-menu" id="burger-btn" aria-label="Open menu">
@@ -106,6 +124,7 @@
       <a href="/nibula/team/" class="button link-button">Team</a>
       <a href="/nibula/faq/" class="button link-button">FAQ</a>
 
+      <div class="nav-slot nav-search-slot" id="nav-search-slot"></div>
       
 
       <a href="https://github.com/rhaastrake/nibula" target="_blank" rel="noopener noreferrer" class="button link-button nav-social" aria-label="GitHub repository"><i class="bi bi-github" style="font-size: 1.5rem"></i></a>
