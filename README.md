@@ -9,7 +9,7 @@
 from small hand-written practice sites to a real project setup as gentle as
 possible.
 
-📖 **[Read the documentation](https://rhaastrake.github.io/nibula/docs/)**
+📖 **[Read the documentation](https://nibula.dev/docs/)**
 
 ## 🎯 Why choose Nibula
 
@@ -121,7 +121,7 @@ removing too.
 
 Everything else — the page structure, components, styling, the backend, SEO and
 deployment — is at
-**[rhaastrake.github.io/Nibula](https://rhaastrake.github.io/nibula/docs/)**.
+**[nibula.dev](https://nibula.dev/docs/)**.
 
 ## ⭐ Support Nibula
 
