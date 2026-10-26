@@ -94,7 +94,6 @@ module.exports = function (eleventyConfig) {
 
   // Project assets
   eleventyConfig.addPassthroughCopy("src/frontend/assets");
-  eleventyConfig.addPassthroughCopy("src/frontend/robots.txt");
 
   // Hosting files
   eleventyConfig.addPassthroughCopy({

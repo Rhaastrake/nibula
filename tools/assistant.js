@@ -39,6 +39,11 @@ async function handleCreate() {
     const name = await askPageName(ui.promptLine(message('cli.createPrompt')));
     if (!name) return;
 
+    if (pageExists(name)) {
+        ui.warning(message('cli.pageExists', { name }));
+        return;
+    }
+
     const layoutName = await askLayout();
     if (layoutName === null) {
         ui.notice(message('cli.cancelled'));

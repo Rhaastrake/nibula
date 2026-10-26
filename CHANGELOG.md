@@ -5,6 +5,15 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.2] - 2026-10-26
+
+### Changed
+- The `theme-color` meta tag is no longer written by the layout.
+
+### Fixed
+- Removed the passthrough copy of `src/frontend/robots.txt`, a leftover pointing at a file that no longer exists since `robots.txt` is generated from `indexing/robots.njk`.
+- The CLI now checks whether a page already exists before asking which layout to use, instead of asking first and refusing afterwards.
+
 ## [3.0.1] - 2026-09-21
 
 ### Fixed

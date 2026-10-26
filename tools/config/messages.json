@@ -72,6 +72,7 @@
     "confirmRemove": "This permanently deletes the source files for \"{name}\". Rebuild to update the output.",
     "cancelled": "Cancelled.",
     "pageNotFound": "Page \"{name}\" does not exist.",
+    "pageExists": "Page \"{name}\" already exists.",
     "sameName": "Old and new name are the same.",
     "invalidOption": "Invalid option.",
     "unexpectedError": "Unexpected error: {error}",
