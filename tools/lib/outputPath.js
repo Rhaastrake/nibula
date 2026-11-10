@@ -6,6 +6,7 @@ const { log } = require('./logger');
 const { formatText } = require('./text');
 const { isTypeScriptProject, scriptEntries } = require('./project');
 const { isProtectedOutput } = require('./outputSafety');
+const { validateOutputPath } = require('./validation');
 
 const OUTPUT_VARIABLE = settings.eleventy.outputVariable;
 const TYPESCRIPT_OUTPUT_KEY = settings.typescript.outputKey;
@@ -13,7 +14,7 @@ const OUTPUT_VARIABLE_PATTERN = new RegExp(`const ${OUTPUT_VARIABLE}\\s*=\\s*['"
 const TYPESCRIPT_OUTPUT_PATTERN = new RegExp(`"${TYPESCRIPT_OUTPUT_KEY}"\\s*:\\s*"[^"]*"`);
 const WINDOWS_DRIVE_PATTERN = /^[a-zA-Z]:/;
 const BACKSLASH_PATTERN = /\\/g;
-const TRAILING_SLASH_PATTERN = /\/$/;
+const TRAILING_SLASH_PATTERN = /\/+$/;
 const FORWARD_SLASH = '/';
 const RELATIVE_PREFIX = './';
 const EMPTY = '';
@@ -94,14 +95,24 @@ function deleteOldOutput(oldPath) {
     }
 }
 
+function outputFolderName() {
+    return `${path.basename(PATHS.root)}${settings.project.outputSuffix}`;
+}
+
+// The input is the folder the output goes in: "../sites" becomes
+// "../sites/<project>-out". "." and "out" restore the default, and a path that
+// already ends in "<project>-out" (the current one, typed again) is kept as is.
 function normalizeOutputPath(rawPath) {
     const trimmed = (rawPath ?? '').trim().replace(BACKSLASH_PATTERN, FORWARD_SLASH);
     if (!trimmed) return null;
 
-    if (trimmed === settings.project.currentDirectory) return settings.project.defaultOutputDirectory;
+    const { currentDirectory, defaultOutputDirectory } = settings.project;
+    if (trimmed === currentDirectory || trimmed === defaultOutputDirectory) return defaultOutputDirectory;
 
     const parent = trimmed.replace(TRAILING_SLASH_PATTERN, EMPTY);
-    return `${parent}${FORWARD_SLASH}${path.basename(PATHS.root)}${settings.project.outputSuffix}`;
+    if (path.posix.basename(parent) === outputFolderName()) return parent;
+
+    return `${parent}${FORWARD_SLASH}${outputFolderName()}`;
 }
 
 function updateOutputPath(rawPath) {
@@ -111,11 +122,26 @@ function updateOutputPath(rawPath) {
         return;
     }
 
+    const invalidPath = validateOutputPath(normalizedPath);
+    if (invalidPath) {
+        log('output.invalidPath', { path: normalizedPath, error: invalidPath });
+        return;
+    }
+    if (isProtectedOutput(normalizedPath)) {
+        log('output.protectedPath', { path: normalizedPath });
+        return;
+    }
+
     let oldPath = null;
     try {
         oldPath = parseOutputDirectory(readText(PATHS.eleventyConfig));
     } catch (error) {
         log('output.readFailed', { file: settings.paths.eleventyConfig, error: error.message });
+        return;
+    }
+
+    if (oldPath === normalizedPath) {
+        log('output.unchanged', { path: normalizedPath });
         return;
     }
 
@@ -139,4 +165,4 @@ function getCurrentOutputPath() {
     }
 }
 
-module.exports = { updateOutputPath, getCurrentOutputPath };
+module.exports = { updateOutputPath, getCurrentOutputPath, outputFolderName };
