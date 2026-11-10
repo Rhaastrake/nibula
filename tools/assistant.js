@@ -4,7 +4,7 @@ const { toKebabCase } = require('./lib/text');
 const { validateTypedPageName, validatePageName, validateOutputPath, checkRequiredFiles } = require('./lib/validation');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
 const { pageExists, pageConflicts } = require('./lib/pageArtifacts');
-const { updateOutputPath, getCurrentOutputPath } = require('./lib/outputPath');
+const { updateOutputPath, getCurrentOutputPath, outputFolderName } = require('./lib/outputPath');
 const { availableLayouts } = require('./lib/layouts');
 const { ask, confirm, askChoice, close } = require('./cli/prompt');
 const ui = require('./cli/ui');
@@ -108,9 +108,9 @@ async function handleRename() {
 
 async function handleOutputPath() {
     const current = getCurrentOutputPath();
-    const prefix = current
-        ? ui.noticePrefix(message('cli.currentOutputPath', { path: current }))
-        : NEW_LINE;
+    const notes = [message('cli.outputPathHint', { folder: outputFolderName() })];
+    if (current) notes.unshift(message('cli.currentOutputPath', { path: current }));
+    const prefix = ui.noticePrefix(notes.join(NEW_LINE));
 
     const input = await ask(ui.promptLine(message('cli.outputPathPrompt'), prefix));
     if (input === null) return;

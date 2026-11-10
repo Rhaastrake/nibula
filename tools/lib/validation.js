@@ -7,7 +7,9 @@ const TYPED_NAME_CHARACTER_PATTERN = /[A-Za-z0-9\s_-]/;
 const CHARACTER_LIST_SEPARATOR = ' ';
 const NAME_PATTERN = /^[a-z0-9-]+$/;
 const LEADING_DIGIT_PATTERN = /^\d/;
-const INVALID_PATH_PATTERN = /[<>|?*"']/;
+// The path is written unquoted into the build scripts, so only characters the
+// shell leaves alone are accepted: no spaces, quotes, $, &, ; and the like.
+const OUTPUT_PATH_PATTERN = /^([A-Za-z]:)?[A-Za-z0-9._\/\\-]+$/;
 
 function requiredFiles() {
     return [
@@ -41,7 +43,7 @@ function validatePageName(name, { isNew = false } = {}) {
 function validateOutputPath(input) {
     const value = (input ?? '').trim();
     if (!value) return message('validation.invalidPath');
-    if (INVALID_PATH_PATTERN.test(value)) return message('validation.invalidPathCharacters');
+    if (!OUTPUT_PATH_PATTERN.test(value)) return message('validation.invalidPathCharacters');
     return null;
 }
 
