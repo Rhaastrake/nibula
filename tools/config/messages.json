@@ -103,7 +103,7 @@
     "unknownCommand": "Unknown command: {command}",
     "missingArguments": "Missing arguments. Usage: {usage}",
     "tooManyArguments": "Too many arguments. Usage: {usage}",
-    "quoteHint": "Put names with spaces in quotes: nib rename \"about us\" \"who we are\"",
+    "spacesInName": "Page names cannot contain spaces: use hyphens instead, e.g. {example}",
     "unknownOption": "Unknown option {option} for \"nib {command}\".",
     "missingValue": "{option} needs a value.",
     "layoutNeeded": "This project has more than one layout: pick one with -l <layout>.",

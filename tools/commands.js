@@ -5,11 +5,11 @@
 //   nib remove <page-name> [-y]
 //   nib path [<folder>]
 //
-// create and remove take a single name, so its words can be typed without
-// quotes: "nib create about us" creates about-us. rename takes two names and
-// needs quotes around a name with spaces.
+// Page names can't contain spaces: words are joined with hyphens
+// (nib create about-us). Uppercase letters are fine and become lowercase.
 
 const { message } = require('./lib/logger');
+const { toKebabCase } = require('./lib/text');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
 const { updateOutputPath } = require('./lib/outputPath');
 const { confirm } = require('./cli/prompt');
@@ -24,6 +24,7 @@ const OPTIONS = Object.freeze({
 const OPTION_PREFIX = '-';
 const VALUE_SEPARATOR = '=';
 const WORD_SEPARATOR = ' ';
+const WHITESPACE_PATTERN = /\s/;
 
 async function create([rawName], { layout }) {
     const name = steps.readPageName(rawName, steps.NEW_PAGE);
@@ -86,11 +87,25 @@ async function outputPath([folder]) {
 }
 
 const COMMANDS = Object.freeze({
-    create: { run: create,     arguments: { min: 1, max: 1 }, options: ['layout'], joinWords: true  },
-    rename: { run: rename,     arguments: { min: 2, max: 2 }, options: [],         joinWords: false },
-    remove: { run: remove,     arguments: { min: 1, max: 1 }, options: ['yes'],    joinWords: true  },
-    path:   { run: outputPath, arguments: { min: 0, max: 1 }, options: [],         joinWords: false },
+    create: { run: create,     arguments: { min: 1, max: 1 }, options: ['layout'], pageNames: true  },
+    rename: { run: rename,     arguments: { min: 2, max: 2 }, options: [],         pageNames: true  },
+    remove: { run: remove,     arguments: { min: 1, max: 1 }, options: ['yes'],    pageNames: true  },
+    path:   { run: outputPath, arguments: { min: 0, max: 1 }, options: [],         pageNames: false },
 });
+
+// A page name typed with spaces, either as several words or in quotes. The
+// suggestion shows the same command with hyphens: nib create about-us.
+function reportSpacesInName(commandName, positional) {
+    const { max } = COMMANDS[commandName].arguments;
+    const names = positional.length > max && max === 1
+        ? [positional.join(WORD_SEPARATOR)]
+        : positional;
+    const example = positional.length > max && max > 1
+        ? message(`commands.usage.${commandName}`)
+        : ['nib', commandName, ...names.map(toKebabCase)].join(WORD_SEPARATOR);
+
+    ui.error(message('commands.spacesInName', { example }));
+}
 
 function findOption(name) {
     return Object.keys(OPTIONS).find((key) => OPTIONS[key].names.includes(name)) ?? null;
@@ -132,8 +147,10 @@ function parseArguments(commandName, args) {
     }
 
     const { min, max } = command.arguments;
-    if (command.joinWords && positional.length > max) {
-        positional.splice(0, positional.length, positional.join(WORD_SEPARATOR));
+    const hasSpaces = positional.length > max || positional.some((value) => WHITESPACE_PATTERN.test(value));
+    if (command.pageNames && hasSpaces) {
+        reportSpacesInName(commandName, positional);
+        return null;
     }
     if (positional.length < min) {
         ui.error(message('commands.missingArguments', { usage: message(`commands.usage.${commandName}`) }));
@@ -141,7 +158,6 @@ function parseArguments(commandName, args) {
     }
     if (positional.length > max) {
         ui.error(message('commands.tooManyArguments', { usage: message(`commands.usage.${commandName}`) }));
-        if (commandName === 'rename') ui.notice(message('commands.quoteHint'));
         return null;
     }
 

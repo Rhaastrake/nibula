@@ -125,8 +125,9 @@ directly.
 | `nib remove <page>` | Remove a page, after asking. Add `-y` to skip the question |
 | `nib path [<folder>]` | Show where the output goes, or move it to a `<project>-out` folder inside `<folder>` |
 
-`nib create about us` creates `about-us`. `rename` takes two names, so a name
-with spaces goes in quotes there: `nib rename "about us" team`.
+Page names use hyphens instead of spaces: `nib create about-us`. Uppercase
+letters are fine: the route file is always lowercase (`about-us.njk`), the
+stylesheet and script use camelCase (`aboutUs.scss`, `aboutUs.js`).
 
 ## 📖 Documentation
 
