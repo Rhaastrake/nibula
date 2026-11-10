@@ -3,7 +3,8 @@
     "marker": ".eleventy.js",
     "defaultOutputDirectory": "out",
     "currentDirectory": ".",
-    "outputSuffix": "-out"
+    "outputSuffix": "-out",
+    "protectedDirectories": ["src", "node_modules", ".git"]
   },
   "paths": {
     "eleventyConfig": ".eleventy.js",
@@ -39,9 +40,6 @@
     "outputKey": "outDir",
     "outputSubdirectory": "ts"
   },
-  "build": {
-    "scriptOutput": "js/pages"
-  },
   "outputScripts": [
     {
       "name": "build:css",
@@ -65,7 +63,8 @@
     }
   ],
   "page": {
-    "protected": ["homepage", "404"],
+    "protected": ["homepage", "index", "404"],
+    "reserved": ["api", "assets", "backend", "css", "js", "ts"],
     "styleExtension": "scss",
     "routeExtension": "njk",
     "styleTemplate": "template.scss",

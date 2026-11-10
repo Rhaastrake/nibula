@@ -7,4 +7,9 @@ $header-height: 10vh;
 $header-padding-y: 15px;
 $header-padding-x: 15px;
 
-$header-footer-color: #11474b;
+$header-footer-background: inherit;
+$divider: color-mix(in srgb, currentColor 8%, transparent);
+$separator: color-mix(in srgb, currentColor 15%, transparent);
+
+$accent: light-dark(#0f7d52, #22c97d);
+$accent-hover: light-dark(#0b5e3d, #1a9e62);

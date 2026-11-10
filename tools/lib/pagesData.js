@@ -23,6 +23,21 @@ function readPagesData() {
     }
 }
 
+// Record keys matching the page's camelCase name, ignoring case: chiSiamo and
+// chisiamo name different records, but their stylesheets and scripts collide.
+function findPageRecords(pageName) {
+    if (!exists(PATHS.pagesData)) return [];
+    try {
+        const data = readJson(PATHS.pagesData);
+        if (!data || typeof data !== 'object') return [];
+
+        const target = toCamelCase(pageName).toLowerCase();
+        return Object.keys(data).filter((key) => key.toLowerCase() === target);
+    } catch {
+        return [];
+    }
+}
+
 function writePagesData(data) {
     writeJson(PATHS.pagesData, data);
 }
@@ -78,6 +93,7 @@ function renamePageData(oldName, newName) {
 
     const oldCamelName = toCamelCase(oldName);
     const newCamelName = toCamelCase(newName);
+    if (oldCamelName === newCamelName) return;
 
     if (!data[oldCamelName]) {
         log('pagesData.recordMissing', { name: oldCamelName });
@@ -95,4 +111,4 @@ function renamePageData(oldName, newName) {
     log('pagesData.recordRenamed', { source: oldCamelName, destination: newCamelName });
 }
 
-module.exports = { readPagesData, addPageData, removePageData, renamePageData };
+module.exports = { readPagesData, findPageRecords, addPageData, removePageData, renamePageData };

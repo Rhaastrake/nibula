@@ -30,6 +30,17 @@ function writeJson(target, data) {
     writeText(target, `${JSON.stringify(data, null, INDENTATION)}${NEW_LINE}`);
 }
 
+function sameFile(first, second) {
+    if (first === second) return true;
+    try {
+        const firstStat = fs.statSync(first);
+        const secondStat = fs.statSync(second);
+        return firstStat.dev === secondStat.dev && firstStat.ino === secondStat.ino;
+    } catch {
+        return false;
+    }
+}
+
 function copyFile(source, destination) {
     ensureDirectory(destination);
     fs.copyFileSync(source, destination);
@@ -72,6 +83,7 @@ module.exports = {
     writeText,
     readJson,
     writeJson,
+    sameFile,
     copyFile,
     moveFile,
     removeFile,

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const settings = require('../config/settings.json');
 const { PATHS, resolveFromProject } = require('./paths');
-const { readJson, writeJson } = require('./files');
+const { readJson } = require('./files');
 
 const JAVASCRIPT = 'javascript';
 const TYPESCRIPT = 'typescript';
@@ -28,16 +28,8 @@ function scriptEntries(language) {
     return `${pages}/${ENTRY_WILDCARD}.${extension}`;
 }
 
-function allScriptEntries() {
-    return Object.keys(settings.languages).map((language) => scriptEntries(language));
-}
-
 function readPackageJson() {
     return readJson(PATHS.packageJson);
-}
-
-function writePackageJson(content) {
-    writeJson(PATHS.packageJson, content);
 }
 
 module.exports = {
@@ -48,7 +40,5 @@ module.exports = {
     languageSettings,
     scriptPagesDirectory,
     scriptEntries,
-    allScriptEntries,
     readPackageJson,
-    writePackageJson,
 };
