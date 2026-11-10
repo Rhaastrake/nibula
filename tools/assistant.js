@@ -3,7 +3,7 @@ const { message } = require('./lib/logger');
 const { toKebabCase } = require('./lib/text');
 const { validatePageName, validateOutputPath, checkRequiredFiles } = require('./lib/validation');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
-const { pageExists } = require('./lib/pageArtifacts');
+const { pageExists, pageConflicts } = require('./lib/pageArtifacts');
 const { updateOutputPath, getCurrentOutputPath } = require('./lib/outputPath');
 const { availableLayouts } = require('./lib/layouts');
 const { ask, confirm, askChoice, close } = require('./cli/prompt');
@@ -36,6 +36,15 @@ async function askLayout() {
     return askChoice(message('cli.layoutPrompt'), choices);
 }
 
+function reportConflicts(name, ownName) {
+    const conflicts = pageConflicts(name, ownName);
+    if (conflicts.length === 0) return false;
+
+    ui.warningList(message('cli.nameConflict', { name }), conflicts);
+    ui.notice(message('cli.pickAnotherName'));
+    return true;
+}
+
 async function handleCreate() {
     const name = await askPageName(ui.promptLine(message('cli.createPrompt')), NEW_PAGE);
     if (!name) return;
@@ -44,6 +53,7 @@ async function handleCreate() {
         ui.warning(message('cli.pageExists', { name }));
         return;
     }
+    if (reportConflicts(name)) return;
 
     const layoutName = await askLayout();
     if (layoutName === null) {
@@ -82,6 +92,12 @@ async function handleRename() {
         ui.warning(message('cli.sameName'));
         return;
     }
+    if (pageExists(newName)) {
+        ui.warning(message('cli.pageExists', { name: newName }));
+        return;
+    }
+    if (reportConflicts(newName, oldName)) return;
+
     renamePage(oldName, newName);
 }
 

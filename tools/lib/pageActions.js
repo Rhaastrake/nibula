@@ -5,7 +5,7 @@ const { exists, readText, writeText, copyFile, moveFile, removeFile, removeDirec
 const { log } = require('./logger');
 const { formatText } = require('./text');
 const { languageSettings } = require('./project');
-const { getPageArtifacts, pageExists } = require('./pageArtifacts');
+const { getPageArtifacts, pageExists, pageConflicts } = require('./pageArtifacts');
 const { readPagesData, addPageData, removePageData, renamePageData } = require('./pagesData');
 
 const FRONT_MATTER_PATTERNS = Object.freeze({
@@ -32,11 +32,20 @@ function applyFrontMatter(filePath, values, keys) {
     writeText(filePath, content);
 }
 
+function refuseConflicts(pageName, ownName) {
+    const conflicts = pageConflicts(pageName, ownName);
+    if (conflicts.length === 0) return true;
+
+    log('page.wouldOverwrite', { name: pageName, files: conflicts.join(', ') });
+    return false;
+}
+
 function addPage(pageName, layoutName) {
     if (pageExists(pageName)) {
         log('page.alreadyExists', { name: pageName });
         return;
     }
+    if (!refuseConflicts(pageName)) return;
 
     const { camelName, source } = getPageArtifacts(pageName);
     const values = { camelName, pageName, layoutName };
@@ -81,6 +90,7 @@ function renamePage(oldName, newName) {
         log('page.targetExists', { name: newName });
         return;
     }
+    if (!refuseConflicts(newName, oldName)) return;
     if (!readPagesData()) return;
 
     const current = getPageArtifacts(oldName);
@@ -95,6 +105,7 @@ function renamePage(oldName, newName) {
 
     try {
         for (const { source, destination, isRoute } of moves) {
+            if (source === destination) continue;
             if (!exists(source)) {
                 log('page.fileMissing', { path: source });
                 continue;

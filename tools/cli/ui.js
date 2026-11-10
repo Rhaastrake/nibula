@@ -44,6 +44,14 @@ function warning(text) {
     console.log(`${NEW_LINE}${line(COLORS.warning, `${SYMBOLS.warning} ${text}`)}`);
 }
 
+function warningList(text, items) {
+    warning(text);
+
+    for (const item of items) {
+        console.log(`  ${line(COLORS.warning, SYMBOLS.bullet)} ${item}`);
+    }
+}
+
 function notice(text) {
     console.log(`${NEW_LINE}${line(COLORS.notice, text)}`);
 }
@@ -85,4 +93,4 @@ function renderMissingFiles(items) {
     console.log(`${NEW_LINE}${line(COLORS.notice, message('cli.incompleteProject'))}`);
 }
 
-module.exports = { promptLine, noticePrefix, error, warning, notice, renderMenu, renderMissingFiles };
+module.exports = { promptLine, noticePrefix, error, warning, warningList, notice, renderMenu, renderMissingFiles };

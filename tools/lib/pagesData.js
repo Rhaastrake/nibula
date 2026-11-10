@@ -23,6 +23,17 @@ function readPagesData() {
     }
 }
 
+function hasPageRecord(pageName) {
+    if (!exists(PATHS.pagesData)) return false;
+    try {
+        const data = readJson(PATHS.pagesData);
+        return Boolean(data) && typeof data === 'object'
+            && Object.prototype.hasOwnProperty.call(data, toCamelCase(pageName));
+    } catch {
+        return false;
+    }
+}
+
 function writePagesData(data) {
     writeJson(PATHS.pagesData, data);
 }
@@ -78,6 +89,7 @@ function renamePageData(oldName, newName) {
 
     const oldCamelName = toCamelCase(oldName);
     const newCamelName = toCamelCase(newName);
+    if (oldCamelName === newCamelName) return;
 
     if (!data[oldCamelName]) {
         log('pagesData.recordMissing', { name: oldCamelName });
@@ -95,4 +107,4 @@ function renamePageData(oldName, newName) {
     log('pagesData.recordRenamed', { source: oldCamelName, destination: newCamelName });
 }
 
-module.exports = { readPagesData, addPageData, removePageData, renamePageData };
+module.exports = { readPagesData, hasPageRecord, addPageData, removePageData, renamePageData };
