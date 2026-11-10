@@ -40,9 +40,6 @@
     "outputKey": "outDir",
     "outputSubdirectory": "ts"
   },
-  "build": {
-    "scriptOutput": "js/pages"
-  },
   "outputScripts": [
     {
       "name": "build:css",
