@@ -119,17 +119,17 @@ function updateOutputPath(rawPath) {
     const normalizedPath = normalizeOutputPath(rawPath);
     if (!normalizedPath) {
         log('output.emptyPath');
-        return;
+        return false;
     }
 
     const invalidPath = validateOutputPath(normalizedPath);
     if (invalidPath) {
         log('output.invalidPath', { path: normalizedPath, error: invalidPath });
-        return;
+        return false;
     }
     if (isProtectedOutput(normalizedPath)) {
         log('output.protectedPath', { path: normalizedPath });
-        return;
+        return false;
     }
 
     let oldPath = null;
@@ -137,12 +137,12 @@ function updateOutputPath(rawPath) {
         oldPath = parseOutputDirectory(readText(PATHS.eleventyConfig));
     } catch (error) {
         log('output.readFailed', { file: settings.paths.eleventyConfig, error: error.message });
-        return;
+        return false;
     }
 
     if (oldPath === normalizedPath) {
         log('output.unchanged', { path: normalizedPath });
-        return;
+        return true;
     }
 
     deleteOldOutput(oldPath);
@@ -154,7 +154,9 @@ function updateOutputPath(rawPath) {
         updateTypeScriptConfig(normalizedPath);
     } catch (error) {
         log('output.updateFailed', { error: error.message });
+        return false;
     }
+    return true;
 }
 
 function getCurrentOutputPath() {

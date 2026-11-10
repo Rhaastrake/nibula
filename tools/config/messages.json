@@ -77,6 +77,7 @@
     "outputPathPrompt": "Folder to put the output in: ",
     "menuPrompt": "Choose an option: ",
     "layoutPrompt": "Select a layout (arrow keys, Enter to confirm):",
+    "layoutNotFound": "Layout \"{layout}\" not found. Available layouts: {layouts}",
     "currentOutputPath": "Current path: \"{path}\"",
     "outputPathHint": "The output goes in a \"{folder}\" folder inside the path you enter. Enter \".\" to go back to \"out\".",
     "confirmRemove": "This permanently deletes the source files for \"{name}\". Rebuild to update the output.",

@@ -64,9 +64,9 @@ function refuseConflicts(pageName, ownName) {
 function addPage(pageName, layoutName) {
     if (pageExists(pageName)) {
         log('page.alreadyExists', { name: pageName });
-        return;
+        return false;
     }
-    if (!refuseConflicts(pageName)) return;
+    if (!refuseConflicts(pageName)) return false;
 
     const { camelName, source } = getPageArtifacts(pageName);
     const values = { camelName, pageName, layoutName };
@@ -96,23 +96,24 @@ function addPage(pageName, layoutName) {
         }
     } catch (error) {
         log('page.createFailed', { error: error.message });
-        return;
+        return false;
     }
 
     addPageData(pageName);
+    return true;
 }
 
 function renamePage(oldName, newName) {
     if (!pageExists(oldName)) {
         log('page.doesNotExist', { name: oldName });
-        return;
+        return false;
     }
     if (pageExists(newName)) {
         log('page.targetExists', { name: newName });
-        return;
+        return false;
     }
-    if (!refuseConflicts(newName, oldName)) return;
-    if (!readPagesData()) return;
+    if (!refuseConflicts(newName, oldName)) return false;
+    if (!readPagesData()) return false;
 
     const current = getPageArtifacts(oldName);
     const next = getPageArtifacts(newName);
@@ -139,18 +140,19 @@ function renamePage(oldName, newName) {
         }
     } catch (error) {
         log('page.renameFailed', { error: error.message });
-        return;
+        return false;
     }
 
     renamePageData(oldName, newName);
+    return true;
 }
 
 function removePage(pageName) {
     if (!pageExists(pageName)) {
         log('page.doesNotExist', { name: pageName });
-        return;
+        return false;
     }
-    if (!readPagesData()) return;
+    if (!readPagesData()) return false;
 
     const { source } = getPageArtifacts(pageName);
     const files = [source.style, source.script, source.route];
@@ -170,6 +172,7 @@ function removePage(pageName) {
     for (const directory of sourceDirectories) {
         if (removeDirectoryIfEmpty(directory)) log('page.fileDeleted', { path: directory });
     }
+    return true;
 }
 
 module.exports = { addPage, removePage, renamePage };
