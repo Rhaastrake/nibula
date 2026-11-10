@@ -34,6 +34,7 @@
     "recordConflict": "{file} record \"{name}\"",
     "fileCreated": "[created] {path}",
     "fileRenamed": "[renamed] {source} \u2192 {destination}",
+    "permalinkKept": "[kept] custom permalink in {path}",
     "fileDeleted": "[deleted] {path}",
     "createFailed": "[error] could not create page files: {error}",
     "renameFailed": "[error] could not rename page files: {error}",

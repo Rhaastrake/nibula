@@ -17,6 +17,10 @@ const FRONT_MATTER_PATTERNS = Object.freeze({
 const ROUTE_FRONT_MATTER_KEYS = ['title', 'permalink'];
 const RENAME_FRONT_MATTER_KEYS = ['title', 'permalink'];
 const LAYOUT_KEY = 'layout';
+const PERMALINK_KEY = 'permalink';
+const PERMALINK_VALUE_PATTERN = /^permalink:\s*(["']?)(.*?)\1\s*$/m;
+const TRAILING_SLASHES_PATTERN = /\/+$/;
+const EMPTY = '';
 
 function templatePath(name) {
     return path.join(PATHS.templates, name);
@@ -30,6 +34,23 @@ function applyFrontMatter(filePath, values, keys) {
     }
 
     writeText(filePath, content);
+}
+
+function permalinkValue(content) {
+    const match = content.match(PERMALINK_VALUE_PATTERN);
+    return match ? match[2].replace(TRAILING_SLASHES_PATTERN, EMPTY) : null;
+}
+
+// A rename moves the page to /<new-name>/ only when it still sits at the
+// permalink the assistant gave it. A permalink set by hand is kept.
+function renameFrontMatterKeys(routeFile, oldName) {
+    const current = permalinkValue(readText(routeFile));
+    const generated = permalinkValue(formatText(settings.frontMatter.permalink, { pageName: oldName }));
+
+    if (current === null || current === generated) return RENAME_FRONT_MATTER_KEYS;
+
+    log('page.permalinkKept', { path: routeFile });
+    return RENAME_FRONT_MATTER_KEYS.filter((key) => key !== PERMALINK_KEY);
 }
 
 function refuseConflicts(pageName, ownName) {
@@ -114,7 +135,7 @@ function renamePage(oldName, newName) {
             moveFile(source, destination);
             log('page.fileRenamed', { source, destination });
 
-            if (isRoute) applyFrontMatter(destination, values, RENAME_FRONT_MATTER_KEYS);
+            if (isRoute) applyFrontMatter(destination, values, renameFrontMatterKeys(destination, oldName));
         }
     } catch (error) {
         log('page.renameFailed', { error: error.message });
