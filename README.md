@@ -101,21 +101,33 @@ Your site is now at `localhost:8080`, and it rebuilds every time you save.
 
 ## 💻 Commands
 
-Run these from anywhere inside a project — except `nib new`, which must be run
+Run these from anywhere inside a project, except `nib new`: that one must be run
 **outside** a project, in the folder where you want the new one created.
 
 | Command | Description |
 |---|---|
 | `nib new <name>` | Create a new project |
 | `nib run` | Start the dev server and rebuild as you save |
-| `nib cli` | Open the page-management assistant |
 | `nib build` | Build the output folder |
 | `nib clean` | Remove the output directory |
 | `nib update` | Update Nibula (applies from your next project on) |
 
 Creating a page by hand means writing three files and a data record that all have
-to agree on the name. `nib cli` does it for you, and handles renaming and
-removing too.
+to agree on the name. Nibula does it for you, and handles renaming and removing
+too: open the assistant with `nib cli` and pick from its menu, or run the action
+directly.
+
+| Command | Description |
+|---|---|
+| `nib cli` | Open the page-management assistant. It will be removed in Nibula 4 |
+| `nib create <page>` | Create a page. Add `-l <layout>` (or `-layout <layout>`) to pick a layout without being asked |
+| `nib rename <page> <new-name>` | Rename a page |
+| `nib remove <page>` | Remove a page, after asking. Add `-y` to skip the question |
+| `nib path <folder>` | Move the output to a `<project>-out` folder inside `<folder>`. Without a folder, it shows where the output goes now |
+
+Page names use hyphens instead of spaces: `nib create about-us`. Uppercase
+letters are fine: the route file is always lowercase (`about-us.njk`), the
+stylesheet and script use camelCase (`aboutUs.scss`, `aboutUs.js`).
 
 ## 📖 Documentation
 
