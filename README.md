@@ -108,14 +108,24 @@ Run these from anywhere inside a project — except `nib new`, which must be run
 |---|---|
 | `nib new <name>` | Create a new project |
 | `nib run` | Start the dev server and rebuild as you save |
-| `nib cli` | Open the page-management assistant |
 | `nib build` | Build the output folder |
 | `nib clean` | Remove the output directory |
 | `nib update` | Update Nibula (applies from your next project on) |
 
 Creating a page by hand means writing three files and a data record that all have
-to agree on the name. `nib cli` does it for you, and handles renaming and
-removing too.
+to agree on the name. Nibula does it for you, and handles renaming and removing
+too: open the assistant with `nib cli` and pick from its menu, or run the action
+directly.
+
+| Command | Description |
+|---|---|
+| `nib cli` | Open the page-management assistant |
+| `nib create <page>` | Create a page. Add `--layout <layout>` to pick a layout without being asked |
+| `nib rename <page> <new-name>` | Rename a page |
+| `nib remove <page>` | Remove a page, after asking. Add `--yes` to skip the question |
+| `nib path [<folder>]` | Show where the output goes, or move it to a `<project>-out` folder inside `<folder>` |
+
+Names with spaces go in quotes: `nib create "about us"` creates `about-us`.
 
 ## 📖 Documentation
 
