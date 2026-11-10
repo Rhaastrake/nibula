@@ -5,6 +5,51 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-11-10
+
+Pages can now be created, renamed and removed with a single command, without
+opening the assistant: `nib create`, `nib rename`, `nib remove`, plus `nib path`
+for the output folder. The assistant checks page names more carefully, so it can
+no longer delete the homepage or overwrite the files of another page, and
+`nib clean` can no longer empty the wrong folder. New projects also get a
+welcome page, header and footer in the style of nibula.dev. `nib cli` still
+works, but it will be removed in Nibula 4.
+
+### Added
+- `nib create <page>`, `nib rename <page> <new-name>`, `nib remove <page>` and `nib path [<folder>]` do the same as the four options of `nib cli`, in one line. They accept and refuse exactly the same names as the assistant, and exit with `0` when the action succeeds and `1` when it doesn't, so they can be used in scripts.
+- `nib create` asks which layout to use when the project has more than one, or takes it from `-l` (or `-layout`): `-l base` and `-l base.njk` both work. Outside a terminal, where nobody can answer, `-l` is required.
+- `nib remove` asks for confirmation like the assistant does. `-y` skips the question, and outside a terminal it is required.
+- `nib path` without a folder shows the current output path and how the folder you type is used.
+- A project whose own copy of Nibula is older than these commands says so and suggests `nib cli` or `npm install -D nibula@latest`, instead of answering "Unknown command".
+
+### Changed
+- Page names with spaces are refused, with the hyphenated name as a suggestion: `nib create about us` answers with `nib create about-us`. Uppercase letters are still accepted and become lowercase: the route file is always lowercase (`about-us.njk`), the stylesheet and script use camelCase (`aboutUs.scss`, `aboutUs.js`).
+- Page names with accented letters or symbols are refused, and the error lists the characters that can't be used. Before, they were silently dropped: `Città` became `citt`.
+- New pages can no longer be called `api`, `assets`, `backend`, `css`, `js` or `ts`. Those paths are already taken by the output folder or by the server config: `/api/` goes to the backend and `/backend/` is blocked. Existing pages with one of those names can still be renamed or removed.
+- Renaming a page only rewrites its `permalink` if it is still the default `/<old-name>/`. A permalink you set by hand is kept, and the assistant tells you so.
+- The output path option explains what it does: the folder you type is where a `<project>-out` folder is created. Typing the current path again no longer creates `<project>-out/<project>-out`, and `out` restores the default, like `.`.
+- Changing the output path first cleans the old output folder, the same way `nib clean` does. Old output folders outside the project used to be left behind.
+- An unknown command prints a short red error and a hint to run `nib help`, instead of the whole list of commands.
+- The welcome page of new projects follows the nibula.dev homepage: a large centered title and two cards with an icon, a thin border and a green highlight on hover.
+- Header and footer use the page background, separated by a thin line, instead of the teal `#11474b`. They work with Bootstrap, Bulma or no framework, in both the light and the dark theme. In `_root.scss`, `$header-footer-color` is replaced by `$header-footer-background`, `$divider`, `$separator`, `$accent` and `$accent-hover`.
+
+### Deprecated
+- `nib cli` will be removed in Nibula 4. It shows a warning when it opens; use `nib create`, `nib rename`, `nib remove` and `nib path` instead.
+
+### Fixed
+- The homepage could be deleted or moved. `homepage` was protected, but its route file is `index.njk`, so removing or renaming a page called `index` deleted or moved the homepage. `index` is now protected too.
+- Creating a page could overwrite the stylesheet and script of another page. `page-2` and `page2` both use `page2.scss` and `page2.js`, and `chiSiamo.js` and `chisiamo.js` count as the same file for esbuild, which silently dropped one of them. Only the route file was checked; now the stylesheet, the script and the `pages.json` record are checked too, ignoring case, and the conflicting files are listed.
+- `nib clean` could delete the whole project or the folder containing it, if `outputDir` in `package.json` pointed there. `build` and `serve` run `clean` every time, so one wrong value was enough. It now refuses the project, its parent folders, `src/`, `node_modules/`, `.git/` and files.
+- An output path with spaces or shell characters broke the build scripts, and a `$` corrupted `.eleventy.js`. Only letters, numbers, `.`, `_`, `-` and slashes are accepted now, plus a drive letter on Windows.
+- Renaming asked for the new name before checking that the page to rename exists.
+- The welcome component used the class `.card`, which clashes with Bootstrap's, and its `h1` style applied to every page of the site.
+
+### Removed
+- Unused code in `tools/`: `settings.build`, `allScriptEntries()`, `writePackageJson()` and `getNotInsideProjectMessage()`.
+
+### Notes
+- Existing projects keep running their own copy of Nibula. To use the new commands there, update it with `npm install -D nibula@latest`.
+
 ## [3.0.2] - 2026-10-26
 
 ### Changed
