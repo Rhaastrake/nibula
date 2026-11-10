@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const settings = require('../config/settings.json');
 const { PATHS, resolveFromProject } = require('./paths');
+const { removeDirectory } = require('./files');
+const { log } = require('./logger');
 
 const PARENT_DIRECTORY = '..';
 
@@ -26,4 +28,26 @@ function isProtectedOutput(target) {
     return fs.existsSync(resolved) && !fs.statSync(resolved).isDirectory();
 }
 
-module.exports = { isProtectedOutput };
+// What nib clean does: empties an output folder, unless it is protected.
+// Folders outside the project are fine, that is where an output often lives.
+function cleanOutputDirectory(target) {
+    const resolved = path.resolve(PATHS.root, target);
+
+    if (isProtectedOutput(resolved)) {
+        log('output.refuseClean', {
+            path: resolved,
+            key: settings.packageJson.outputKey,
+            file: settings.paths.packageJson,
+        });
+        return false;
+    }
+
+    if (removeDirectory(resolved)) {
+        log('output.cleaned', { path: resolved });
+    } else {
+        log('output.nothingToClean', { path: resolved });
+    }
+    return true;
+}
+
+module.exports = { isProtectedOutput, cleanOutputDirectory };

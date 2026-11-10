@@ -1,11 +1,11 @@
 const path = require('path');
 const settings = require('../config/settings.json');
 const { PATHS } = require('./paths');
-const { readText, writeText, readJson, writeJson, removeDirectory } = require('./files');
+const { readText, writeText, readJson, writeJson } = require('./files');
 const { log } = require('./logger');
 const { formatText } = require('./text');
 const { isTypeScriptProject, scriptEntries } = require('./project');
-const { isProtectedOutput } = require('./outputSafety');
+const { isProtectedOutput, cleanOutputDirectory } = require('./outputSafety');
 const { validateOutputPath } = require('./validation');
 
 const OUTPUT_VARIABLE = settings.eleventy.outputVariable;
@@ -80,20 +80,6 @@ function updateTypeScriptConfig(newPath) {
     log('output.fileUpdated', { file: settings.paths.typescriptConfig, path: outputDirectory });
 }
 
-function deleteOldOutput(oldPath) {
-    if (!oldPath) return;
-
-    const target = path.resolve(PATHS.root, oldPath);
-    const insideProject = target.startsWith(PATHS.root + path.sep);
-
-    if (!insideProject || isProtectedOutput(target)) {
-        log('output.refuseDelete', { path: target });
-        return;
-    }
-    if (removeDirectory(target)) {
-        log('output.directoryDeleted', { path: target });
-    }
-}
 
 function outputFolderName() {
     return `${path.basename(PATHS.root)}${settings.project.outputSuffix}`;
@@ -145,7 +131,9 @@ function updateOutputPath(rawPath) {
         return true;
     }
 
-    deleteOldOutput(oldPath);
+    // The old output is cleaned first, as nib clean would, so it doesn't stay
+    // behind once the build writes somewhere else.
+    if (oldPath) cleanOutputDirectory(oldPath);
     log('output.updating', { path: normalizedPath });
 
     try {
