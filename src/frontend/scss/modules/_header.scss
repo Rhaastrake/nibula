@@ -8,7 +8,8 @@ header {
   justify-content: center;
   align-items: center;
   padding: root.$header-padding-y root.$header-padding-x;
-  background-color: root.$header-footer-color;
+  background-color: root.$header-footer-background;
+  border-bottom: 1px solid root.$divider;
 }
 
 nav {
@@ -23,6 +24,14 @@ nav {
     text-decoration: none !important;
     display: flex;
     align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: inherit;
+    transition: color 0.3s;
+
+    &:hover {
+      color: root.$accent;
+    }
 
     img {
       height: 50px;

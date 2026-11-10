@@ -7,8 +7,19 @@ footer {
     justify-content: space-around;
     width: 100%;
     padding: root.$header-padding-y root.$header-padding-x;
-    background-color: root.$header-footer-color;
-    
+    background-color: root.$header-footer-background;
+    border-top: 1px solid root.$divider;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+            color: root.$accent-hover;
+        }
+    }
+
     h6 {
         margin-bottom: 0.75rem;
     }
@@ -22,7 +33,7 @@ footer {
     hr {
         width: 100%;
         border: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        border-top: 1px solid root.$separator;
         margin: 1.5rem 0 1rem 0;
     }
 
