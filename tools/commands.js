@@ -10,6 +10,7 @@
 
 const { message } = require('./lib/logger');
 const { toKebabCase } = require('./lib/text');
+const { validateTypedPageName } = require('./lib/validation');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
 const { updateOutputPath } = require('./lib/outputPath');
 const { confirm } = require('./cli/prompt');
@@ -25,6 +26,8 @@ const OPTION_PREFIX = '-';
 const VALUE_SEPARATOR = '=';
 const WORD_SEPARATOR = ' ';
 const WHITESPACE_PATTERN = /\s/;
+const ALL_WHITESPACE_PATTERN = /\s+/g;
+const EMPTY = '';
 
 async function create([rawName], { layout }) {
     const name = steps.readPageName(rawName, steps.NEW_PAGE);
@@ -94,12 +97,22 @@ const COMMANDS = Object.freeze({
 });
 
 // A page name typed with spaces, either as several words or in quotes. The
-// suggestion shows the same command with hyphens: nib create about-us.
+// suggestion shows the same command with hyphens: nib create about-us. Other
+// characters that can't be used are reported first, so the suggestion is a
+// name that works.
 function reportSpacesInName(commandName, positional) {
     const { max } = COMMANDS[commandName].arguments;
     const names = positional.length > max && max === 1
         ? [positional.join(WORD_SEPARATOR)]
         : positional;
+
+    const charactersError = names
+        .map((name) => validateTypedPageName(name.replace(ALL_WHITESPACE_PATTERN, EMPTY)))
+        .find(Boolean);
+    if (charactersError) {
+        ui.error(charactersError);
+        return;
+    }
     const example = positional.length > max && max > 1
         ? message(`commands.usage.${commandName}`)
         : ['nib', commandName, ...names.map(toKebabCase)].join(WORD_SEPARATOR);
