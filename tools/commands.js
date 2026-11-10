@@ -1,9 +1,13 @@
 // Direct commands: the same actions as the nib cli menu, run in one line.
 //
-//   nib create <page-name> [--layout <layout>]
+//   nib create <page-name> [-l <layout>]
 //   nib rename <page-name> <new-name>
-//   nib remove <page-name> [--yes]
+//   nib remove <page-name> [-y]
 //   nib path [<folder>]
+//
+// create and remove take a single name, so its words can be typed without
+// quotes: "nib create about us" creates about-us. rename takes two names and
+// needs quotes around a name with spaces.
 
 const { message } = require('./lib/logger');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
@@ -13,12 +17,13 @@ const steps = require('./cli/steps');
 const ui = require('./cli/ui');
 
 const OPTIONS = Object.freeze({
-    layout: { names: ['--layout', '-l'], takesValue: true },
-    yes:    { names: ['--yes', '-y'],    takesValue: false },
+    layout: { names: ['-l', '-layout'], takesValue: true },
+    yes:    { names: ['-y'],            takesValue: false },
 });
 
 const OPTION_PREFIX = '-';
 const VALUE_SEPARATOR = '=';
+const WORD_SEPARATOR = ' ';
 
 async function create([rawName], { layout }) {
     const name = steps.readPageName(rawName, steps.NEW_PAGE);
@@ -81,10 +86,10 @@ async function outputPath([folder]) {
 }
 
 const COMMANDS = Object.freeze({
-    create: { run: create,     arguments: { min: 1, max: 1 }, options: ['layout'] },
-    rename: { run: rename,     arguments: { min: 2, max: 2 }, options: [] },
-    remove: { run: remove,     arguments: { min: 1, max: 1 }, options: ['yes'] },
-    path:   { run: outputPath, arguments: { min: 0, max: 1 }, options: [] },
+    create: { run: create,     arguments: { min: 1, max: 1 }, options: ['layout'], joinWords: true  },
+    rename: { run: rename,     arguments: { min: 2, max: 2 }, options: [],         joinWords: false },
+    remove: { run: remove,     arguments: { min: 1, max: 1 }, options: ['yes'],    joinWords: true  },
+    path:   { run: outputPath, arguments: { min: 0, max: 1 }, options: [],         joinWords: false },
 });
 
 function findOption(name) {
@@ -127,12 +132,16 @@ function parseArguments(commandName, args) {
     }
 
     const { min, max } = command.arguments;
+    if (command.joinWords && positional.length > max) {
+        positional.splice(0, positional.length, positional.join(WORD_SEPARATOR));
+    }
     if (positional.length < min) {
         ui.error(message('commands.missingArguments', { usage: message(`commands.usage.${commandName}`) }));
         return null;
     }
     if (positional.length > max) {
         ui.error(message('commands.tooManyArguments', { usage: message(`commands.usage.${commandName}`) }));
+        if (commandName === 'rename') ui.notice(message('commands.quoteHint'));
         return null;
     }
 

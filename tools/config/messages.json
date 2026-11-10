@@ -95,18 +95,19 @@
   },
   "commands": {
     "usage": {
-      "create": "nib create <page-name> [--layout <layout>]",
+      "create": "nib create <page-name> [-l <layout>]",
       "rename": "nib rename <page-name> <new-name>",
-      "remove": "nib remove <page-name> [--yes]",
+      "remove": "nib remove <page-name> [-y]",
       "path": "nib path [<folder>]"
     },
     "unknownCommand": "Unknown command: {command}",
     "missingArguments": "Missing arguments. Usage: {usage}",
-    "tooManyArguments": "Too many arguments. Usage: {usage}. Put names with spaces in quotes: nib create \"about us\"",
+    "tooManyArguments": "Too many arguments. Usage: {usage}",
+    "quoteHint": "Put names with spaces in quotes: nib rename \"about us\" \"who we are\"",
     "unknownOption": "Unknown option {option} for \"nib {command}\".",
     "missingValue": "{option} needs a value.",
-    "layoutNeeded": "This project has more than one layout: pick one with --layout <layout>.",
-    "confirmNeeded": "Run the command in a terminal to confirm, or add --yes to remove the page without asking.",
+    "layoutNeeded": "This project has more than one layout: pick one with -l <layout>.",
+    "confirmNeeded": "Run the command in a terminal to confirm, or add -y to remove the page without asking.",
     "pathChangeHint": "Change it with: nib path <folder>",
     "projectTooOld": "This project uses Nibula {version}, which has no \"nib {command}\" command. Use \"nib cli\", or update the project's copy with: npm install -D nibula@latest"
   }

@@ -120,12 +120,13 @@ directly.
 | Command | Description |
 |---|---|
 | `nib cli` | Open the page-management assistant |
-| `nib create <page>` | Create a page. Add `--layout <layout>` to pick a layout without being asked |
+| `nib create <page>` | Create a page. Add `-l <layout>` (or `-layout <layout>`) to pick a layout without being asked |
 | `nib rename <page> <new-name>` | Rename a page |
-| `nib remove <page>` | Remove a page, after asking. Add `--yes` to skip the question |
+| `nib remove <page>` | Remove a page, after asking. Add `-y` to skip the question |
 | `nib path [<folder>]` | Show where the output goes, or move it to a `<project>-out` folder inside `<folder>` |
 
-Names with spaces go in quotes: `nib create "about us"` creates `about-us`.
+`nib create about us` creates `about-us`. `rename` takes two names, so a name
+with spaces goes in quotes there: `nib rename "about us" team`.
 
 ## 📖 Documentation
 

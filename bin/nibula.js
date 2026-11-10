@@ -203,9 +203,9 @@ ${color.yellow}nib clean${color.reset}                      Remove the output di
 ${color.yellow}nib update${color.reset}                     Update to the latest version
 
 ${color.yellow}nib cli${color.reset}                        Open the page-management assistant
-${color.yellow}nib create <page>${color.reset}              Create a page (--layout <layout> to pick one)
+${color.yellow}nib create <page>${color.reset}              Create a page (-l <layout> to pick one)
 ${color.yellow}nib rename <page> <new-name>${color.reset}   Rename a page
-${color.yellow}nib remove <page>${color.reset}              Remove a page (--yes to skip the confirmation)
+${color.yellow}nib remove <page>${color.reset}              Remove a page (-y to skip the confirmation)
 ${color.yellow}nib path [<folder>]${color.reset}            Show or change where the output folder goes
 
 `);
