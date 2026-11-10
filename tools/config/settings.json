@@ -65,7 +65,7 @@
     }
   ],
   "page": {
-    "protected": ["homepage", "404"],
+    "protected": ["homepage", "index", "404"],
     "styleExtension": "scss",
     "routeExtension": "njk",
     "styleTemplate": "template.scss",
