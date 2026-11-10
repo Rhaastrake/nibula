@@ -12,13 +12,14 @@ const ui = require('./cli/ui');
 const NEW_LINE = '\n';
 const NO_PREFIX = '';
 const NO_LAYOUT = '';
+const NEW_PAGE = Object.freeze({ isNew: true });
 
-async function askPageName(prompt) {
+async function askPageName(prompt, options) {
     const raw = await ask(prompt);
     if (raw === null) return null;
 
     const name = toKebabCase(raw);
-    const error = validatePageName(name);
+    const error = validatePageName(name, options);
     if (error) {
         ui.error(error);
         return null;
@@ -36,7 +37,7 @@ async function askLayout() {
 }
 
 async function handleCreate() {
-    const name = await askPageName(ui.promptLine(message('cli.createPrompt')));
+    const name = await askPageName(ui.promptLine(message('cli.createPrompt')), NEW_PAGE);
     if (!name) return;
 
     if (pageExists(name)) {
@@ -74,7 +75,7 @@ async function handleRename() {
     const oldName = await askPageName(ui.promptLine(message('cli.renameFromPrompt')));
     if (!oldName) return;
 
-    const newName = await askPageName(ui.promptLine(message('cli.renameToPrompt'), NO_PREFIX));
+    const newName = await askPageName(ui.promptLine(message('cli.renameToPrompt'), NO_PREFIX), NEW_PAGE);
     if (!newName) return;
 
     if (oldName === newName) {

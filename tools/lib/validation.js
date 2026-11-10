@@ -17,11 +17,12 @@ function requiredFiles() {
     ];
 }
 
-function validatePageName(name) {
+function validatePageName(name, { isNew = false } = {}) {
     if (!name) return message('validation.invalidName');
     if (!NAME_PATTERN.test(name)) return message('validation.invalidNameCharacters');
     if (LEADING_DIGIT_PATTERN.test(name)) return message('validation.nameStartsWithNumber');
     if (settings.page.protected.includes(name)) return message('validation.protectedName', { name });
+    if (isNew && settings.page.reserved.includes(name)) return message('validation.reservedName', { name });
     return null;
 }
 

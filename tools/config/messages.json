@@ -19,6 +19,7 @@
     "invalidNameCharacters": "Page name can only contain lowercase letters, numbers, and hyphens.",
     "nameStartsWithNumber": "Page name cannot start with a number.",
     "protectedName": "\"{name}\" is a protected page name.",
+    "reservedName": "\"{name}\" is reserved: the site already uses /{name}/ for its own files.",
     "invalidPath": "Invalid path.",
     "invalidPathCharacters": "Path contains invalid characters.",
     "templatesLabel": "CLI page templates"
