@@ -23,14 +23,18 @@ function readPagesData() {
     }
 }
 
-function hasPageRecord(pageName) {
-    if (!exists(PATHS.pagesData)) return false;
+// Record keys matching the page's camelCase name, ignoring case: chiSiamo and
+// chisiamo name different records, but their stylesheets and scripts collide.
+function findPageRecords(pageName) {
+    if (!exists(PATHS.pagesData)) return [];
     try {
         const data = readJson(PATHS.pagesData);
-        return Boolean(data) && typeof data === 'object'
-            && Object.prototype.hasOwnProperty.call(data, toCamelCase(pageName));
+        if (!data || typeof data !== 'object') return [];
+
+        const target = toCamelCase(pageName).toLowerCase();
+        return Object.keys(data).filter((key) => key.toLowerCase() === target);
     } catch {
-        return false;
+        return [];
     }
 }
 
@@ -107,4 +111,4 @@ function renamePageData(oldName, newName) {
     log('pagesData.recordRenamed', { source: oldCamelName, destination: newCamelName });
 }
 
-module.exports = { readPagesData, hasPageRecord, addPageData, removePageData, renamePageData };
+module.exports = { readPagesData, findPageRecords, addPageData, removePageData, renamePageData };
