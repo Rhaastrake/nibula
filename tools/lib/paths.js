@@ -50,14 +50,9 @@ const PATHS = Object.freeze({
     get layouts()          { return resolveFromProject(settings.paths.layouts); },
 });
 
-function getNotInsideProjectMessage() {
-    return paint('red', require('./logger').message('project.notInside'));
-}
-
 module.exports = {
     PATHS,
     PACKAGE_ROOT,
-    getNotInsideProjectMessage,
     findProjectRoot,
     resolveFromProject,
     resolveFromPackage,
