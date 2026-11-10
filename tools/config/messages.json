@@ -20,7 +20,7 @@
     "nameStartsWithNumber": "Page name cannot start with a number.",
     "protectedName": "\"{name}\" is a protected page name.",
     "invalidPath": "Invalid path.",
-    "invalidPathCharacters": "Path contains invalid characters.",
+    "invalidPathCharacters": "Path can only contain letters, numbers, dots, hyphens, underscores and slashes.",
     "templatesLabel": "CLI page templates"
   },
   "page": {

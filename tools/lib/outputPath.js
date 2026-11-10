@@ -29,7 +29,7 @@ function isAbsolutePath(target) {
 
 function updateEleventyConfig(newPath) {
     const content = readText(PATHS.eleventyConfig);
-    const updated = content.replace(OUTPUT_VARIABLE_PATTERN, `const ${OUTPUT_VARIABLE} = "${newPath}"`);
+    const updated = content.replace(OUTPUT_VARIABLE_PATTERN, () => `const ${OUTPUT_VARIABLE} = "${newPath}"`);
 
     if (content === updated) {
         log('output.variableMissing', { variable: OUTPUT_VARIABLE, file: settings.paths.eleventyConfig });
@@ -69,7 +69,7 @@ function updateTypeScriptConfig(newPath) {
     const prefix = isAbsolutePath(newPath) ? EMPTY : RELATIVE_PREFIX;
     const outputDirectory = `${prefix}${newPath}${FORWARD_SLASH}${settings.typescript.outputSubdirectory}`;
     const content = readText(PATHS.typescriptConfig);
-    const updated = content.replace(TYPESCRIPT_OUTPUT_PATTERN, `"${TYPESCRIPT_OUTPUT_KEY}": "${outputDirectory}"`);
+    const updated = content.replace(TYPESCRIPT_OUTPUT_PATTERN, () => `"${TYPESCRIPT_OUTPUT_KEY}": "${outputDirectory}"`);
 
     if (content === updated) {
         log('output.keyMissing', { key: TYPESCRIPT_OUTPUT_KEY, file: settings.paths.typescriptConfig });
