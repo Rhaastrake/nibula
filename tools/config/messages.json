@@ -18,6 +18,7 @@
     "invalidName": "Invalid name.",
     "invalidNameCharacters": "Page name can only contain lowercase letters, numbers, and hyphens.",
     "nameStartsWithNumber": "Page name cannot start with a number.",
+    "unsupportedCharacters": "Page name cannot contain: {characters}. Use letters without accents, numbers, spaces and hyphens.",
     "protectedName": "\"{name}\" is a protected page name.",
     "reservedName": "\"{name}\" is reserved: the site already uses /{name}/ for its own files.",
     "invalidPath": "Invalid path.",

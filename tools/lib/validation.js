@@ -3,6 +3,8 @@ const { PATHS } = require('./paths');
 const { exists } = require('./files');
 const { message } = require('./logger');
 
+const TYPED_NAME_CHARACTER_PATTERN = /[A-Za-z0-9\s_-]/;
+const CHARACTER_LIST_SEPARATOR = ' ';
 const NAME_PATTERN = /^[a-z0-9-]+$/;
 const LEADING_DIGIT_PATTERN = /^\d/;
 const INVALID_PATH_PATTERN = /[<>|?*"']/;
@@ -15,6 +17,16 @@ function requiredFiles() {
         { label: settings.paths.pagesData,       path: PATHS.pagesData },
         { label: message('validation.templatesLabel'), path: PATHS.templates },
     ];
+}
+
+// Checks the name as typed, before it is turned into kebab-case. Uppercase,
+// spaces and underscores convert cleanly; anything else (accented letters,
+// symbols) would be dropped from the name, so it is refused instead.
+function validateTypedPageName(raw) {
+    const unsupported = [...new Set([...raw].filter((character) => !TYPED_NAME_CHARACTER_PATTERN.test(character)))];
+    if (unsupported.length === 0) return null;
+
+    return message('validation.unsupportedCharacters', { characters: unsupported.join(CHARACTER_LIST_SEPARATOR) });
 }
 
 function validatePageName(name, { isNew = false } = {}) {
@@ -37,4 +49,4 @@ function checkRequiredFiles() {
     return requiredFiles().filter((item) => !exists(item.path));
 }
 
-module.exports = { validatePageName, validateOutputPath, checkRequiredFiles };
+module.exports = { validateTypedPageName, validatePageName, validateOutputPath, checkRequiredFiles };

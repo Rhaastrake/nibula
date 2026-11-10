@@ -1,7 +1,7 @@
 const settings = require('./config/settings.json');
 const { message } = require('./lib/logger');
 const { toKebabCase } = require('./lib/text');
-const { validatePageName, validateOutputPath, checkRequiredFiles } = require('./lib/validation');
+const { validateTypedPageName, validatePageName, validateOutputPath, checkRequiredFiles } = require('./lib/validation');
 const { addPage, removePage, renamePage } = require('./lib/pageActions');
 const { pageExists, pageConflicts } = require('./lib/pageArtifacts');
 const { updateOutputPath, getCurrentOutputPath } = require('./lib/outputPath');
@@ -19,7 +19,7 @@ async function askPageName(prompt, options) {
     if (raw === null) return null;
 
     const name = toKebabCase(raw);
-    const error = validatePageName(name, options);
+    const error = validateTypedPageName(raw) ?? validatePageName(name, options);
     if (error) {
         ui.error(error);
         return null;
