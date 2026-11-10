@@ -8,7 +8,7 @@ const { spawnSync } = require('child_process');
 const { findProjectRoot } = require('../tools/lib/paths');
 const { color } = require('../tools/lib/colors');
 const { message } = require('../tools/lib/logger');
-const { delegateToLocal } = require('./delegate');
+const { delegateToLocal, localPackageRoot } = require('./delegate');
 
 const pkg = require('../package.json');
 
@@ -17,6 +17,8 @@ const [, , cmd, ...rest] = process.argv;
 const CREATE = path.join(__dirname, 'create.js');
 const ASSISTANT = path.join(__dirname, '..', 'tools', 'assistant.js');
 const CLEAN     = path.join(__dirname, '..', 'tools', 'cleanOutput.js');
+const COMMANDS  = path.join(__dirname, '..', 'tools', 'commands.js');
+const COMMANDS_FILE = path.join('tools', 'commands.js');
 
 const REGISTRY = 'https://registry.npmjs.org/nibula/latest';
 const CHECK_TIMEOUT = 2500;
@@ -52,6 +54,17 @@ function enterProject() {
     const root = requireProjectRoot();
     delegateToLocal(root);
     return root;
+}
+
+// Projects keep their own copy of Nibula, and copies older than the direct
+// page commands would answer "Unknown command". Say what to do instead.
+function requireLocalCommands(root, command) {
+    const localRoot = localPackageRoot(root);
+    if (!localRoot || fs.existsSync(path.join(localRoot, COMMANDS_FILE))) return;
+
+    const { version } = JSON.parse(fs.readFileSync(path.join(localRoot, 'package.json'), 'utf8'));
+    console.error(`\n${color.yellow}${message('commands.projectTooOld', { version, command })}${color.reset}\n`);
+    process.exit(1);
 }
 
 function runNpm(root, scriptName) {
@@ -183,12 +196,17 @@ function usage(currentVersion) {
 
 ${color.bold}${color.cyan}Nibula (${currentVersion})${color.reset} ${color.bold}by Michele Garofalo${color.reset}
 
-${color.yellow}nib new <project-name>${color.reset}   Create your new project
-${color.yellow}nib cli${color.reset}                  Open the page-management assistant
-${color.yellow}nib run${color.reset}                  Start the dev server and builds out folder runtime
-${color.yellow}nib build${color.reset}                Build the site out folder to publish
-${color.yellow}nib clean${color.reset}                Remove the output directory
-${color.yellow}nib update${color.reset}               Update to the latest version
+${color.yellow}nib new <project-name>${color.reset}         Create your new project
+${color.yellow}nib run${color.reset}                        Start the dev server and builds out folder runtime
+${color.yellow}nib build${color.reset}                      Build the site out folder to publish
+${color.yellow}nib clean${color.reset}                      Remove the output directory
+${color.yellow}nib update${color.reset}                     Update to the latest version
+
+${color.yellow}nib cli${color.reset}                        Open the page-management assistant
+${color.yellow}nib create <page>${color.reset}              Create a page (--layout <layout> to pick one)
+${color.yellow}nib rename <page> <new-name>${color.reset}   Rename a page
+${color.yellow}nib remove <page>${color.reset}              Remove a page (--yes to skip the confirmation)
+${color.yellow}nib path [<folder>]${color.reset}            Show or change where the output folder goes
 
 `);
 }
@@ -268,6 +286,16 @@ async function main() {
         case 'clean': {
             enterProject();
             run(CLEAN, []);
+            break;
+        }
+        case 'create':
+        case 'rename':
+        case 'remove':
+        case 'path': {
+            const root = requireProjectRoot();
+            requireLocalCommands(root, cmd);
+            delegateToLocal(root);
+            run(COMMANDS, [cmd, ...rest]);
             break;
         }
         case 'update': {

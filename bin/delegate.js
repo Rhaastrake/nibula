@@ -20,17 +20,25 @@ function realPath(target) {
     }
 }
 
-function delegateToLocal(projectRoot) {
-    if (process.env[LOCAL_FLAG] === LOCAL_FLAG_VALUE) return;
+// The project's own copy of Nibula, when the command has to be handed over to
+// it: null if this already is that copy or the project has none.
+function localPackageRoot(projectRoot) {
+    if (process.env[LOCAL_FLAG] === LOCAL_FLAG_VALUE) return null;
 
     const localRoot = realPath(path.join(projectRoot, NODE_MODULES, PACKAGE_NAME));
     const selfRoot = realPath(path.join(__dirname, '..'));
 
-    if (!localRoot || localRoot === selfRoot) return;
+    if (!localRoot || localRoot === selfRoot) return null;
+    if (!fs.existsSync(path.join(localRoot, ENTRY_FILE))) return null;
+
+    return localRoot;
+}
+
+function delegateToLocal(projectRoot) {
+    const localRoot = localPackageRoot(projectRoot);
+    if (!localRoot) return;
 
     const localEntry = path.join(localRoot, ENTRY_FILE);
-    if (!fs.existsSync(localEntry)) return;
-
     const result = spawnSync(process.execPath, [localEntry, ...process.argv.slice(2)], {
         stdio: 'inherit',
         cwd: process.cwd(),
@@ -40,4 +48,4 @@ function delegateToLocal(projectRoot) {
     process.exit(result.status ?? 0);
 }
 
-module.exports = { delegateToLocal };
+module.exports = { delegateToLocal, localPackageRoot };
