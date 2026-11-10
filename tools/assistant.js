@@ -70,6 +70,8 @@ async function main() {
         process.exit(1);
     }
 
+    ui.warning(message('cli.removedInVersion4'));
+
     while (true) {
         ui.renderMenu();
 

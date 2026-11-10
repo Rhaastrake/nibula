@@ -90,7 +90,8 @@
     "unexpectedError": "Unexpected error: {error}",
     "missingFiles": "This project is missing required files:",
     "incompleteProject": "The project may be incomplete or created with a different Nibula version.",
-    "exitHint": "CTRL + C to exit"
+    "exitHint": "CTRL + C to exit",
+    "removedInVersion4": "nib cli will be removed in Nibula 4. Use nib create, nib rename, nib remove and nib path instead."
   },
   "commands": {
     "usage": {
