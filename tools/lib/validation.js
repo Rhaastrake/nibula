@@ -2,8 +2,10 @@ const settings = require('../config/settings.json');
 const { PATHS } = require('./paths');
 const { exists } = require('./files');
 const { message } = require('./logger');
+const { toKebabCase } = require('./text');
 
-const TYPED_NAME_CHARACTER_PATTERN = /[A-Za-z0-9\s_-]/;
+const TYPED_NAME_CHARACTER_PATTERN = /[A-Za-z0-9_-]/;
+const WHITESPACE_PATTERN = /\s/;
 const CHARACTER_LIST_SEPARATOR = ' ';
 const NAME_PATTERN = /^[a-z0-9-]+$/;
 const LEADING_DIGIT_PATTERN = /^\d/;
@@ -19,14 +21,19 @@ function requiredFiles() {
     ];
 }
 
-// Checks the name as typed, before it is turned into kebab-case. Uppercase,
-// spaces and underscores convert cleanly; anything else (accented letters,
-// symbols) would be dropped from the name, so it is refused instead.
+// Checks the name as typed, before it is turned into kebab-case. Uppercase
+// and underscores convert cleanly. Accented letters and symbols would be
+// dropped from the name, so they are refused; spaces are refused afterwards,
+// with the hyphenated name as a hint.
 function validateTypedPageName(raw) {
-    const unsupported = [...new Set([...raw].filter((character) => !TYPED_NAME_CHARACTER_PATTERN.test(character)))];
-    if (unsupported.length === 0) return null;
+    const unsupported = [...new Set([...raw].filter((character) =>
+        !TYPED_NAME_CHARACTER_PATTERN.test(character) && !WHITESPACE_PATTERN.test(character)))];
+    if (unsupported.length > 0) {
+        return message('validation.unsupportedCharacters', { characters: unsupported.join(CHARACTER_LIST_SEPARATOR) });
+    }
 
-    return message('validation.unsupportedCharacters', { characters: unsupported.join(CHARACTER_LIST_SEPARATOR) });
+    if (WHITESPACE_PATTERN.test(raw)) return message('validation.spacesInName', { example: toKebabCase(raw) });
+    return null;
 }
 
 function validatePageName(name, { isNew = false } = {}) {
