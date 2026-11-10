@@ -102,6 +102,7 @@
       "path": "nib path [<folder>]"
     },
     "unknownCommand": "Unknown command: {command}",
+    "helpHint": "Run \"nib help\" to see the available commands.",
     "missingArguments": "Missing arguments. Usage: {usage}",
     "tooManyArguments": "Too many arguments. Usage: {usage}",
     "spacesInName": "Page names cannot contain spaces: use hyphens instead, e.g. {example}",

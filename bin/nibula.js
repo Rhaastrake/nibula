@@ -346,8 +346,8 @@ async function main() {
             break;
         }
         default:
-            console.error(`${color.red}\nUnknown command:${color.reset} ${cmd}`);
-            usage(pkg.version);
+            console.error(`\n${color.red}${message('commands.unknownCommand', { command: cmd })}${color.reset}`);
+            console.error(`${color.dim}${message('commands.helpHint')}${color.reset}\n`);
             process.exit(1);
     }
 }
