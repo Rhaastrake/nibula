@@ -85,6 +85,11 @@ async function handleRename() {
     const oldName = await askPageName(ui.promptLine(message('cli.renameFromPrompt')));
     if (!oldName) return;
 
+    if (!pageExists(oldName)) {
+        ui.warning(message('cli.pageNotFound', { name: oldName }));
+        return;
+    }
+
     const newName = await askPageName(ui.promptLine(message('cli.renameToPrompt'), NO_PREFIX), NEW_PAGE);
     if (!newName) return;
 
