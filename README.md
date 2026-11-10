@@ -101,7 +101,7 @@ Your site is now at `localhost:8080`, and it rebuilds every time you save.
 
 ## 💻 Commands
 
-Run these from anywhere inside a project — except `nib new`, which must be run
+Run these from anywhere inside a project, except `nib new`: that one must be run
 **outside** a project, in the folder where you want the new one created.
 
 | Command | Description |
@@ -119,11 +119,11 @@ directly.
 
 | Command | Description |
 |---|---|
-| `nib cli` | Open the page-management assistant |
+| `nib cli` | Open the page-management assistant. It will be removed in Nibula 4 |
 | `nib create <page>` | Create a page. Add `-l <layout>` (or `-layout <layout>`) to pick a layout without being asked |
 | `nib rename <page> <new-name>` | Rename a page |
 | `nib remove <page>` | Remove a page, after asking. Add `-y` to skip the question |
-| `nib path [<folder>]` | Show where the output goes, or move it to a `<project>-out` folder inside `<folder>` |
+| `nib path <folder>` | Move the output to a `<project>-out` folder inside `<folder>`. Without a folder, it shows where the output goes now |
 
 Page names use hyphens instead of spaces: `nib create about-us`. Uppercase
 letters are fine: the route file is always lowercase (`about-us.njk`), the
