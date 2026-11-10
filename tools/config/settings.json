@@ -3,7 +3,8 @@
     "marker": ".eleventy.js",
     "defaultOutputDirectory": "out",
     "currentDirectory": ".",
-    "outputSuffix": "-out"
+    "outputSuffix": "-out",
+    "protectedDirectories": ["src", "node_modules", ".git"]
   },
   "paths": {
     "eleventyConfig": ".eleventy.js",

@@ -55,8 +55,9 @@
     "keyMissing": "[skip] {key} not found in {file}",
     "fileUpdated": "[updated] {file} \u2192 {path}",
     "directoryDeleted": "[deleted] {path}",
-    "refuseDelete": "[skip] refusing to delete \"{path}\" (outside project)",
+    "refuseDelete": "[skip] refusing to delete \"{path}\" (outside the project or a protected folder)",
     "missingConfiguration": "(!) {key} not found in {file}",
+    "refuseClean": "(!) refusing to empty {path}: it is the project, one of its parent folders, a source folder or a file. Check \"{key}\" in {file}.",
     "cleaned": "(\u2713) cleaned \u2192 {path}",
     "nothingToClean": "(i) nothing to clean \u2192 {path}"
   },

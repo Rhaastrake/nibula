@@ -5,6 +5,7 @@ const { readText, writeText, readJson, writeJson, removeDirectory } = require('.
 const { log } = require('./logger');
 const { formatText } = require('./text');
 const { isTypeScriptProject, scriptEntries } = require('./project');
+const { isProtectedOutput } = require('./outputSafety');
 
 const OUTPUT_VARIABLE = settings.eleventy.outputVariable;
 const TYPESCRIPT_OUTPUT_KEY = settings.typescript.outputKey;
@@ -84,7 +85,7 @@ function deleteOldOutput(oldPath) {
     const target = path.resolve(PATHS.root, oldPath);
     const insideProject = target.startsWith(PATHS.root + path.sep);
 
-    if (!insideProject || target === PATHS.root) {
+    if (!insideProject || isProtectedOutput(target)) {
         log('output.refuseDelete', { path: target });
         return;
     }
