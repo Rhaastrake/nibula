@@ -6,11 +6,15 @@ eleventyExcludeFromCollections: true
 
 > {{ site.description }}
 
-Built by {{ site.author.fullName }} — {{ site.author.website }}
+Built by {{ site.author.fullName }} — [Website]({{ site.author.website }})
 
 ## Pages
-
-- {{ site.url }}: Homepage
+{% for page in collections.all -%}
+{%- set pageMeta = pages[page.data.title] -%}
+{%- if not page.data.draft and pageMeta and pageMeta.seo.noindex === false %}
+- [{{ pageMeta.seo.title }}]({{ site.url }}{{ page.url | lower }}){% if pageMeta.seo.description %}: {{ pageMeta.seo.description }}{% endif %}
+{%- endif -%}
+{%- endfor %}
 
 ## Notes
 
