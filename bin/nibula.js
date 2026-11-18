@@ -23,6 +23,7 @@ const COMMANDS_FILE = path.join('tools', 'commands.js');
 const REGISTRY = 'https://registry.npmjs.org/nibula/latest';
 const CHECK_TIMEOUT = 2500;
 const SKIP_FLAG = '--skip-update-check';
+const OVERWRITE_FLAG = '--overwrite';
 
 function run(script, args) {
     const res = spawnSync('node', [script, ...args], {
@@ -196,7 +197,7 @@ function usage(currentVersion) {
 
 ${color.bold}${color.cyan}Nibula (${currentVersion})${color.reset} ${color.bold}by Michele Garofalo${color.reset}
 
-${color.yellow}nib new <project-name>${color.reset}         Create your new project
+${color.yellow}nib new <project-name>${color.reset}         Create your new project (--overwrite to replace an existing one)
 ${color.yellow}nib run${color.reset}                        Start the dev server and builds out folder runtime
 ${color.yellow}nib build${color.reset}                      Build the site out folder to publish
 ${color.yellow}nib clean${color.reset}                      Remove the output directory
@@ -214,8 +215,9 @@ ${color.yellow}nib path [<folder>]${color.reset}            Show or change where
 async function main() {
     switch (cmd) {
         case 'new': {
-            const args = rest.filter((a) => a !== SKIP_FLAG);
+            const args = rest.filter((a) => a !== SKIP_FLAG && a !== OVERWRITE_FLAG);
             const skipCheck = rest.includes(SKIP_FLAG);
+            const forceOverwrite = rest.includes(OVERWRITE_FLAG);
 
             if (!args[0]) {
                 console.error('Missing project name. Usage: nib new <project-name>');
@@ -234,7 +236,7 @@ async function main() {
                             const code = updateGlobal(info.latest);
                             if (code !== 0) process.exit(code);
                             console.log(`\n${color.green}Updated.${color.reset} Continuing with the new version...\n`);
-                            process.exit(reexecAfterUpdate(['new', args[0]]));
+                            process.exit(reexecAfterUpdate(['new', args[0], ...(forceOverwrite ? [OVERWRITE_FLAG] : [])]));
                         }
                     } else {
                         console.log('Run "nib update" to update.\n');
@@ -245,12 +247,12 @@ async function main() {
             const existing = findExistingProject(process.cwd(), args[0]);
             if (existing) {
                 console.log(`\n${color.yellow}A project named "${args[0]}" already exists:${color.reset} ${existing}`);
-                let overwrite = false;
-                if (process.stdin.isTTY) {
+                let overwrite = forceOverwrite;
+                if (!overwrite && process.stdin.isTTY) {
                     const answer = await ask('Do you want to overwrite it? [y/N] ');
                     overwrite = (answer === 'y' || answer === 'yes');
-                } else {
-                    console.log('Run in a TTY to confirm overwrite.');
+                } else if (!overwrite) {
+                    console.log(`Run in a TTY to confirm overwrite, or pass ${OVERWRITE_FLAG}.`);
                 }
                 if (!overwrite) {
                     console.log('Stopped creating the new project');
