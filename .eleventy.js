@@ -29,6 +29,22 @@ const HEADING_ANCHORS = {
   }),
 };
 
+// Only the files written by Sass and esbuild: passthrough copies such as
+// prism.css and bootstrap.bundle.min.js change on every build
+const SASS_ESBUILD_OUTPUT = [
+  `${OUTPUT_DIR}/css/global.css`,
+  `${OUTPUT_DIR}/css/pages/**/*.css`,
+  `${OUTPUT_DIR}/js/pages/**/*.js`,
+];
+
+// The watcher ignores a glob whose folder does not exist yet, and Sass and
+// esbuild create these folders only after the server has started
+function createPageOutputFolders() {
+  for (const folder of ["css/pages", "js/pages"]) {
+    fs.mkdirSync(`${OUTPUT_DIR}/${folder}`, { recursive: true });
+  }
+}
+
 function copyBackend() {
   if (!fs.existsSync(BACKEND_SOURCE)) return;
 
@@ -60,6 +76,9 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("componentsPath", (name) => `${COMPONENTS_PATH}${name}`);
 
+  // Partial included by layouts/base.njk, not a standalone page
+  eleventyConfig.ignores.add(`${DIRS.input}/indexing/json-ld.njk`);
+
   eleventyConfig.addPassthroughCopy(`${DIRS.input}/assets`);
 
   eleventyConfig.addPassthroughCopy({
@@ -83,11 +102,11 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.on("eleventy.before", copyBackend);
 
+  createPageOutputFolders();
+
   // Sass and esbuild write straight into the output folder:
   // reload the browser once their files are ready
-  eleventyConfig.setServerOptions({
-    watch: [`${OUTPUT_DIR}/css/**/*.css`, `${OUTPUT_DIR}/js/**/*.js`],
-  });
+  eleventyConfig.setServerOptions({ watch: SASS_ESBUILD_OUTPUT });
 
   return {
     markdownTemplateEngine: TEMPLATE_ENGINE,
