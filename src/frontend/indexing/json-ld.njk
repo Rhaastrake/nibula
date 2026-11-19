@@ -1,24 +1,26 @@
 {#- JSON-LD — Structured data for SEO/AI. Included in layouts/base.njk -#}
 
+{%- set websiteId = site.url + "/#website" %}
+
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": {{ (pageData.seo.title or title or site.title) | dump | safe }},
-    "description": {{ (pageData.seo.description or site.description) | dump | safe }},
-    "url": {{ (site.url + page.url) | dump | safe }},
-    "author": {
-        "@type": "Person",
-        "name": {{ site.author.fullName | dump | safe }},
-        "url": {{ site.author.website | dump | safe }}
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": {{ site.siteName | dump | safe }},
-        "logo": {
-            "@type": "ImageObject",
-            "url": {{ (site.url + site.logo) | dump | safe }}
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "@id": {{ websiteId | dump | safe }},
+            "name": {{ site.siteName | dump | safe }},
+            "url": {{ (site.url + "/") | dump | safe }},
+            "inLanguage": {{ (site.lang or "en") | dump | safe }}
+        },
+        {
+            "@type": "WebPage",
+            "name": {{ (pageData.seo.title or title or site.title) | dump | safe }},
+            "description": {{ (pageData.seo.description or site.description) | dump | safe }},
+            "url": {{ canonicalUrl | dump | safe }},
+            "inLanguage": {{ (site.lang or "en") | dump | safe }},
+            "isPartOf": { "@id": {{ websiteId | dump | safe }} }
         }
-    }
+    ]
 }
 </script>
