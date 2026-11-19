@@ -117,6 +117,16 @@ const FRAMEWORKS = {
 
 // ── GENERATED FILE CONTENTS ───────────────────────────────────────────────────
 
+const AGENTS_TEMPLATE_DIR = path.join(templateDir, 'tools/res/templates/agents');
+
+// AGENTS.md tells AI assistants how the project works; CLAUDE.md only imports it
+function copyAgentFiles() {
+    for (const file of ['AGENTS.md', 'CLAUDE.md']) {
+        fs.copyFileSync(path.join(AGENTS_TEMPLATE_DIR, file), path.join(targetDir, file));
+        logAdd(file);
+    }
+}
+
 const GITIGNORE_BASE = `
 node_modules/
 out/
@@ -135,20 +145,25 @@ const PROJECT_PACKAGE = {
     private:   true,
     outputDir: 'out',
     dependencies: {
-        '@11ty/eleventy':     '^3.1.6',
-        '@11ty/eleventy-img': '^7.0.0',
+        '@11ty/eleventy':     '^3.1.8',
         '@11ty/eleventy-plugin-syntaxhighlight': '^5.0.2',
-        'bootstrap':          '^5.3.8',
-        'bootstrap-icons':    '^1.13.1',
+        'bootstrap':          '^5.3.9',
+        'bootstrap-icons':    '^1.13.2',
         'bulma':              '^1.0.4',
         'markdown-it-anchor': '^9.2.1',
         'markdown-it-attrs':  '^5.0.1',
     },
     devDependencies: {
         'nibula': `^${SELF_VERSION}`,
-        'concurrently':  '^9.2.4',
+        'concurrently':  '^9.2.5',
         'esbuild':       '^0.28.2',
-        'sass':          '^1.103.1',
+        'sass':          '^1.108.2',
+    },
+    // Approves the install scripts of esbuild and of @parcel/watcher (used by
+    // Sass), so npm does not warn now and will not block them later
+    allowScripts: {
+        'esbuild':         true,
+        '@parcel/watcher': true,
     },
 };
 
@@ -442,10 +457,13 @@ function askChoice(question, choices) {
 // Silent when git is missing or the folder is already inside a repository
 function initGitRepository() {
     const inside = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: targetDir, stdio: 'ignore' });
-    if (inside.error || inside.status === 0) return;
+    if (inside.error || inside.status === 0) return false;
 
     const res = spawnSync('git', ['init', '-q'], { cwd: targetDir, stdio: 'ignore' });
-    if (!res.error && res.status === 0) log(`${color.green}>> Git repository initialized${color.reset}`);
+    if (res.error || res.status !== 0) return false;
+
+    log(`\n${color.green}>> Git repository initialized${color.reset}`);
+    return true;
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -522,6 +540,8 @@ async function init() {
     fs.writeFileSync(path.join(targetDir, '.gitignore'), gitignore);
     logAdd('.gitignore');
 
+    copyAgentFiles();
+
     for (const dir of CREATE_DIRS) {
         fs.mkdirSync(path.join(targetDir, dir), { recursive: true });
     }
@@ -530,9 +550,10 @@ async function init() {
 
     installDependencies(backend);
 
-    initGitRepository();
+    const gitInitialized = initGitRepository();
 
-    log(`\n${color.green}>> Done!${color.reset}`);
+    // Right below the git line, or after a blank line when there is none
+    log(`${gitInitialized ? '' : '\n'}${color.green}>> Done!${color.reset}`);
     log(`${color.yellow}\nNow run:\n${color.reset}`);
     if (process.argv[2]) log(`${color.yellow}> cd ${process.argv[2]}${color.reset}`);
     log(`${color.yellow}> nib run${color.reset}`);
