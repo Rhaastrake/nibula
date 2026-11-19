@@ -1,0 +1,24 @@
+{#- JSON-LD — Structured data for SEO/AI. Included in layouts/base.njk -#}
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": {{ (pageData.seo.title or title or site.title) | dump | safe }},
+    "description": {{ (pageData.seo.description or site.description) | dump | safe }},
+    "url": {{ (site.url + page.url) | dump | safe }},
+    "author": {
+        "@type": "Person",
+        "name": {{ site.author.fullName | dump | safe }},
+        "url": {{ site.author.website | dump | safe }}
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": {{ site.siteName | dump | safe }},
+        "logo": {
+            "@type": "ImageObject",
+            "url": {{ (site.url + site.logo) | dump | safe }}
+        }
+    }
+}
+</script>
