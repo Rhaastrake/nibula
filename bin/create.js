@@ -119,9 +119,10 @@ const FRAMEWORKS = {
 
 const AGENTS_TEMPLATE_DIR = path.join(templateDir, 'tools/res/templates/agents');
 
-// AGENTS.md tells AI assistants how the project works; CLAUDE.md only imports it
+// AGENTS.md tells AI assistants how the project works; CLAUDE.md and
+// GEMINI.md only import it, for the tools that do not read AGENTS.md
 function copyAgentFiles() {
-    for (const file of ['AGENTS.md', 'CLAUDE.md']) {
+    for (const file of ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md']) {
         fs.copyFileSync(path.join(AGENTS_TEMPLATE_DIR, file), path.join(targetDir, file));
         logAdd(file);
     }
