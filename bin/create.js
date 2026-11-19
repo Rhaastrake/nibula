@@ -428,6 +428,17 @@ function askChoice(question, choices) {
     });
 }
 
+// ── GIT ──────────────────────────────────────────────────────────────────────
+
+// Silent when git is missing or the folder is already inside a repository
+function initGitRepository() {
+    const inside = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: targetDir, stdio: 'ignore' });
+    if (inside.error || inside.status === 0) return;
+
+    const res = spawnSync('git', ['init', '-q'], { cwd: targetDir, stdio: 'ignore' });
+    if (!res.error && res.status === 0) log(`${color.green}>> Git repository initialized${color.reset}`);
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 
 async function init() {
@@ -506,6 +517,8 @@ async function init() {
     applyFramework(framework);
 
     installDependencies(backend);
+
+    initGitRepository();
 
     log(`\n${color.green}>> Done!${color.reset}`);
     log(`${color.yellow}\nNow run:\n${color.reset}`);
