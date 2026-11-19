@@ -2,14 +2,8 @@
   "siteName": "Site name",
   "title": "Site title",
   "description": "Site description",
-  "keywords": "keyword1, keyword2, keyword3",
-  "domain": "yoursite.com",
   "url": "https://yoursite.com",
   "lang": "en",
-  "author": {
-      "fullName": "Name and surname",
-      "website": "https://example.com"
-  },
   "theme": "dark",
   "logo": "/assets/brand/logo.svg",
   "legal": {
