@@ -84,6 +84,13 @@ module.exports = function (eleventyConfig) {
   });
 
   // ---------------------------------------------------------------------------
+  // Ignores
+  // ---------------------------------------------------------------------------
+
+  // Partial included by layouts/base.njk, not a standalone page
+  eleventyConfig.ignores.add("src/frontend/indexing/json-ld.njk");
+
+  // ---------------------------------------------------------------------------
   // Passthrough copy
   // ---------------------------------------------------------------------------
 
