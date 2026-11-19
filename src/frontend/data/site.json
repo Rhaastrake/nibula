@@ -5,14 +5,8 @@
   "url": "https://yoursite.com",
   "lang": "en",
   "theme": "dark",
-  "logo": "/assets/brand/logo.svg",
-  "legal": {
-    "privacy": "/privacy/",
-    "cookie": "/cookies/",
-    "terms": "/terms/",
-    "copyright": {
-      "year": "2026",
-      "text": "All rights reserved."
-    }
+  "copyright": {
+    "year": "2026",
+    "text": "All rights reserved."
   }
 }

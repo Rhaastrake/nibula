@@ -10,12 +10,13 @@
 
         {% set pageKey = title %}
         {% set pageData = pages[pageKey] %}
+        {% set canonicalUrl = pageData.seo.canonical or (site.url + page.url) %}
 
       {#╔══════════════════╗
         ║       SEO        ║
         ╚══════════════════╝#}
 
-        <link rel="canonical" href="{{ pageData.seo.canonical or (site.url + page.url) }}"/>
+        <link rel="canonical" href="{{ canonicalUrl }}"/>
         <title>{{ pageData.seo.title or title or site.title }}</title>
         <meta name="description" content="{{ pageData.seo.description or site.description }}">
         {% if pageData.seo.keywords %}
@@ -30,15 +31,19 @@
         <meta property="og:title" content="{{ pageData.seo.title or title or site.title }}">
         <meta property="og:description" content="{{ pageData.seo.description or site.description }}">
         <meta property="og:type" content="website">
-        <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-        <meta property="og:image" content="{{ site.url }}{{ site.logo }}">
+        <meta property="og:url" content="{{ canonicalUrl }}">
+        <meta property="og:image" content="{{ site.url }}/assets/brand/og-image.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{{ site.siteName }}">
         <meta property="og:site_name" content="{{ site.siteName }}">
 
         {# Twitter Card #}
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="{{ pageData.seo.title or title or site.title }}">
         <meta name="twitter:description" content="{{ pageData.seo.description or site.description }}">
-        <meta name="twitter:image" content="{{ site.url }}{{ site.logo }}">
+        <meta name="twitter:image" content="{{ site.url }}/assets/brand/og-image.png">
+        <meta name="twitter:image:alt" content="{{ site.siteName }}">
 
         {% include "../indexing/json-ld.njk" ignore missing %}
 
@@ -100,7 +105,7 @@
         {% endif %}
 
         {# Page JS #}
-        <script src="{{ ('/js/pages/' + title + '.js') | url }}"></script>
+        <script src="{{ ('/js/pages/' + title + '.js') | url }}" defer></script>
 
     </body>
 
