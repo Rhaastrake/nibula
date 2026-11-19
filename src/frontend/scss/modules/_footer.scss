@@ -8,7 +8,7 @@ footer {
     width: 100%;
     padding: root.$header-padding-y root.$header-padding-x;
     background-color: root.$header-footer-background;
-    border-top: 1px solid root.$divider;
+    border-top: 1px solid color-mix(in srgb, currentColor 8%, transparent);
 
     a {
         color: inherit;
@@ -16,7 +16,7 @@ footer {
         transition: color 0.3s;
 
         &:hover {
-            color: root.$accent-hover;
+            color: light-dark(#0b5e3d, #1a9e62);
         }
     }
 
@@ -33,7 +33,7 @@ footer {
     hr {
         width: 100%;
         border: 0;
-        border-top: 1px solid root.$separator;
+        border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
         margin: 1.5rem 0 1rem 0;
     }
 

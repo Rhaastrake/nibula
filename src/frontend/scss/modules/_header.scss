@@ -9,7 +9,7 @@ header {
   align-items: center;
   padding: root.$header-padding-y root.$header-padding-x;
   background-color: root.$header-footer-background;
-  border-bottom: 1px solid root.$divider;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 8%, transparent);
 }
 
 nav {
@@ -30,7 +30,7 @@ nav {
     transition: color 0.3s;
 
     &:hover {
-      color: root.$accent;
+      color: light-dark(#0f7d52, #22c97d);
     }
 
     img {

@@ -30,6 +30,7 @@ const FRAMEWORK = Object.freeze({
 const BACKEND = Object.freeze({
     NODE: 'node',
     PHP:  'php',
+    NONE: 'none',
 });
 
 const COMMENT_STYLE = Object.freeze({
@@ -53,6 +54,7 @@ const FRAMEWORK_CHOICES = [
 const BACKEND_CHOICES = [
     { label: 'Node.js', note: 'needs a VPS',  value: BACKEND.NODE },
     { label: 'PHP',     note: 'any hosting',  value: BACKEND.PHP  },
+    { label: 'None',    note: 'static site',  value: BACKEND.NONE },
 ];
 
 // Runtime dependencies for the Node backend, read from the backend's own
@@ -115,10 +117,12 @@ const FRAMEWORKS = {
 
 // ── GENERATED FILE CONTENTS ───────────────────────────────────────────────────
 
-const GITIGNORE_CONTENT = `
+const GITIGNORE_BASE = `
 node_modules/
-src/backend/core/vendor/
 out/
+`;
+
+const GITIGNORE_BACKEND = `src/backend/core/vendor/
 src/backend/config.php
 src/backend/config.js
 src/backend/cache/
@@ -306,6 +310,11 @@ function installDependencies(backend) {
         return false;
     }
 
+    // No backend: nothing else to install.
+    if (backend === BACKEND.NONE) {
+        return true;
+    }
+
     // Node backend: its runtime deps were added to the ROOT package.json and
     // installed above into the root node_modules — there is no separate install
     // inside src/backend, and Composer is never run.
@@ -447,6 +456,8 @@ async function init() {
         if (!fs.existsSync(src)) continue;
 
         if (target === 'src/backend') {
+            // A static site gets no backend folder at all.
+            if (backend === BACKEND.NONE) continue;
             // Copy only the chosen backend's files (the other backend is omitted).
             copyBackend(src, dest, backend);
         } else {
@@ -496,7 +507,8 @@ async function init() {
     fs.writeFileSync(path.join(targetDir, 'package.json'), JSON.stringify(pkg, null, 2));
     logAdd('package.json');
 
-    fs.writeFileSync(path.join(targetDir, '.gitignore'), GITIGNORE_CONTENT);
+    const gitignore = backend === BACKEND.NONE ? GITIGNORE_BASE : GITIGNORE_BASE + GITIGNORE_BACKEND;
+    fs.writeFileSync(path.join(targetDir, '.gitignore'), gitignore);
     logAdd('.gitignore');
 
     for (const dir of CREATE_DIRS) {

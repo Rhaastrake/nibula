@@ -48,9 +48,9 @@
       "parseFailed": "[error] cannot parse {file}: {error}",
       "recordExists": "[skip] record \"{name}\" already exists",
       "recordMissing": "[skip] record \"{name}\" not found",
-      "recordAdded": "[updated] record \"{name}\" added",
-      "recordRemoved": "[cleaned] record \"{name}\" removed",
-      "recordRenamed": "[updated] record \"{source}\" renamed to \"{destination}\""
+      "recordAdded": "[created] {path}",
+      "recordRemoved": "[deleted] {path}",
+      "recordRenamed": "[updated] {path}"
   },
   "output": {
     "emptyPath": "[skip] empty output path",
