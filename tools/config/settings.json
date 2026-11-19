@@ -63,7 +63,7 @@
     }
   ],
   "page": {
-    "protected": ["homepage", "index", "404"],
+    "protected": ["homepage", "404"],
     "reserved": ["api", "assets", "backend", "css", "js", "ts"],
     "styleExtension": "scss",
     "routeExtension": "njk",

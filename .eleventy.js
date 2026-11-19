@@ -1,168 +1,116 @@
+const fs = require("fs");
 const { RenderPlugin } = require("@11ty/eleventy");
+const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const markdownItAnchor = require("markdown-it-anchor");
 const markdownItAttrs = require("markdown-it-attrs");
-const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
-const Image = require("@11ty/eleventy-img");
-const fs = require("fs");
-const path = require("path");
 
+// Build output folder. Rewritten by the Nibula CLI: keep it a plain string
 const OUTPUT_DIR = "out";
+
 const TEMPLATE_ENGINE = "njk";
-const ANCHOR_LEVELS = [2, 3, 4];
-const ANCHOR_PERMALINK_SYMBOL = "#";
-const ANCHOR_PERMALINK_PLACEMENT = "after";
 
-const MARKDOWN_BASE_PATH = "src/frontend/components/";
+const DIRS = {
+  input: "src/frontend",
+  includes: "components",
+  layouts: "layouts",
+  data: "data",
+};
 
-module.exports = function (eleventyConfig) {
-  // ---------------------------------------------------------------------------
-  // Utilities
-  // ---------------------------------------------------------------------------
+const COMPONENTS_PATH = `${DIRS.input}/${DIRS.includes}/`;
 
-  function copyRecursiveSync(src, dest) {
-    if (!fs.existsSync(src)) return;
-    if (src.includes(".git")) return;
+const BACKEND_SOURCE = "src/backend";
+const BACKEND_OUTPUT = `${OUTPUT_DIR}/backend`;
 
-    const stat = fs.statSync(src);
+const HEADING_ANCHORS = {
+  level: [2, 3, 4],
+  permalink: markdownItAnchor.permalink.linkInsideHeader({
+    symbol: "#",
+    placement: "after",
+  }),
+};
 
-    if (stat.isDirectory()) {
-      fs.mkdirSync(dest, { recursive: true });
-      for (const child of fs.readdirSync(src)) {
-        copyRecursiveSync(path.join(src, child), path.join(dest, child));
-      }
-    } else {
-      fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.copyFileSync(src, dest);
-    }
+// Only the files written by Sass and esbuild: passthrough copies such as
+// prism.css and bootstrap.bundle.min.js change on every build
+const SASS_ESBUILD_OUTPUT = [
+  `${OUTPUT_DIR}/css/global.css`,
+  `${OUTPUT_DIR}/css/pages/**/*.css`,
+  `${OUTPUT_DIR}/js/pages/**/*.js`,
+];
+
+// The watcher ignores a glob whose folder does not exist yet, and Sass and
+// esbuild create these folders only after the server has started
+function createPageOutputFolders() {
+  for (const folder of ["css/pages", "js/pages"]) {
+    fs.mkdirSync(`${OUTPUT_DIR}/${folder}`, { recursive: true });
+  }
+}
+
+function copyBackend() {
+  if (!fs.existsSync(BACKEND_SOURCE)) return;
+
+  fs.cpSync(BACKEND_SOURCE, BACKEND_OUTPUT, {
+    recursive: true,
+    filter: (source) => !source.includes(".git"),
+  });
+}
+
+function openExternalLinksInNewTab(tokens, idx, options, env, self) {
+  const href = tokens[idx].attrGet("href") || "";
+
+  if (href.startsWith("http://") || href.startsWith("https://")) {
+    tokens[idx].attrSet("target", "_blank");
+    tokens[idx].attrSet("rel", "noopener noreferrer");
   }
 
-  // ---------------------------------------------------------------------------
-  // Plugins & markdown
-  // ---------------------------------------------------------------------------
+  return self.renderToken(tokens, idx, options);
+}
 
+module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(RenderPlugin);
+  eleventyConfig.addPlugin(syntaxHighlight, { templateFormats: ["md"] });
 
-  eleventyConfig.addPlugin(syntaxHighlight, {
-    templateFormats: ["md"],
+  eleventyConfig.amendLibrary("md", (markdown) => {
+    markdown.renderer.rules.link_open = openExternalLinksInNewTab;
+    markdown.use(markdownItAnchor, HEADING_ANCHORS).use(markdownItAttrs);
   });
 
-  eleventyConfig.amendLibrary("md", (markdownLibrary) => {
-    markdownLibrary.renderer.rules.link_open = function (
-      tokens,
-      idx,
-      options,
-      env,
-      self,
-    ) {
-      const href = tokens[idx].attrGet("href");
+  eleventyConfig.addFilter("componentsPath", (name) => `${COMPONENTS_PATH}${name}`);
 
-      if (href && (href.startsWith("http://") || href.startsWith("https://"))) {
-        tokens[idx].attrSet("target", "_blank");
-        tokens[idx].attrSet("rel", "noopener noreferrer");
-      }
+  // Partial included by layouts/base.njk, not a standalone page
+  eleventyConfig.ignores.add(`${DIRS.input}/indexing/json-ld.njk`);
 
-      return self.renderToken(tokens, idx, options);
-    };
+  eleventyConfig.addPassthroughCopy(`${DIRS.input}/assets`);
 
-    markdownLibrary
-      .use(markdownItAnchor, {
-        level: ANCHOR_LEVELS,
-        permalink: markdownItAnchor.permalink.linkInsideHeader({
-          symbol: ANCHOR_PERMALINK_SYMBOL,
-          placement: ANCHOR_PERMALINK_PLACEMENT,
-        }),
-      })
-      .use(markdownItAttrs);
+  eleventyConfig.addPassthroughCopy({
+    [`${DIRS.input}/hosting/.htaccess`]: ".htaccess",
+    [`${DIRS.input}/hosting/web.config`]: "web.config",
   });
 
-  // ---------------------------------------------------------------------------
-  // Events
-  // ---------------------------------------------------------------------------
-
-  eleventyConfig.on("eleventy.before", () => {
-    copyRecursiveSync("src/backend", `${OUTPUT_DIR}/backend`);
-  });
-
-  // ---------------------------------------------------------------------------
-  // Passthrough copy
-  // ---------------------------------------------------------------------------
-
-  // Prism syntax highlighting theme
   eleventyConfig.addPassthroughCopy({
     "node_modules/prismjs/themes/prism-tomorrow.css": "css/prism.css",
   });
 
-  // Project assets
-  eleventyConfig.addPassthroughCopy("src/frontend/assets");
-
-  // Hosting files
-  eleventyConfig.addPassthroughCopy({
-    "src/frontend/hosting/.htaccess": ".htaccess",
-    "src/frontend/hosting/web.config": "web.config",
-  });
-
-  // CSS frameworks — uncomment the one you are using
+  // CSS frameworks: uncomment the one you are using
   // prettier-ignore
   eleventyConfig.addPassthroughCopy({
     // Bootstrap
     "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js": "js/bootstrap.bundle.min.js",
     "node_modules/bootstrap-icons/font/fonts": "css/fonts",
 
-    // Bulma — CSS only, no JS passthrough needed
+    // Bulma: CSS only, no JS passthrough needed
   });
 
-  // ---------------------------------------------------------------------------
-  // Shortcodes
-  // ---------------------------------------------------------------------------
+  eleventyConfig.on("eleventy.before", copyBackend);
 
-  eleventyConfig.addFilter(
-    "componentsPath",
-    (name) => `${MARKDOWN_BASE_PATH}${name}`,
-  );
+  createPageOutputFolders();
 
-  eleventyConfig.addShortcode("image", async function (src, alt) {
-    const metadata = await Image(src, {
-      widths: [320, 480, 720, 1280, 1920, 2048, 2560, 3840, 4096, 7680],
-      formats: ["webp", "jpeg"],
-      outputDir: `${OUTPUT_DIR}/assets/images/`,
-      urlPath: "/assets/images/",
-    });
-
-    return Image.generateHTML(metadata, {
-      alt,
-      sizes: "(max-width: 768px) 100vw, 50vw",
-      loading: "lazy",
-      decoding: "async",
-    });
-  });
-
-  // ---------------------------------------------------------------------------
-  // Watch targets & dev server
-  // ---------------------------------------------------------------------------
-
-  eleventyConfig.addWatchTarget("./src/frontend/scss");
-  eleventyConfig.addWatchTarget("./src/frontend/routes");
-  eleventyConfig.addWatchTarget("./src/frontend/data");
-  eleventyConfig.addWatchTarget("./src/frontend/components");
-
-  eleventyConfig.setServerOptions({
-    watch: [`${OUTPUT_DIR}/js/**/*.js`],
-  });
-
-  // ---------------------------------------------------------------------------
-  // Directory configuration
-  // ---------------------------------------------------------------------------
+  // Sass and esbuild write straight into the output folder:
+  // reload the browser once their files are ready
+  eleventyConfig.setServerOptions({ watch: SASS_ESBUILD_OUTPUT });
 
   return {
-    markdownTemplateEngine: "njk",
+    markdownTemplateEngine: TEMPLATE_ENGINE,
     htmlTemplateEngine: TEMPLATE_ENGINE,
-
-    dir: {
-      input: "src/frontend",
-      output: OUTPUT_DIR,
-      includes: "components",
-      layouts: "layouts",
-      data: "data",
-    },
+    dir: { ...DIRS, output: OUTPUT_DIR },
   };
 };

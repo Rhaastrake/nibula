@@ -30,6 +30,7 @@ const FRAMEWORK = Object.freeze({
 const BACKEND = Object.freeze({
     NODE: 'node',
     PHP:  'php',
+    NONE: 'none',
 });
 
 const COMMENT_STYLE = Object.freeze({
@@ -53,6 +54,7 @@ const FRAMEWORK_CHOICES = [
 const BACKEND_CHOICES = [
     { label: 'Node.js', note: 'needs a VPS',  value: BACKEND.NODE },
     { label: 'PHP',     note: 'any hosting',  value: BACKEND.PHP  },
+    { label: 'None',    note: 'static site',  value: BACKEND.NONE },
 ];
 
 // Runtime dependencies for the Node backend, read from the backend's own
@@ -115,10 +117,22 @@ const FRAMEWORKS = {
 
 // ── GENERATED FILE CONTENTS ───────────────────────────────────────────────────
 
-const GITIGNORE_CONTENT = `
+const AGENTS_TEMPLATE_DIR = path.join(templateDir, 'tools/res/templates/agents');
+
+// AGENTS.md tells AI assistants how the project works; CLAUDE.md only imports it
+function copyAgentFiles() {
+    for (const file of ['AGENTS.md', 'CLAUDE.md']) {
+        fs.copyFileSync(path.join(AGENTS_TEMPLATE_DIR, file), path.join(targetDir, file));
+        logAdd(file);
+    }
+}
+
+const GITIGNORE_BASE = `
 node_modules/
-src/backend/core/vendor/
 out/
+`;
+
+const GITIGNORE_BACKEND = `src/backend/core/vendor/
 src/backend/config.php
 src/backend/config.js
 src/backend/cache/
@@ -131,20 +145,25 @@ const PROJECT_PACKAGE = {
     private:   true,
     outputDir: 'out',
     dependencies: {
-        '@11ty/eleventy':     '^3.1.6',
-        '@11ty/eleventy-img': '^7.0.0',
+        '@11ty/eleventy':     '^3.1.8',
         '@11ty/eleventy-plugin-syntaxhighlight': '^5.0.2',
-        'bootstrap':          '^5.3.8',
-        'bootstrap-icons':    '^1.13.1',
+        'bootstrap':          '^5.3.9',
+        'bootstrap-icons':    '^1.13.2',
         'bulma':              '^1.0.4',
         'markdown-it-anchor': '^9.2.1',
         'markdown-it-attrs':  '^5.0.1',
     },
     devDependencies: {
         'nibula': `^${SELF_VERSION}`,
-        'concurrently':  '^9.2.4',
+        'concurrently':  '^9.2.5',
         'esbuild':       '^0.28.2',
-        'sass':          '^1.103.1',
+        'sass':          '^1.108.2',
+    },
+    // Approves the install scripts of esbuild and of @parcel/watcher (used by
+    // Sass), so npm does not warn now and will not block them later
+    allowScripts: {
+        'esbuild':         true,
+        '@parcel/watcher': true,
     },
 };
 
@@ -306,6 +325,11 @@ function installDependencies(backend) {
         return false;
     }
 
+    // No backend: nothing else to install.
+    if (backend === BACKEND.NONE) {
+        return true;
+    }
+
     // Node backend: its runtime deps were added to the ROOT package.json and
     // installed above into the root node_modules — there is no separate install
     // inside src/backend, and Composer is never run.
@@ -428,6 +452,20 @@ function askChoice(question, choices) {
     });
 }
 
+// ── GIT ──────────────────────────────────────────────────────────────────────
+
+// Silent when git is missing or the folder is already inside a repository
+function initGitRepository() {
+    const inside = spawnSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: targetDir, stdio: 'ignore' });
+    if (inside.error || inside.status === 0) return false;
+
+    const res = spawnSync('git', ['init', '-q'], { cwd: targetDir, stdio: 'ignore' });
+    if (res.error || res.status !== 0) return false;
+
+    log(`\n${color.green}>> Git repository initialized${color.reset}`);
+    return true;
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 
 async function init() {
@@ -447,6 +485,8 @@ async function init() {
         if (!fs.existsSync(src)) continue;
 
         if (target === 'src/backend') {
+            // A static site gets no backend folder at all.
+            if (backend === BACKEND.NONE) continue;
             // Copy only the chosen backend's files (the other backend is omitted).
             copyBackend(src, dest, backend);
         } else {
@@ -496,8 +536,11 @@ async function init() {
     fs.writeFileSync(path.join(targetDir, 'package.json'), JSON.stringify(pkg, null, 2));
     logAdd('package.json');
 
-    fs.writeFileSync(path.join(targetDir, '.gitignore'), GITIGNORE_CONTENT);
+    const gitignore = backend === BACKEND.NONE ? GITIGNORE_BASE : GITIGNORE_BASE + GITIGNORE_BACKEND;
+    fs.writeFileSync(path.join(targetDir, '.gitignore'), gitignore);
     logAdd('.gitignore');
+
+    copyAgentFiles();
 
     for (const dir of CREATE_DIRS) {
         fs.mkdirSync(path.join(targetDir, dir), { recursive: true });
@@ -507,7 +550,10 @@ async function init() {
 
     installDependencies(backend);
 
-    log(`\n${color.green}>> Done!${color.reset}`);
+    const gitInitialized = initGitRepository();
+
+    // Right below the git line, or after a blank line when there is none
+    log(`${gitInitialized ? '' : '\n'}${color.green}>> Done!${color.reset}`);
     log(`${color.yellow}\nNow run:\n${color.reset}`);
     if (process.argv[2]) log(`${color.yellow}> cd ${process.argv[2]}${color.reset}`);
     log(`${color.yellow}> nib run${color.reset}`);

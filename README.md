@@ -50,7 +50,8 @@ code you're not supposed to touch.
 
 ### Backend included
 
-At project creation you choose your backend: **Node.js or PHP**. Both expose the
+At project creation you choose your backend: **Node.js, PHP or none** for a
+plain static site. Node and PHP expose the
 same REST API — same routing, `X-Api-Key` auth, CORS and rate limiting — so a
 contact form or a small API works on whatever hosting you end up with.
 
@@ -89,7 +90,8 @@ nib new your-project
 ```
 
 The scaffolder asks you three things — the language, the CSS framework and the
-backend — then installs everything for you. Move into the project and start the
+backend — then installs everything for you. If git is installed, the project
+also starts as a git repository. Move into the project and start the
 dev server:
 
 ```
@@ -106,7 +108,7 @@ Run these from anywhere inside a project, except `nib new`: that one must be run
 
 | Command | Description |
 |---|---|
-| `nib new <name>` | Create a new project |
+| `nib new <name>` | Create a new project. If one with the same name exists, it asks before replacing it: add `--overwrite` to replace it without asking |
 | `nib run` | Start the dev server and rebuild as you save |
 | `nib build` | Build the output folder |
 | `nib clean` | Remove the output directory |

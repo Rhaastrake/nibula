@@ -5,6 +5,57 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-11-19
+
+New projects can now be created without a backend, as a plain static site, and
+start as a git repository when git is installed. `nib new --overwrite` replaces
+an existing project without asking. The JSON-LD now has its own file and is
+valid JSON again, `llms.txt` lists every indexed page, and `site.json` keeps
+only the values the site actually uses. During `nib run`, style changes now show
+up as soon as Sass has written them.
+
+### Added
+- A **None** option for the backend, for static sites: the project gets no `src/backend` folder, Composer is never run and `.gitignore` has no backend entries.
+- `nib new --overwrite` replaces an existing project with the same name without asking. It also works outside a terminal, and it is kept when Nibula updates itself before creating the project.
+- New projects get an `AGENTS.md` for AI assistants: it points to the documentation on nibula.dev and explains the commands, folders and naming rules. A one-line `CLAUDE.md` imports it for Claude Code.
+- New projects start as a git repository when git is installed. If git is missing or the folder is already inside a repository, the step is skipped silently.
+
+### Changed
+- New projects require Eleventy 3.1.8, Sass 1.108, Bootstrap 5.3.9, Bootstrap Icons 1.13.2 and concurrently 9.2.5 or later.
+- The JSON-LD describes the site as well as the page: a `WebSite` node with the site name and URL, linked from the `WebPage`, and the language from `site.lang` on both. Search engines can use it to show the site name in results.
+- The JSON-LD moved from `base.njk` to its own file, `indexing/json-ld.njk`, included by the layout. The build skips it as a standalone page.
+- `llms.txt` lists every indexed page as a link with its description, instead of the homepage only. Drafts and pages marked `noindex` are left out.
+- `llms.txt` no longer states that all content may be used for AI indexing. It shows the copyright from `site.json` instead, the same as the footer.
+- The keywords meta tag is taken only from `pages.json`, and it is left out when a page has none.
+- The homepage route is now `homepage.njk` instead of `index.njk`, like every other page. Its URL is still `/`, and `index` is no longer a protected name.
+- CLI messages start with a mark: a green check when something was done, a warning for `[skip]` and a cross for `[error]`. Changes to `pages.json` show the file path like every other file.
+- The welcome page says the site is ready and points at `welcome.njk` to delete it.
+- `.eleventy.js` is reorganized: settings at the top, helpers outside the config function, and the backend is copied with `fs.cpSync`.
+
+### Fixed
+- The JSON-LD was not valid JSON: its values were HTML-escaped (`&quot;`), so search engines ignored it.
+- During `nib run`, the browser reloaded before Sass had written the new CSS, often showing the old styles. It now reloads once the CSS is ready, swapping only the stylesheet.
+- Links in `llms.txt` are proper Markdown links.
+- Page scripts ran before Bootstrap and the per-page CDN scripts, so they could not use them. They now load with `defer` and run after both.
+- `og:url` and the JSON-LD `url` ignored the page's `canonical` from `pages.json`. All three now use the same URL.
+- During `nib run`, every rebuild logged `prism.css` and `bootstrap.bundle.min.js` as changed and reloaded the page a second time. The server now watches only the files written by Sass and esbuild.
+- `llms.txt` left out pages whose `pages.json` entry had no `noindex` field. Like the sitemap, it now leaves out only pages with `noindex: true`.
+- Link previews on WhatsApp, Facebook, X and LinkedIn showed no image, because `og:image` pointed to `logo.svg` and they do not display SVG. They now use `assets/brand/og-image.png` (1200×630), with its size and alt text.
+- `npm install` warned that the install scripts of esbuild and `@parcel/watcher` were not approved. New projects now approve them in `allowScripts`, so the warning is gone and future npm versions will not block them.
+- New projects still installed `@11ty/eleventy-img`, which was no longer used.
+- The header logo had no `alt` and its links skipped the `url` filter, so they broke on a site served from a subfolder.
+- The sitemap and `llms.txt` lowercased every URL, so a hand-written permalink with capital letters, such as `/Chi-Siamo/`, was listed with a URL that returned 404.
+
+### Removed
+- `legal` from `site.json`: `copyright` moved to the top level (`site.copyright.year`, `site.copyright.text`) and the footer links to `/privacy/`, `/cookies/` and `/terms/` directly.
+- `logo` from `site.json`: the header uses `assets/brand/logo.svg` directly, like the favicons. To change the logo, replace the file.
+- The `publisher` from the JSON-LD, which assumed every site belongs to an organization.
+- `domain`, `keywords` and `author` from `site.json`, with the author meta tag, the author in the JSON-LD and the "Built by" line in `llms.txt`.
+- The `@11ty/eleventy-img` dependency and the undocumented `image` shortcode.
+- `favicon-48.png`, which no tag referenced.
+- `$divider`, `$separator`, `$accent` and `$accent-hover` from `_root.scss`: header and footer modules use the values directly.
+- Watch targets that Eleventy already covered.
+
 ## [3.1.0] - 2026-11-10
 
 Pages can now be created, renamed and removed with a single command, without

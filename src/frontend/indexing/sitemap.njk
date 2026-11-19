@@ -2,13 +2,16 @@
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
+
+{#- sitemap.xml — List of indexable pages for search engines -#}
+
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for page in collections.all %}
         {% set pageMeta = pages[page.data.title] %}
         {% if not page.data.draft and '/404' not in page.url and not (pageMeta and pageMeta.seo.noindex) %}
             <url>
-                <loc>{{ site.url }}{{ page.url | lower }}</loc>
+                <loc>{{ site.url }}{{ page.url }}</loc>
                 <lastmod>{{ page.date.toISOString() }}</lastmod>
                 <changefreq>weekly</changefreq>
                 <priority>{{ '1.0' if page.url == '/' else '0.8' }}</priority>
