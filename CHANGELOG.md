@@ -5,6 +5,41 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - ????-??-??
+
+New projects can now be created without a backend, as a plain static site, and
+start as a git repository when git is installed. `nib new --overwrite` replaces
+an existing project without asking. The JSON-LD now has its own file and is
+valid JSON again, `llms.txt` lists every indexed page, and `site.json` keeps
+only the values the site actually uses. During `nib run`, style changes now show
+up as soon as Sass has written them.
+
+### Added
+- A **None** option for the backend, for static sites: the project gets no `src/backend` folder, Composer is never run and `.gitignore` has no backend entries.
+- `nib new --overwrite` replaces an existing project with the same name without asking. It also works outside a terminal, and it is kept when Nibula updates itself before creating the project.
+- New projects start as a git repository when git is installed. If git is missing or the folder is already inside a repository, the step is skipped silently.
+
+### Changed
+- The JSON-LD moved from `base.njk` to its own file, `indexing/json-ld.njk`, included by the layout. The build skips it as a standalone page.
+- `llms.txt` lists every indexed page as a link with its description, instead of the homepage only. Drafts and pages marked `noindex` are left out.
+- The keywords meta tag is taken only from `pages.json`, and it is left out when a page has none.
+- The homepage route is now `homepage.njk` instead of `index.njk`, like every other page. Its URL is still `/`, and `index` is no longer a protected name.
+- CLI messages start with a mark: a green check when something was done, a warning for `[skip]` and a cross for `[error]`. Changes to `pages.json` show the file path like every other file.
+- The welcome page says the site is ready and points at `welcome.njk` to delete it.
+- `.eleventy.js` is reorganized: settings at the top, helpers outside the config function, and the backend is copied with `fs.cpSync`.
+
+### Fixed
+- The JSON-LD was not valid JSON: its values were HTML-escaped (`&quot;`), so search engines ignored it.
+- During `nib run`, the browser reloaded before Sass had written the new CSS, often showing the old styles. It now reloads once the CSS is ready, swapping only the stylesheet.
+- Links in `llms.txt` are proper Markdown links.
+
+### Removed
+- `domain`, `keywords` and `author` from `site.json`, with the author meta tag, the author in the JSON-LD and the "Built by" line in `llms.txt`.
+- The `@11ty/eleventy-img` dependency and the undocumented `image` shortcode.
+- `favicon-48.png`, which no tag referenced.
+- `$divider`, `$separator`, `$accent` and `$accent-hover` from `_root.scss`: header and footer modules use the values directly.
+- Watch targets that Eleventy already covered.
+
 ## [3.1.0] - 2026-11-10
 
 Pages can now be created, renamed and removed with a single command, without
