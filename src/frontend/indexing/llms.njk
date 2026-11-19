@@ -2,13 +2,22 @@
 permalink: /llms.txt
 eleventyExcludeFromCollections: true
 ---
+
+{#- llms.txt — Site summary and page index for LLMs -#}
+
 # {{ site.siteName }}
 
 > {{ site.description }}
 
-## Pages
+Built by {{ site.author.fullName }} — [Website]({{ site.author.website }})
 
-- {{ site.url }}: Homepage
+## Pages
+{% for page in collections.all -%}
+{%- set pageMeta = pages[page.data.title] -%}
+{%- if not page.data.draft and pageMeta and pageMeta.seo.noindex === false %}
+- [{{ pageMeta.seo.title }}]({{ site.url }}{{ page.url | lower }}){% if pageMeta.seo.description %}: {{ pageMeta.seo.description }}{% endif %}
+{%- endif -%}
+{%- endfor %}
 
 ## Notes
 

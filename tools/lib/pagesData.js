@@ -69,7 +69,7 @@ function addPageData(pageName) {
     data[camelName] = record;
 
     writePagesData(data);
-    log('pagesData.recordAdded', { name: camelName });
+    log('pagesData.recordAdded', { path: PATHS.pagesData });
 }
 
 function removePageData(pageName) {
@@ -84,7 +84,7 @@ function removePageData(pageName) {
 
     delete data[camelName];
     writePagesData(data);
-    log('pagesData.recordRemoved', { name: camelName });
+    log('pagesData.recordRemoved', { path: PATHS.pagesData });
 }
 
 function renamePageData(oldName, newName) {
@@ -108,7 +108,7 @@ function renamePageData(oldName, newName) {
     delete data[oldCamelName];
 
     writePagesData(data);
-    log('pagesData.recordRenamed', { source: oldCamelName, destination: newCamelName });
+    log('pagesData.recordRenamed', { path: PATHS.pagesData });
 }
 
 module.exports = { readPagesData, findPageRecords, addPageData, removePageData, renamePageData };
