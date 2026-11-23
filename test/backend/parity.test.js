@@ -9,14 +9,6 @@ const { CASES, SHARED_HEADERS } = require('../helpers/api-cases');
 const { backendRoot, startBackend } = require('../helpers/backend');
 const { send } = require('../helpers/backend-suite');
 
-// Not covered yet: an empty query, encoded as [] by PHP and {} by Node
-function withoutEmptyQuery(json) {
-    const query = json && json.data && json.data.query;
-    if (!query || Object.keys(query).length > 0) return json;
-    const { query: _, ...data } = json.data;
-    return { ...json, data };
-}
-
 describe('backend parity: Node and PHP', { skip: requireTools('php', 'composer') }, () => {
     let node;
     let php;
@@ -38,7 +30,7 @@ describe('backend parity: Node and PHP', { skip: requireTools('php', 'composer')
             for (const header of SHARED_HEADERS) {
                 assert.equal(b.headers[header], a.headers[header], `header ${header}`);
             }
-            assert.deepEqual(withoutEmptyQuery(b.json), withoutEmptyQuery(a.json), 'JSON body');
+            assert.deepEqual(b.json, a.json, 'JSON body');
         });
     }
 });

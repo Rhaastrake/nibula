@@ -26,12 +26,7 @@ const CASES = [
         name: 'GET a public endpoint',
         path: '/api/example-public',
         status: 200,
-        // Not covered yet: the shape of an empty query (PHP [] and Node {})
-        check: (res) => {
-            assert.equal(res.json.status, 'success');
-            assert.equal(res.json.data.message, 'Endpoint is working');
-            assert.deepEqual(res.json.data.params, []);
-        },
+        check: (res) => assert.deepEqual(res.json, { status: 'success', data: { message: 'Endpoint is working', params: [], query: {} } }),
     },
     {
         name: 'extra segments become params, query string is parsed',
