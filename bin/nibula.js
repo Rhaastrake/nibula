@@ -5,9 +5,11 @@ const path = require('path');
 const https = require('https');
 const readline = require('readline');
 const { spawnSync } = require('child_process');
+const { parseArgs } = require('util');
 const { findProjectRoot } = require('../tools/lib/paths');
 const { color } = require('../tools/lib/colors');
 const { message } = require('../tools/lib/logger');
+const { FLAG_NAMES, flagsProblem } = require('../tools/lib/newFlags');
 const { delegateToLocal, localPackageRoot } = require('./delegate');
 
 const pkg = require('../package.json');
@@ -215,9 +217,34 @@ ${color.yellow}nib path [<folder>]${color.reset}            Show or change where
 async function main() {
     switch (cmd) {
         case 'new': {
-            const args = rest.filter((a) => a !== SKIP_FLAG && a !== OVERWRITE_FLAG);
-            const skipCheck = rest.includes(SKIP_FLAG);
-            const forceOverwrite = rest.includes(OVERWRITE_FLAG);
+            let parsed;
+            try {
+                parsed = parseArgs({
+                    args: rest,
+                    allowPositionals: true,
+                    options: {
+                        'skip-update-check': { type: 'boolean' },
+                        overwrite:           { type: 'boolean' },
+                        lang:                { type: 'string' },
+                        css:                 { type: 'string' },
+                        backend:             { type: 'string' },
+                        'no-install':        { type: 'boolean' },
+                    },
+                });
+            } catch (err) {
+                console.error(`${color.red}${err.message}${color.reset}`);
+                process.exit(1);
+            }
+            const args = parsed.positionals;
+            const skipCheck = Boolean(parsed.values['skip-update-check']);
+            const forceOverwrite = Boolean(parsed.values.overwrite);
+
+            // Options handed to create.js (and kept when re-running after an update)
+            const createFlags = [];
+            for (const flag of FLAG_NAMES) {
+                if (parsed.values[flag] !== undefined) createFlags.push(`--${flag}`, parsed.values[flag]);
+            }
+            if (parsed.values['no-install']) createFlags.push('--no-install');
 
             if (!args[0]) {
                 console.error('Missing project name. Usage: nib new <project-name>');
@@ -225,6 +252,13 @@ async function main() {
             }
 
             requireOutsideProject();
+
+            // Before the update prompt and the overwrite: a wrong flag must not cost the old project
+            const flagProblem = flagsProblem(parsed.values, process.stdin.isTTY);
+            if (flagProblem) {
+                console.error(`${color.red}${flagProblem}${color.reset}`);
+                process.exit(1);
+            }
 
             if (!skipCheck) {
                 const info = await checkVersion();
@@ -236,7 +270,7 @@ async function main() {
                             const code = updateGlobal(info.latest);
                             if (code !== 0) process.exit(code);
                             console.log(`\n${color.green}Updated.${color.reset} Continuing with the new version...\n`);
-                            process.exit(reexecAfterUpdate(['new', args[0], ...(forceOverwrite ? [OVERWRITE_FLAG] : [])]));
+                            process.exit(reexecAfterUpdate(['new', args[0], ...(forceOverwrite ? [OVERWRITE_FLAG] : []), ...createFlags]));
                         }
                     } else {
                         console.log('Run "nib update" to update.\n');
@@ -267,7 +301,7 @@ async function main() {
                 }
             }
 
-            run(CREATE, [args[0]]);
+            run(CREATE, [args[0], ...createFlags]);
             break;
         }
         case 'cli': {

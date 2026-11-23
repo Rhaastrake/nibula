@@ -1,0 +1,184 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to the same pull request cancels the run still going
+concurrency:
+  group: tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # nib new for every combination, nib new errors, CHANGELOG, README,
+  # npm package contents and syntax. No npm install of projects: fast.
+  scaffold:
+    name: Scaffold (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      # Outside the repo, so new projects get their own git init
+      - name: Test folder
+        shell: bash
+        run: echo "NIBULA_TEST_TMP=${{ runner.temp }}/nibula-tests" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run test:scaffold
+
+  # One job per combination: npm install, build, output, SEO and page commands
+  build:
+    name: Build ${{ matrix.lang }}-${{ matrix.css }}-${{ matrix.backend }} (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+        lang: [js, ts]
+        css: [bootstrap, bulma, none]
+        backend: [node, php, none]
+    env:
+      NIBULA_COMBO: ${{ matrix.lang }}-${{ matrix.css }}-${{ matrix.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      # Outside the repo, so new projects get their own git init
+      - name: Test folder
+        shell: bash
+        run: echo "NIBULA_TEST_TMP=${{ runner.temp }}/nibula-tests" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - if: matrix.backend == 'php'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - run: npm ci
+      - run: npm run test:build
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.lang }}-${{ matrix.css }}-${{ matrix.backend }}-node${{ matrix.node }}
+          path: |
+            ${{ env.NIBULA_TEST_TMP }}
+            !${{ env.NIBULA_TEST_TMP }}/**/node_modules/**
+          retention-days: 7
+
+  # A few combinations on Windows: paths, line endings, npm through cmd
+  build-windows:
+    name: Build ${{ matrix.combo }} (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        combo: [js-bootstrap-none, ts-bulma-node, js-none-php]
+    env:
+      NIBULA_COMBO: ${{ matrix.combo }}
+    steps:
+      - uses: actions/checkout@v4
+      # Outside the repo, so new projects get their own git init
+      - name: Test folder
+        shell: bash
+        run: echo "NIBULA_TEST_TMP=${{ runner.temp }}/nibula-tests" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - if: endsWith(matrix.combo, '-php')
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - run: npm ci
+      - run: npm run test:build
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-windows-${{ matrix.combo }}
+          path: |
+            ${{ env.NIBULA_TEST_TMP }}
+            !${{ env.NIBULA_TEST_TMP }}/**/node_modules/**
+          retention-days: 7
+
+  # Node and PHP backends answering real requests, and giving the same answers
+  backend:
+    name: Backend (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      # Outside the repo, so new projects get their own git init
+      - name: Test folder
+        shell: bash
+        run: echo "NIBULA_TEST_TMP=${{ runner.temp }}/nibula-tests" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
+      - run: npm ci
+      - run: npm run test:backend
+
+  # nginx and Apache in Docker with the project's own configs; IIS rules
+  servers:
+    name: Web servers
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      # Outside the repo, so new projects get their own git init
+      - name: Test folder
+        shell: bash
+        run: echo "NIBULA_TEST_TMP=${{ runner.temp }}/nibula-tests" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+      - run: npm ci
+      - run: npm run test:servers
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: servers
+          path: |
+            ${{ env.NIBULA_TEST_TMP }}
+            !${{ env.NIBULA_TEST_TMP }}/**/node_modules/**
+          retention-days: 7
+
+  # The one check to require in the ruleset: green only when every job above is
+  all:
+    name: All tests
+    if: always()
+    needs: [scaffold, build, build-windows, backend, servers]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every job passed
+        run: |
+          echo '${{ toJSON(needs.*.result) }}'
+          test "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}" = "false"
