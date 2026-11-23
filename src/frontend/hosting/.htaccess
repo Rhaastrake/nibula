@@ -6,8 +6,8 @@ ErrorDocument 403 /404.html
     RewriteEngine On
     RewriteBase /
 
-    # Block sensitive files (web.config, dotfiles)
-    RewriteRule ^(web\.config|\..*)$ /404.html [L,NC]
+    # Block sensitive files (web.config, dotfiles): 404 status, 404.html page
+    RewriteRule ^(web\.config|\..*)$ - [R=404,L,NC]
 </IfModule>
 
 # === /api routing — covers BOTH backends ====================================
@@ -25,15 +25,17 @@ ErrorDocument 403 /404.html
 # the mod_proxy block below.
 
 # --- Node backend (if mod_proxy is available) ---
-<IfModule mod_proxy.c>
-    ProxyPreserveHost On
-    ProxyPass        /api/ http://127.0.0.1:3000/api/ retry=0
-    ProxyPassReverse /api/ http://127.0.0.1:3000/api/
-
+# ProxyPass is not allowed in .htaccess: the [P] flag of mod_rewrite proxies
+# instead. The client's own X-Forwarded-For is dropped, so mod_proxy sends the
+# real address and the rate limiter cannot be fooled.
+<IfModule mod_proxy_http.c>
     <IfModule mod_headers.c>
-        RequestHeader set X-Forwarded-For "%{REMOTE_ADDR}s"
+        RequestHeader unset X-Forwarded-For
         RequestHeader set X-Forwarded-Proto "https"
     </IfModule>
+
+    RewriteEngine On
+    RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L,QSA]
 </IfModule>
 
 # --- PHP backend (fallback when mod_proxy is absent) ---

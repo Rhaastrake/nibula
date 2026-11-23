@@ -36,6 +36,27 @@ async function assertBlocked(port, pathname) {
     return res;
 }
 
+// Blocked paths whose answer is a success status (a "soft 404")
+async function successStatuses(port, paths = BLOCKED) {
+    const wrong = [];
+    for (const pathname of paths) {
+        const res = await request(port, pathname);
+        if (res.status < 400) wrong.push(`${pathname}: ${res.status}`);
+    }
+    return wrong;
+}
+
+// A client that sends a new X-Forwarded-For on every request is still rate
+// limited: the backend must see the real address. Uses up the limit, so it
+// runs last in its suite.
+async function assertRateLimitHoldsAgainstSpoofing(port, limit = 60) {
+    for (let i = 0; i <= limit; i++) {
+        const res = await request(port, '/api/example-public', { headers: { 'X-Forwarded-For': `10.0.${Math.floor(i / 250)}.${i % 250}` } });
+        if (res.status === 429) return;
+    }
+    assert.fail(`more than ${limit} requests passed with a different X-Forwarded-For each`);
+}
+
 async function assertNoListing(port, pathname) {
     const res = await request(port, pathname);
     assert.notEqual(res.status, 200, `${pathname} answered 200`);
@@ -59,4 +80,4 @@ async function assertApiWorks(port) {
     assert.equal(posted.status, 201, posted.text);
 }
 
-module.exports = { BLOCKED, assertBlocked, assertNoListing, assertApiWorks };
+module.exports = { BLOCKED, assertBlocked, successStatuses, assertRateLimitHoldsAgainstSpoofing, assertNoListing, assertApiWorks };

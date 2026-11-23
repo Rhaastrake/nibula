@@ -1,6 +1,6 @@
 // The .htaccess files of a new project, run by a real Apache with PHP in
-// Docker, as on shared hosting without mod_proxy: /api goes to PHP.
-// Not covered yet: Apache with mod_proxy (/api to Node).
+// Docker: shared hosting without mod_proxy (/api goes to PHP), and a server
+// with mod_proxy (/api goes to Node). Only the Node port is changed.
 
 const { describe, test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -8,9 +8,9 @@ const fs = require('fs');
 const path = require('path');
 const { requireTools } = require('../helpers/env');
 const { read } = require('../helpers/files');
-const { freePort, request, waitForHttp } = require('../helpers/server');
+const { freePort, request, waitForHttp, startProcess, stopProcess } = require('../helpers/server');
 const { apacheImage, startContainer, stopContainer, containerLogs, servedOutput } = require('../helpers/docker');
-const { BLOCKED, assertBlocked, assertNoListing, assertApiWorks } = require('../helpers/web-cases');
+const { BLOCKED, assertBlocked, successStatuses, assertRateLimitHoldsAgainstSpoofing, assertNoListing, assertApiWorks } = require('../helpers/web-cases');
 
 const DOCUMENT_ROOT = '/var/www/html';
 
@@ -72,8 +72,61 @@ describe('Apache without mod_proxy: PHP backend', { skip: requireTools('docker',
         });
     }
 
+    test('blocked paths answer with an error status, not 200', async () => {
+        assert.deepEqual(await successStatuses(server.port), []);
+    });
+
+    test('blocked files show the 404 page with status 404', async () => {
+        for (const pathname of ['/web.config', '/.git/config', '/.env']) {
+            const res = await request(server.port, pathname);
+            assert.equal(res.status, 404, pathname);
+            assert.equal(res.text, read(path.join(server.root, '404.html')), pathname);
+        }
+    });
+
     test('no directory listing', async () => {
         await assertNoListing(server.port, '/css/');
         await assertNoListing(server.port, '/assets/brand/');
+    });
+});
+
+describe('Apache with mod_proxy: Node backend', { skip: requireTools('docker') }, () => {
+    let server;
+    let node;
+
+    before(async () => {
+        server = await startApache('proxy', 'js-bootstrap-node', { withProxy: true });
+        node = startProcess(process.execPath, [path.join(server.root, 'backend/core/index.js')], {
+            env: { PORT: String(server.nodePort), HOST: '127.0.0.1' },
+        });
+        await waitForHttp(server.nodePort, { pathname: '/api/example-public', child: node });
+    });
+
+    after(async () => {
+        await stopProcess(node);
+        if (server) server.stop();
+    });
+
+    test('serves the homepage', async () => {
+        const res = await request(server.port, '/');
+        assert.equal(res.status, 200, `${res.text}\n${server.logs()}`);
+    });
+
+    test('/api reaches Node', async () => {
+        await assertApiWorks(server.port);
+    });
+
+    for (const pathname of BLOCKED) {
+        test(`never serves ${pathname}`, async () => {
+            await assertBlocked(server.port, pathname);
+        });
+    }
+
+    test('blocked paths answer with an error status, not 200', async () => {
+        assert.deepEqual(await successStatuses(server.port), []);
+    });
+
+    test('a spoofed X-Forwarded-For does not get around the rate limit', async () => {
+        await assertRateLimitHoldsAgainstSpoofing(server.port);
     });
 });
