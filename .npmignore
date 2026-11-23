@@ -3,3 +3,5 @@ src/backend/core/vendor/
 out/
 node_modules/
 .github
+test/
+.claude/

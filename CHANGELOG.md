@@ -5,6 +5,23 @@ All notable changes to Nibula are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.2] - 2026-11-23
+
+### Added
+- `nib new` takes `--lang js|ts`, `--css bootstrap|bulma|none` and `--backend node|php|none`, so a project can be created without the menus (scripts, CI, AI agents). A missing choice still shows its menu; without a terminal all three are required.
+
+### Changed
+- `nib new` stops with an error on an unknown option or value, before the update prompt and before an existing project is replaced.
+
+### Fixed
+- On Apache with `mod_proxy`, the whole site answered 500: `ProxyPass` is not allowed in `.htaccess`. `/api` now reaches Node through a `mod_rewrite` proxy rule, and the client's own `X-Forwarded-For` is dropped, so the rate limiter sees each visitor's real address instead of `(null)` for everyone.
+- On Apache, `web.config` and dotfiles such as `/.git/config` now answer with status 404. They already showed the 404 page, but with status 200.
+- `nginx.conf` no longer passes on a client-sent `X-Forwarded-For` to Node, so the rate limit cannot be bypassed by sending a fake one.
+- The homepage link on the 404 page keeps the path prefix when the site lives in a subfolder.
+- The PHP example endpoints send an empty query as `{}`, like Node, instead of `[]`.
+
+Projects created before 3.2.2 keep the old files: copy `src/frontend/hosting/.htaccess`, `nginx.conf` and `src/frontend/components/not-found.njk` from a new project, and in your PHP endpoints use `(object) $request['query']` wherever you return the query.
+
 ## [3.2.1] - 2026-11-19
 
 ### Added
@@ -224,17 +241,17 @@ works, but it will be removed in Nibula 4.
   into `{ "fullName": "...", "website": "..." }`. Leaving the file as it is keeps
   the old templates working — the two only have to move together.
 
-## [2.4.3] 2026-08-24
+## [2.4.3] - 2026-08-24
 
-### Changes
+### Changed
 - Minor changes in template files for new pages
 
-## [2.4.2] 2026-08-24
+## [2.4.2] - 2026-08-24
 
 ### Fixed
 - Fixed markdown file components not acepting some of njk keywords
 
-## [2.4.1] 2026-08-24
+## [2.4.1] - 2026-08-24
 
 ### Changed
 - Changed template.njk snippets for renderFile

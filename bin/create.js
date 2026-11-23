@@ -6,11 +6,35 @@ const readline = require('readline');
 const settings = require('../tools/config/settings.json');
 const { writeSync } = require('fs');
 const { spawnSync } = require('child_process');
+const { parseArgs } = require('util');
 const { color } = require('../tools/lib/colors');
+const { resolveFlag, flagsProblem } = require('../tools/lib/newFlags');
+
+// ── ARGUMENTS ────────────────────────────────────────────────────────────────
+
+// nib new <name> [--lang js|ts] [--css bootstrap|bulma|none] [--backend node|php|none]
+// --no-install skips npm/Composer (used by the test suite)
+let cli;
+try {
+    cli = parseArgs({
+        allowPositionals: true,
+        options: {
+            lang:         { type: 'string' },
+            css:          { type: 'string' },
+            backend:      { type: 'string' },
+            'no-install': { type: 'boolean' },
+        },
+    });
+} catch (err) {
+    console.error(`${color.red}${err.message}${color.reset}`);
+    process.exit(1);
+}
+
+const projectArg = cli.positionals[0];
 
 // ── PATHS ────────────────────────────────────────────────────────────────────
 
-const targetDir  = process.argv[2] ? path.resolve(process.argv[2]) : process.cwd();
+const targetDir  = projectArg ? path.resolve(projectArg) : process.cwd();
 const templateDir = path.join(__dirname, '..');
 const SELF_VERSION = require('../package.json').version;
 
@@ -321,7 +345,7 @@ function installDependencies(backend) {
 
     if (npm.status !== 0) {
         log('\n(!) npm install failed. Finish manually:');
-        if (process.argv[2]) log(`      cd ${process.argv[2]}`);
+        if (projectArg) log(`      cd ${projectArg}`);
         log('      npm install\n');
         return false;
     }
@@ -467,16 +491,36 @@ function initGitRepository() {
     return true;
 }
 
+// ── FLAGS ────────────────────────────────────────────────────────────────────
+
+// Stop before anything is created when a flag is wrong or missing
+function checkFlags() {
+    const problem = flagsProblem(cli.values, process.stdin.isTTY);
+    if (problem) {
+        console.error(`${color.red}${problem}${color.reset}`);
+        process.exit(1);
+    }
+}
+
+// The flag's value when given, otherwise the interactive menu
+function choose(flag, question, choices) {
+    const raw = cli.values[flag];
+    if (raw !== undefined) return Promise.resolve(resolveFlag(flag, raw));
+    return askChoice(question, choices);
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 
 async function init() {
+    checkFlags();
+
     if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
 
     log(`\n>> ${color.magenta}Creating Nibula project in ${targetDir}\n${color.reset}`);
 
-    const language  = await askChoice('Select a language',      LANGUAGE_CHOICES);
-    const framework = await askChoice('Select a CSS framework', FRAMEWORK_CHOICES);
-    const backend   = await askChoice('Select a backend',       BACKEND_CHOICES);
+    const language  = await choose('lang',    'Select a language',      LANGUAGE_CHOICES);
+    const framework = await choose('css',     'Select a CSS framework', FRAMEWORK_CHOICES);
+    const backend   = await choose('backend', 'Select a backend',       BACKEND_CHOICES);
 
     log('');
 
@@ -549,14 +593,14 @@ async function init() {
 
     applyFramework(framework);
 
-    installDependencies(backend);
+    if (!cli.values['no-install']) installDependencies(backend);
 
     const gitInitialized = initGitRepository();
 
     // Right below the git line, or after a blank line when there is none
     log(`${gitInitialized ? '' : '\n'}${color.green}>> Done!${color.reset}`);
     log(`${color.yellow}\nNow run:\n${color.reset}`);
-    if (process.argv[2]) log(`${color.yellow}> cd ${process.argv[2]}${color.reset}`);
+    if (projectArg) log(`${color.yellow}> cd ${projectArg}${color.reset}`);
     log(`${color.yellow}> nib run${color.reset}`);
     log('');
 }
