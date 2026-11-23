@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { TMP, parseCombo } = require('./env');
-const { scaffold, runOk } = require('./project');
+const { scaffold, runOk, phase } = require('./project');
 const { freePort, startProcess, stopProcess, waitForHttp } = require('./server');
 
 const NOT_FOUND_PAGE = '<!doctype html><title>Not found</title><h1>nibula-test-404</h1>';
@@ -16,6 +16,7 @@ function backendRoot(kind, label) {
     if (!fs.existsSync(path.join(source, 'src/backend'))) {
         scaffold(path.join(TMP, 'backend-source'), kind, parseCombo(`js-none-${kind}`));
         if (kind === 'php') {
+            phase('composer install');
             runOk('composer', ['install', '--no-interaction', '--no-progress'], { cwd: path.join(source, 'src/backend/core') });
         }
     }

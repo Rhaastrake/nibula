@@ -170,3 +170,15 @@ jobs:
             ${{ env.NIBULA_TEST_TMP }}
             !${{ env.NIBULA_TEST_TMP }}/**/node_modules/**
           retention-days: 7
+
+  # The one check to require in the ruleset: green only when every job above is
+  all:
+    name: All tests
+    if: always()
+    needs: [scaffold, build, build-windows, backend, servers]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every job passed
+        run: |
+          echo '${{ toJSON(needs.*.result) }}'
+          test "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}" = "false"

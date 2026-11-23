@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { run, runOk } = require('./project');
+const { run, runOk, phase } = require('./project');
 const { builtProject } = require('./project');
 const { TMP, parseCombo } = require('./env');
 
@@ -24,6 +24,7 @@ function uidArgs() {
 }
 
 function startContainer(args) {
+    phase(`docker run ${args[args.length - 1]}`);
     return docker(['run', '-d', '--rm', '--network', 'host', ...args]).stdout.trim();
 }
 
@@ -67,6 +68,7 @@ function apacheImage(withProxy) {
         'RUN sed -ri "s/^Listen 80$/Listen \\${APACHE_PORT}/" /etc/apache2/ports.conf',
         'RUN sed -ri "s/<VirtualHost \\*:80>/<VirtualHost *:\\${APACHE_PORT}>/" /etc/apache2/sites-available/000-default.conf',
     ].join('\n');
+    phase(`docker build ${tag}`);
     const context = fs.mkdtempSync(path.join(os.tmpdir(), 'nibula-apache-'));
     fs.writeFileSync(path.join(context, 'Dockerfile'), dockerfile);
     docker(['build', '-q', '-t', tag, context]);

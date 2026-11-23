@@ -51,11 +51,11 @@
     "clean": "node tools/cleanOutput.js",
     "serve": "npm run clean && concurrently \"npm run serve:11ty\" \"npm run serve:css\" \"npm run serve:js\"",
     "assistant": "node tools/assistant.js",
-    "test": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/**/*.test.js\"",
-    "test:scaffold": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/scaffold/*.test.js\" \"test/repo/*.test.js\"",
-    "test:build": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/build/*.test.js\" \"test/seo/*.test.js\" \"test/cli/*.test.js\"",
-    "test:backend": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/backend/*.test.js\"",
-    "test:servers": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/servers/*.test.js\""
+    "test": "node test/run.js",
+    "test:scaffold": "node test/run.js scaffold repo",
+    "test:build": "node test/run.js build seo cli",
+    "test:backend": "node test/run.js backend",
+    "test:servers": "node test/run.js servers"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.8",

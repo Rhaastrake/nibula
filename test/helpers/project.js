@@ -42,19 +42,53 @@ function runOk(command, args, options) {
     return res;
 }
 
+// Tells the reporter which slow step is running (shown next to the spinner)
+function phase(text) {
+    process.stderr.write(`[nibula] ${text}\n`);
+}
+
 function writeLog(dir, name, content) {
     const logDir = path.join(dir, LOG_DIR);
     fs.mkdirSync(logDir, { recursive: true });
     fs.writeFileSync(path.join(logDir, `${name}.log`), content);
 }
 
+// ── LOCKS ───────────────────────────────────────────────────────────────────
+
+// Test groups run in parallel (test/run.js) and some share a built project:
+// the first one to ask builds it, the others wait for it
+function withLock(name, fn) {
+    fs.mkdirSync(TMP, { recursive: true });
+    const lock = path.join(TMP, `${name}.lock`);
+    const pause = new Int32Array(new SharedArrayBuffer(4));
+    for (;;) {
+        try {
+            fs.mkdirSync(lock);
+            break;
+        } catch (error) {
+            if (error.code !== 'EEXIST') throw error;
+            Atomics.wait(pause, 0, 0, 200);
+        }
+    }
+    try {
+        return fn();
+    } finally {
+        fs.rmSync(lock, { recursive: true, force: true });
+    }
+}
+
 // ── PACK ────────────────────────────────────────────────────────────────────
 
 function packNibula() {
+    return withLock('pack', packOnce);
+}
+
+function packOnce() {
     const tarball = path.join(TMP, `nibula-${REPO_PACKAGE.version}.tgz`);
     if (fs.existsSync(tarball)) return tarball;
 
     fs.mkdirSync(TMP, { recursive: true });
+    phase('npm pack');
     runOk('npm', ['pack', '--silent', '--pack-destination', TMP], { cwd: REPO });
     if (!fs.existsSync(tarball)) throw new Error(`npm pack did not write ${tarball}`);
     return tarball;
@@ -93,11 +127,13 @@ function installProject(dir, combo) {
     pkg.devDependencies.nibula = `file:${tarball.split(path.sep).join('/')}`;
     fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
+    phase(`npm install ${path.basename(dir)}`);
     const npm = runOk('npm', ['install', '--no-audit', '--no-fund'], { cwd: dir });
     writeLog(dir, 'npm-install', npm.output);
 
     // Same step create.js runs after npm install for a PHP backend
     if (combo.backend === 'php' && hasCommand('composer')) {
+        phase('composer install');
         const composer = runOk('composer', ['install', '--no-interaction', '--no-progress'], {
             cwd: path.join(dir, 'src', 'backend', 'core'),
         });
@@ -107,6 +143,7 @@ function installProject(dir, combo) {
 }
 
 function buildProject(dir) {
+    phase(`npm run build ${path.basename(dir)}`);
     const res = run('npm', ['run', 'build'], { cwd: dir });
     writeLog(dir, 'build', res.output);
     return res;
@@ -114,6 +151,10 @@ function buildProject(dir) {
 
 // A project installed and built once per run, for tests that only read it
 function builtProject(combo) {
+    return withLock(`built-${combo.id}`, () => buildOnce(combo));
+}
+
+function buildOnce(combo) {
     const parent = path.join(TMP, 'built');
     const dir = path.join(parent, combo.id);
     if (fs.existsSync(path.join(dir, BUILT_MARKER))) return dir;
@@ -156,6 +197,6 @@ function repoNib(cwd, args) {
 }
 
 module.exports = {
-    run, runOk, packNibula, scaffold, scaffoldOnce, installProject, buildProject,
+    run, runOk, phase, packNibula, scaffold, scaffoldOnce, installProject, buildProject,
     builtProject, workingCopy, nib, repoNib,
 };
