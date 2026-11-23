@@ -50,7 +50,12 @@
     "serve:11ty": "eleventy --serve --quiet",
     "clean": "node tools/cleanOutput.js",
     "serve": "npm run clean && concurrently \"npm run serve:11ty\" \"npm run serve:css\" \"npm run serve:js\"",
-    "assistant": "node tools/assistant.js"
+    "assistant": "node tools/assistant.js",
+    "test": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/**/*.test.js\"",
+    "test:scaffold": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/scaffold/*.test.js\" \"test/repo/*.test.js\"",
+    "test:build": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/build/*.test.js\" \"test/seo/*.test.js\" \"test/cli/*.test.js\"",
+    "test:backend": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/backend/*.test.js\"",
+    "test:servers": "node --test --test-concurrency=1 --test-timeout=1200000 \"test/servers/*.test.js\""
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.8",
@@ -60,8 +65,10 @@
     "bulma": "^1.0.4",
     "concurrently": "^9.2.5",
     "esbuild": "^0.28.2",
+    "fast-xml-parser": "^5.12.1",
     "markdown-it-anchor": "^9.2.1",
     "markdown-it-attrs": "^5.0.1",
+    "node-html-parser": "^7.1.0",
     "sass": "^1.108.2"
   },
   "allowScripts": {
