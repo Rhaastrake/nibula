@@ -232,17 +232,17 @@ works, but it will be removed in Nibula 4.
   into `{ "fullName": "...", "website": "..." }`. Leaving the file as it is keeps
   the old templates working — the two only have to move together.
 
-## [2.4.3] 2026-08-24
+## [2.4.3] - 2026-08-24
 
-### Changes
+### Changed
 - Minor changes in template files for new pages
 
-## [2.4.2] 2026-08-24
+## [2.4.2] - 2026-08-24
 
 ### Fixed
 - Fixed markdown file components not acepting some of njk keywords
 
-## [2.4.1] 2026-08-24
+## [2.4.1] - 2026-08-24
 
 ### Changed
 - Changed template.njk snippets for renderFile
