@@ -27,7 +27,8 @@ return [
         Response::success([
             'message' => 'Endpoint is working',
             'params'  => $request['requestParams'],
-            'query'   => $request['query'],
+            // (object): an empty query is sent as {} like the Node backend, not []
+            'query'   => (object) $request['query'],
         ]);
     },
 

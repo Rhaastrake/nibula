@@ -12,7 +12,7 @@ const { parseCombo } = require('../helpers/env');
 const { read } = require('../helpers/files');
 const { freePort, request, waitForHttp, startProcess, stopProcess } = require('../helpers/server');
 const { IMAGES, docker, uidArgs, startContainer, stopContainer, containerLogs, servedOutput, writeTemp } = require('../helpers/docker');
-const { BLOCKED, assertBlocked, assertNoListing, assertApiWorks } = require('../helpers/web-cases');
+const { BLOCKED, assertBlocked, assertRateLimitHoldsAgainstSpoofing, assertNoListing, assertApiWorks } = require('../helpers/web-cases');
 
 const SITE_ROOT = '/var/www/site';
 
@@ -149,4 +149,8 @@ describe('nginx: Node backend', { skip: requireTools('docker') }, () => {
             assert.equal(res.status, 404, `${pathname}: status ${res.status}`);
         });
     }
+
+    test('a spoofed X-Forwarded-For does not get around the rate limit', async () => {
+        await assertRateLimitHoldsAgainstSpoofing(server.ports.https);
+    });
 });

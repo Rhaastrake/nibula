@@ -25,8 +25,6 @@ describe(`path prefix: ${combo.id}`, () => {
         const missing = [];
         for (const page of pages) {
             for (const ref of localReferences(page.doc)) {
-                // Not covered yet: the homepage link of the 404 page
-                if (page.url === '/404.html' && ref === '/') continue;
                 if (ref.startsWith('/') && !ref.startsWith(PREFIX)) missing.push(`${page.url} -> ${ref}`);
             }
         }
